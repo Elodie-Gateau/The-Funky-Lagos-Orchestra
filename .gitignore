@@ -21,3 +21,5 @@
 
 ###> iOs ###
 .DS_Store
+.env.dev
+.env.local
