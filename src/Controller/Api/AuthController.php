@@ -22,6 +22,7 @@ class AuthController extends AbstractController
             'authenticated' => true,
             'roles' => $user->getRoles(),
             'email' => $user->getUserIdentifier(),
+            'surname' => $user->getSurname(),
         ]);
     }
 

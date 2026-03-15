@@ -17,6 +17,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
             'authenticated' => true,
             'email'         => $user->getUserIdentifier(),
             'roles'         => $user->getRoles(),
+            'surname' => $user->getSurname(),
         ]);
     }
 }

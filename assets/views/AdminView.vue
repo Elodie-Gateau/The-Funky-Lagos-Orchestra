@@ -20,7 +20,7 @@ async function handleLogout() {
     </header>
     <main>
         <h1>{{ t('admin.title') }}</h1>
-        <p>{{ t('admin.hello') }} {{ auth.user?.email }}</p>
+        <p>{{ t('admin.hello') }} {{ auth.user?.surname }}</p>
     </main>
 </div>
 </template>
