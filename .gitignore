@@ -33,3 +33,7 @@
 /public/build/
 ###< pentatrion/vite-bundle ###
 .claude/
+docker-compose.yml
+docker-compose.yaml
+.env
+.env.local
