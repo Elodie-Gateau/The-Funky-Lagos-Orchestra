@@ -1,0 +1,25 @@
+{
+    "main": {
+        "title": "The Funky Lagos Orchestra"
+    },
+    "nav": {
+        "home": "Home",
+        "concerts": "Concerts",
+        "about": "About"
+    },
+    "home": {
+        "subtitle": "Afrobeat music in France"
+    },
+    "login": {
+        "subtitle": "Admin login",
+        "email": "Email address",
+        "password": "Password",
+        "connexion": "Signing in...",
+        "sign-in": "Sign in"
+    },
+    "admin": {
+        "log-out": "Log out",
+        "title": "Admin area",
+        "hello": "Welcome "
+    }
+}

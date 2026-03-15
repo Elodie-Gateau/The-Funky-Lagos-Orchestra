@@ -1,10 +1,11 @@
-import './stimulus_bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
+import {createApp } from 'vue'
+import { createPinia } from 'pinia'
+import App from './components/App.vue'
+import router from './router/index.js'
+import i18n from './i18n/index.js'
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+const app = createApp(App)
+app.use(createPinia())
+app.use(router)
+app.use(i18n)
+app.mount('#app')

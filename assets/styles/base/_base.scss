@@ -1,0 +1,25 @@
+@use "../utils/variables" as *;
+
+html {
+    width: 100%;
+    background-color: #EBE3CE;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+body {
+    background-color: #F2EDD9;
+    width: 80%;
+    margin-top: $size-48;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}

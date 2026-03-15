@@ -1,0 +1,11 @@
+app:
+    ui:
+        title: The Funky Lagos Orchestra
+        logo: Logo of The Funky Lagos Orchestra
+        header:
+            subtitle_first: Home
+            subtitle_second: About
+            subtitle_third: Music
+            subtitle_fourth: Gallery
+            subtitle_fifth: Events
+            subtitle_sixth: Contact
