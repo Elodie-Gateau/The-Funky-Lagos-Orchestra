@@ -1,14 +1,18 @@
 {
     "main": {
-        "title": "The Funky Lagos Orchestra"
+        "title": "The Funky Lagos Orchestra",
+        "logo": "Logo de The Funky Lagos Orchestra"
     },
     "nav": {
         "home": "Accueil",
-        "concerts": "Concerts",
-        "about": "À propos"
+        "about": "À propos",
+        "music": "Musique",
+        "gallery": "Galerie",
+        "events": "Concerts",
+        "contact": "Contact"
     },
     "home": {
-        "subtitle": "La musique afrobeat en France"
+        "subtitle": "Site officiel"
     },
     "login": {
         "subtitle": "Connexion espace administrateur",

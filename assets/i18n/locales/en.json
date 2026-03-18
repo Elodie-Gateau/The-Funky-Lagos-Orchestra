@@ -1,14 +1,18 @@
 {
     "main": {
-        "title": "The Funky Lagos Orchestra"
+        "title": "The Funky Lagos Orchestra",
+        "logo": "Logo of The Funky Lagos Orchestra"
     },
     "nav": {
         "home": "Home",
-        "concerts": "Concerts",
-        "about": "About"
+        "about": "About",
+        "music": "Music",
+        "gallery": "Gallery",
+        "events": "Events",
+        "contact": "Contact"
     },
     "home": {
-        "subtitle": "Afrobeat music in France"
+        "subtitle": "Official website"
     },
     "login": {
         "subtitle": "Admin login",
