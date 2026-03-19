@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Auth;
+namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,6 +34,7 @@ class AuthController extends AbstractController
     #[Route('/login', name: 'api_login', methods: ['POST'])]
     public function login(): JsonResponse
     {
+        // Symfony intercepte cette requête avant d'arriver ici
         return $this->json(['error' => 'Non intercepté par le firewall'], 500);
     }
 }

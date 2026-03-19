@@ -7,9 +7,13 @@ const { t, locale } = useI18n()
 </script>
 
 <template>
-    <div class="sticky-nav">
-        <div class="logo">
-            <img src="/assets/images/logo.svg" alt="{{ t('main.logo')}}">
+    <div class="hero">
+        <img src="/assets/images/logo.svg" alt="{{ t('main.logo')}}">
+        <div class="title">
+            <h1>{{ t('main.title') }}</h1>
+            <p>{{ t('home.subtitle') }}</p>
+        </div>
+        <div class="menu">
             <NavMenu/>
             <LangSwitcher/>
         </div>
