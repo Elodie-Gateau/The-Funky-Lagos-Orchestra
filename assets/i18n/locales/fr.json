@@ -27,6 +27,13 @@
         "hello": "Bienvenue "
     },
     "about": {
-        "subtitle": "Le groupe"
+        "subtitle": "Le groupe",
+        "subtitle2": {
+            "part1": "Un son ",
+            "part2": "afrofunk",
+            "part3": " ancré en Vendée"
+        },
+        "bloc-text1": "Née au cœur des bocages vendéens, The Funky Lagos Orchestra mêle les rythmes africains chaleureux à l'énergie brute du funk. Une rencontre explosive entre tradition et modernité.",
+        "bloc-text2": "8 musiciens sur scène, des cuivres qui enflamment la salle, des percussions hypnotiques et une voix lead qui transporte le public aux quatre coins du monde."
     }
 }

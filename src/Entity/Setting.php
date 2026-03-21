@@ -34,6 +34,9 @@ class Setting
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $created_by = null;
 
+    public function __construct(){
+        $this->created_at = new \DateTimeImmutable();
+    }
     public function getId(): ?int
     {
         return $this->id;

@@ -24,9 +24,7 @@
 .env.dev
 .env.local
 
-###> symfonycasts/sass-bundle ###
-/public/assets/
-###< symfonycasts/sass-bundle ###
+
 
 ###> pentatrion/vite-bundle ###
 /node_modules/
@@ -36,4 +34,6 @@
 docker-compose.yml
 docker-compose.yaml
 .env
-.env.local
+
+/public/uploads/*
+!/public/uploads/.gitkeep
