@@ -8,18 +8,31 @@ const { t, locale } = useI18n()
 
 <template>
     <div class="hero">
-        <img src="/assets/images/logo.svg" alt="{{ t('main.logo')}}">
+        <img src="/assets/images/logo.svg" :alt="t('main.logo')">
         <div class="title">
             <h1>{{ t('main.title') }}</h1>
             <p>{{ t('home.subtitle') }}</p>
         </div>
         <div class="menu">
-            <NavMenu/>
+            <div class="nav">
+                <NavMenu/>
+            </div>
             <LangSwitcher/>
         </div>
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '/assets/styles/utils/breakpoints' as *;
+
+.nav {
+    display:none;
+}
+
+@media (min-width: $md) {
+    .nav {
+        display: block;
+    }
+}
 
 </style>

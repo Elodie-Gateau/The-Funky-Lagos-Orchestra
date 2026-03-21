@@ -25,5 +25,8 @@
         "log-out": "Log out",
         "title": "Admin area",
         "hello": "Welcome "
+    },
+    "about": {
+        "subtitle": "The Group"
     }
 }

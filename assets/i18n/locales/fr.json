@@ -25,5 +25,8 @@
         "log-out": "Déconnexion",
         "title" : "Espace administrateur",
         "hello": "Bienvenue "
+    },
+    "about": {
+        "subtitle": "Le groupe"
     }
 }
