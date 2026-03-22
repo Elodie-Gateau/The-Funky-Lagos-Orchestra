@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\SettingName;
 use App\Repository\SettingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +15,8 @@ class Setting
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 255, enumType: SettingName::class)]
+    private ?SettingName $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $link = null;
@@ -29,11 +30,11 @@ class Setting
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $updated_by = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $updated_by = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $created_by = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $created_by = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description_fr = null;
@@ -50,12 +51,12 @@ class Setting
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): ?SettingName
     {
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(SettingName $name): static
     {
         $this->name = $name;
 
@@ -110,24 +111,24 @@ class Setting
         return $this;
     }
 
-    public function getUpdatedBy(): ?string
+    public function getUpdatedBy(): ?User
     {
         return $this->updated_by;
     }
 
-    public function setUpdatedBy(?string $updated_by): static
+    public function setUpdatedBy(?User $updated_by): static
     {
         $this->updated_by = $updated_by;
 
         return $this;
     }
 
-    public function getCreatedBy(): ?string
+    public function getCreatedBy(): ?User
     {
         return $this->created_by;
     }
 
-    public function setCreatedBy(?string $created_by): static
+    public function setCreatedBy(?User $created_by): static
     {
         $this->created_by = $created_by;
 

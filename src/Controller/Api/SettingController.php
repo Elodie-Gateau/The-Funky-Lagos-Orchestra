@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Setting;
+use App\Enum\SettingName;
 use App\Form\SettingType;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,27 +21,25 @@ final class SettingController extends AbstractController
     #[Route('/settings', methods: ['GET'])]
     public function getSettings(SettingRepository $settingRepository): JsonResponse
     {
-        $image = $settingRepository->findOneBy(['name' => 'Photo']);
-        $descriptions = $settingRepository->findOneBy(['name' => 'Description']);
+        $imageSetting = $settingRepository->findOneBy(['name' => SettingName::Photo]);
+        $descriptions = $settingRepository->findOneBy(['name' => SettingName::Description]);
         return $this->json([
-            'image' => $image ? '/uploads/' . $image->getImage() : null,
-            'descriptions' => ['description_fr' => $descriptions?->getDescriptionFr(),
-                                'description_en' => $descriptions?->getDescriptionEn()
+            'image' => $imageSetting?->getImage() ? '/uploads/' . $imageSetting->getImage() : null,
+            'descriptions' => [
+                'description_fr' => $descriptions?->getDescriptionFr(),
+                'description_en' => $descriptions?->getDescriptionEn()
             ]
         ]);
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/settings', methods: ['POST'])]
-    public function updateSettings(
+    #[Route('/admin/settings/image', methods: ['POST'])]
+    public function updateSettingsImage(
         Request $request,
         SettingRepository $repo,
         EntityManagerInterface $em
     ): JsonResponse {
-        $setting = $repo->findOneBy([]) ?? new Setting();
-
-        $form = $this->createForm(SettingType::class, $setting);
-        $form->submit([]);
+        $setting = $repo->findOneBy(['name' => SettingName::Photo]) ?? new Setting();
 
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile|null $file */
         $file = $request->files->get('imageFile');
@@ -55,6 +54,8 @@ final class SettingController extends AbstractController
             }
 
             $setting->setImage($filename);
+            $setting->setUpdatedAt(new \DateTimeImmutable());
+            $setting->setUpdatedBy($this->getUser());
         }
 
         $em->persist($setting);
@@ -62,4 +63,25 @@ final class SettingController extends AbstractController
 
         return $this->json(['success' => true, 'image' => '/uploads/' . $setting->getImage()]);
         }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin/settings/descriptions', methods: ['POST'])]
+    public function updateSettingsDescriptions(
+        Request $request,
+        SettingRepository $repo,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $setting = $repo->findOneBy(['name' => SettingName::Description]) ?? new Setting();
+        $setting->setDescriptionFr($data['description_fr'] ?? null);
+        $setting->setDescriptionEn($data['description_en'] ?? null);
+        $setting->setUpdatedAt(new \DateTimeImmutable());
+        $setting->setUpdatedBy($this->getUser());
+
+        $em->persist($setting);
+        $em->flush();
+
+        return $this->json(['success' => true]);
+    }
 }
