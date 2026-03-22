@@ -10,6 +10,20 @@ async function handleLogout() {
     await auth.logout()
     router.push('/login')
 }
+
+async function translateDescription() {
+    isTranslating.value = true
+    const response = await fetch('/api/admin/translate', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text: form.description_fr})
+    })
+    const data = await response.json()
+    form.description_en = data.translation
+    isTranslating.value = false
+}
+
 </script>
 
 <template>

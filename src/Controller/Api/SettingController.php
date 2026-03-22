@@ -20,11 +20,13 @@ final class SettingController extends AbstractController
     #[Route('/settings', methods: ['GET'])]
     public function getSettings(SettingRepository $settingRepository): JsonResponse
     {
-        $setting = $settingRepository->findOneBy([]) ?? new Setting();
+        $image = $settingRepository->findOneBy(['name' => 'Photo']);
+        $descriptions = $settingRepository->findOneBy(['name' => 'Description']);
         return $this->json([
-            'image' => $setting->getImage()
-            ? '/uploads/' . $setting->getImage()
-                : null
+            'image' => $image ? '/uploads/' . $image->getImage() : null,
+            'descriptions' => ['description_fr' => $descriptions?->getDescriptionFr(),
+                                'description_en' => $descriptions?->getDescriptionEn()
+            ]
         ]);
     }
 

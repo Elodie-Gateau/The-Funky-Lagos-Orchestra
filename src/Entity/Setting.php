@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SettingRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
@@ -33,6 +34,13 @@ class Setting
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $created_by = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description_fr = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description_en = null;
+
 
     public function __construct(){
         $this->created_at = new \DateTimeImmutable();
@@ -125,4 +133,24 @@ class Setting
 
         return $this;
     }
+    public function getDescriptionFr(): ?string
+    {
+        return $this->description_fr;
+    }
+
+    public function setDescriptionFr(?string $description_fr): void
+    {
+        $this->description_fr = $description_fr;
+    }
+
+    public function getDescriptionEn(): ?string
+    {
+        return $this->description_en;
+    }
+
+    public function setDescriptionEn(?string $description_en): void
+    {
+        $this->description_en = $description_en;
+    }
+
 }

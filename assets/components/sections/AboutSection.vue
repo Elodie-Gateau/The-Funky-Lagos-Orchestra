@@ -2,17 +2,25 @@
 
 import SectionTitle from "../ui/SectionTitle.vue";
 import { useI18n } from "vue-i18n";
-import { ref, onMounted } from "vue";
+import {ref, onMounted, computed} from "vue";
+const { t, locale } = useI18n();
 
 const groupImage = ref(null);
+const descriptionsData = ref(null);
 
 onMounted(async() => {
     const res = await fetch('/api/settings', {credentials: 'include'})
     const data = await res.json();
     groupImage.value = data.image;
+    descriptionsData.value = data.descriptions;
 })
+const description = computed(() =>
+    locale.value === "en"
+        ? descriptionsData.value?.description_en
+        : descriptionsData.value?.description_fr
+)
 
-const { t } = useI18n();
+console.log(locale.value);
 </script>
 
 <template>
@@ -21,11 +29,12 @@ const { t } = useI18n();
     <h3>{{ t('about.subtitle')}}</h3>
     <img v-if="groupImage" :src="groupImage" :alt="t('main.title')" />
     <h4>{{ t('about.subtitle2.part1')}} <span>{{t('about.subtitle2.part2')}}</span> {{t('about.subtitle2.part3')}}</h4>
-    <p>{{ t('about.bloc-text1')}}</p>
-    <p>{{ t('about.bloc-text2')}}</p>
+    <p v-if="description">{{ description }}</p>
 </section>
 </template>
 
 <style scoped>
-
+img {
+    max-width: 100%;
+}
 </style>
