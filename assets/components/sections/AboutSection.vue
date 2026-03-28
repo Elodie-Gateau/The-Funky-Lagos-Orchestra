@@ -20,8 +20,6 @@ const description = computed(() => {
     }
     return descriptionsData.value?.description_fr;
 })
-
-console.log(locale.value);
 </script>
 
 <template>

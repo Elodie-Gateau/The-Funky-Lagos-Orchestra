@@ -26,13 +26,21 @@ class Tracks
     private ?string $audioFile = null;
 
     #[ORM\Column]
-    private ?int $duration = null;
+    private ?string $duration = null;
 
     #[ORM\Column(length: 255)]
     private ?string $artist = null;
 
     #[ORM\Column(length: 255)]
     private ?string $album = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
+    public function __construct()
+    {
+        $this->Added_at = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -87,12 +95,12 @@ class Tracks
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?string
     {
         return $this->duration;
     }
 
-    public function setDuration(int $duration): static
+    public function setDuration(string $duration): static
     {
         $this->duration = $duration;
 
@@ -122,4 +130,16 @@ class Tracks
 
         return $this;
     }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
+    }
+
+
 }

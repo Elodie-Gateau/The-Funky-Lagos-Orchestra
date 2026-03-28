@@ -20,6 +20,26 @@ const routes = [
         {
             path: '/:locale/',
             component: HomeView
+        },
+        {
+            path: '/admin/music',
+            component: () => import('../views/admin/ManageMusicView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/admin/event',
+            component: () => import('../views/admin/ManageEventsView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/admin/gallery',
+            component: () => import('../views/admin/ManageGalleryView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/admin/settings',
+            component: () => import('../views/admin/ManageSettingsView.vue'),
+            meta: { requiresAuth: true }
         }
     ]
 
