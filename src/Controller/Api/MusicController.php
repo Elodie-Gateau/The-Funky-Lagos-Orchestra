@@ -46,7 +46,6 @@ class MusicController extends AbstractController
         $album = $request->request->get('album');
         $status = $request->request->get('status');
         $duration = $request->request->get('duration');
-        dump($audioFile);
         if (!$audioFile) {
             return $this->json(['error' => 'Fichier audio manquant'], 400);
         }
@@ -66,7 +65,7 @@ class MusicController extends AbstractController
         $track->setArtist($artist);
         $track->setAlbum($album);
         $track->setDuration($duration);
-        $track->setAudioFile($finalAudioPath);
+        $track->setAudioFile('/audio/' . basename($finalAudioPath));
         $track->setStatus($status);
 
         $em->persist($track);

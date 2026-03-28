@@ -9,7 +9,8 @@ class AudioConversionService
     public function convertToMp3(string $inputPath, string $outputPath): string
     {
         if ($this->isMp3($inputPath)) {
-            return $inputPath; // pas de conversion nécessaire
+            copy($inputPath, $outputPath);
+            return $outputPath; 
         }
 
         $process = new Process([
