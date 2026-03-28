@@ -10,7 +10,7 @@ class AudioConversionService
     {
         if ($this->isMp3($inputPath)) {
             copy($inputPath, $outputPath);
-            return $outputPath; 
+            return $outputPath;
         }
 
         $process = new Process([
@@ -25,9 +25,10 @@ class AudioConversionService
         return $outputPath;
     }
 
-    private function isMp3(string $filePath): bool {
+    private function isMp3(string $filePath): bool
+    {
         $mimeType = mime_content_type($filePath);
-        return 'audio/mpeg' === $mimeType;
+        return in_array($mimeType, ['audio/mpeg', 'audio/mp3']);
     }
 
 }

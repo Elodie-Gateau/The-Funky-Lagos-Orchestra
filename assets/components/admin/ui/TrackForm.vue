@@ -71,7 +71,7 @@ async function handleSubmit() {
         </div>
         <div>
             <label for="audio">Fichier audio (MP3 / MP4)</label>
-            <input type="file" id="audio" @change="handleAudioUpload" />
+            <input type="file" id="audio" accept="audio/mpeg,audio/ogg,video/mp4,audio/mp4,audio/x-m4a" @change="handleAudioUpload" />
         </div>
         <div>
             <label for="album">Album</label>
@@ -79,7 +79,10 @@ async function handleSubmit() {
         </div>
         <div>
             <label for="status">Statut</label>
-            <input type="text" id="status" v-model="status" value="Publié" />
+            <select id="status" v-model="status">
+                <option value="Brouillon">Brouillon</option>
+                <option value="Publié">Publié</option>
+            </select>
         </div>
         <button
             class="btn btn--primary"

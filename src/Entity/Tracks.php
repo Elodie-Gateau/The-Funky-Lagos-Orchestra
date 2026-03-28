@@ -4,7 +4,10 @@ namespace App\Entity;
 
 use App\Repository\TracksRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity('title')]
 #[ORM\Entity(repositoryClass: TracksRepository::class)]
 class Tracks
 {
@@ -16,25 +19,35 @@ class Tracks
     #[ORM\Column]
     private ?\DateTimeImmutable $Added_at = null;
 
-    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre est obligatoire')]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $audioFile = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $duration = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $artist = null;
 
     #[ORM\Column(length: 255)]
     private ?string $album = null;
 
+    #[Assert\Choice(choices: ['Brouillon', 'Publié'])]
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $status = null;
 
     public function __construct()
