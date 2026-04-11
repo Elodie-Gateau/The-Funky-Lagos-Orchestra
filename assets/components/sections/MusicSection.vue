@@ -35,7 +35,7 @@ onMounted(async() => {
             {{ track.duration }}
         </li>
     </ul>
-
+    <a href="/music">{{ t('music.link') }}</a>
 
 </section>
 </template>

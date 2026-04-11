@@ -42,6 +42,8 @@
     },
     "music": {
         "title": "Our music",
-        "subtitle": "Listen"
+        "subtitle": "Listen",
+        "meta_title": "Musics",
+        "link": "See all tracks"
     }
 }

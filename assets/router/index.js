@@ -1,7 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import {useAuthStore} from "../stores/auth.js";
-
+import MusicView from "../views/MusicView.vue";
+import i18n from "../i18n/index.js";
 
 const routes = [
         {
@@ -21,7 +22,12 @@ const routes = [
         },
         {
             path: '/:locale/',
-            component: HomeView
+            component: HomeView,
+        },
+        {
+            path: '/music/',
+            component: MusicView,
+            meta: { titleKey: 'music.meta_title' }
         },
         {
             path: '/admin/tracks',
@@ -48,9 +54,13 @@ const routes = [
 const router = createRouter({history: createWebHistory(), routes })
 
 router.beforeEach(async (to) => {
-    if (to.meta.title) {
+    // Gestion du titre avec i18n
+    if (to.meta.titleKey) {
+        document.title = `${i18n.global.t(to.meta.titleKey)} — The Funky Lagos Orchestra`
+    } else if (to.meta.title) {
         document.title = to.meta.title
     }
+
     if (to.meta.requiresAuth) {
         const auth = useAuthStore()
         await auth.checkAuth()
