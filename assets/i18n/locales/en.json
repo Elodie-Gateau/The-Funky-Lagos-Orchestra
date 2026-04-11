@@ -45,5 +45,11 @@
         "subtitle": "Listen",
         "meta_title": "Musics",
         "link": "See all tracks"
+    },
+    "event": {
+        "title": "Calendar",
+        "subtitle": "Next shows",
+        "meta_title": "Events",
+        "link": "See all shows"
     }
 }

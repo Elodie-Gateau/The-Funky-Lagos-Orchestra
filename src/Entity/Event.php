@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity('date')]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {
@@ -14,20 +17,27 @@ class Event
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $Date = null;
+    #[Assert\NotBlank(message: 'La date est obligatoire')]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: false)]
+    private ?\DateTime $date;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $Created_at = null;
+    private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Location = null;
+    private ?string $location = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Host = null;
+    private ?string $host = null;
 
+    #[Assert\NotBlank(message: "Le nom de l'événement est obligatoire")]
     #[ORM\Column(length: 255)]
-    private ?string $Status = null;
+    private ?string $name = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -36,60 +46,60 @@ class Event
 
     public function getDate(): ?\DateTime
     {
-        return $this->Date;
+        return $this->date;
     }
 
-    public function setDate(?\DateTime $Date): static
+    public function setDate(?\DateTime $date): static
     {
-        $this->Date = $Date;
+        $this->date = $date;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->Created_at;
+        return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $Created_at): static
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->Created_at = $Created_at;
+        $this->created_at = $created_at;
 
         return $this;
     }
 
     public function getLocation(): ?string
     {
-        return $this->Location;
+        return $this->location;
     }
 
-    public function setLocation(?string $Location): static
+    public function setLocation(?string $location): static
     {
-        $this->Location = $Location;
+        $this->location = $location;
 
         return $this;
     }
 
     public function getHost(): ?string
     {
-        return $this->Host;
+        return $this->host;
     }
 
-    public function setHost(?string $Host): static
+    public function setHost(?string $host): static
     {
-        $this->Host = $Host;
+        $this->host = $host;
 
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getName(): ?string
     {
-        return $this->Status;
+        return $this->name;
     }
 
-    public function setStatus(string $Status): static
+    public function setName(string $name): static
     {
-        $this->Status = $Status;
+        $this->name = $name;
 
         return $this;
     }

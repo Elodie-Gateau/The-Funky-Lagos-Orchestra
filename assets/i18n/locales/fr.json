@@ -45,5 +45,10 @@
         "subtitle": "Écoutez",
         "meta_title": "Musiques",
         "link": "Voir tous les morceaux"
+    },
+    "event": {
+        "title": "Agenda",
+        "subtitle": "Prochains concerts",
+        "meta_title": "Événements"
     }
 }

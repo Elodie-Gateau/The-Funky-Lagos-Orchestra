@@ -27,7 +27,7 @@ class Tracks
     private ?string $Description = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Le fichier audio est obligatoire')]
     #[Assert\Length(max: 255)]
     private ?string $audioFile = null;
 
@@ -37,7 +37,7 @@ class Tracks
     private ?string $duration = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "L'artiste est obligatoire")]
     #[Assert\Length(max: 255)]
     private ?string $artist = null;
 

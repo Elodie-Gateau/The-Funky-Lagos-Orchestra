@@ -1,5 +1,4 @@
 <script setup>
-
 import {Pause, Play, X} from "@lucide/vue";
 import TrackForm from "../../components/admin/ui/TrackForm.vue";
 import {onMounted, ref} from "vue";

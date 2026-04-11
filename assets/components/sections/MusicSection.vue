@@ -22,7 +22,7 @@ onMounted(async() => {
 </script>
 
 <template>
-<section id="music">
+<section v-if="tracks.length > 0" id="music">
     <SectionTitle :title="t('music.title')" :subtitle="t('music.subtitle')" />
     <ul id="tracks">
         <li v-for="track in tracks" :key="track.id">
