@@ -5,12 +5,9 @@ import AppFooter from "./components/layout/AppFooter.vue";
 </script>
 
 <template>
-    <AppHeader/>
     <main>
         <RouterView />
     </main>
-
-    <AppFooter/>
 </template>
 
 <style scoped>

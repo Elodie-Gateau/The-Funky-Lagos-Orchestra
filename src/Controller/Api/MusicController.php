@@ -7,6 +7,7 @@ namespace App\Controller\Api;
 use App\Entity\Tracks;
 use App\Repository\TracksRepository;
 use App\Service\AudioConversionService;
+use App\Service\CheckTrackVisibility;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,10 +23,11 @@ class MusicController extends AbstractController
 
     public function __construct(
         private readonly AudioConversionService $audioConversion,
+        private readonly CheckTrackVisibility $checkTrackVisibility,
     )
     {}
 
-    #[Route('/music', methods: ['GET'])]
+    #[Route('/tracks', methods: ['GET'])]
     public function getTracks(TracksRepository $tracksRepository): JsonResponse
     {
         $tracks = $tracksRepository->findAll();
@@ -34,18 +36,29 @@ class MusicController extends AbstractController
         ]);
     }
 
+    #[Route('/tracks/home', methods: ['GET'])]
+    public function getVisibleTracks(TracksRepository $tracksRepository): JsonResponse
+    {
+        $tracks = $tracksRepository->findby(['isVisible' => true]);
+        return $this->json([
+            'tracks' => $tracks,
+        ]);
+    }
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/music/add', methods: ['POST'])]
+    #[Route('/admin/tracks/add', methods: ['POST'])]
     public function addTrack(
         Request $request,
         EntityManagerInterface $em
     ): JsonResponse {
-        $title = $request->request->get('title');
-        $artist = $request->request->get('artist');
+        $track = new Tracks();
+        $track->setTitle($request->request->get('title'));
+        $track->setArtist($request->request->get('artist'));
+        $track->setAlbum($request->request->get('album'));
+        $track->setDuration($request->request->get('duration'));
+        $track->setStatus($request->request->get('status'));
+        $track->setIsVisible($request->request->get('isVisible'));
+
         $audioFile = $request->files->get('audioFile');
-        $album = $request->request->get('album');
-        $status = $request->request->get('status');
-        $duration = $request->request->get('duration');
         if (!$audioFile) {
             return $this->json(['error' => 'Fichier audio manquant'], 400);
         }
@@ -60,18 +73,44 @@ class MusicController extends AbstractController
             . '/public/audio/' . uniqid() . '.mp3';
         $finalAudioPath = $this->audioConversion->convertToMp3($tempPath, $outputPath);
 
-        $track = new Tracks();
-        $track->setTitle($title);
-        $track->setArtist($artist);
-        $track->setAlbum($album);
-        $track->setDuration($duration);
         $track->setAudioFile('/audio/' . basename($finalAudioPath));
-        $track->setStatus($status);
 
+        $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
+        if (isset($checkTrack['error'])) {
+            return $this->json($checkTrack, 400);
+        }
         $em->persist($track);
         $em->flush();
-
         return $this->json(['success' => true]);
     }
 
+    #[Route('/admin/tracks/{id}', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function updateTrack(Tracks $track, Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $track->setTitle($request->request->get('title'));
+        $track->setArtist($request->request->get('artist'));
+        $track->setAlbum($request->request->get('album'));
+        $track->setDuration($request->request->get('duration'));
+        $track->setStatus($request->request->get('status'));
+        $track->setIsVisible($request->request->get('isVisible') === 'true');
+        $audioFile = $request->files->get('audioFile');
+
+        if ($audioFile && $audioFile->getError() === UPLOAD_ERR_OK) {
+            $tempPath = $audioFile->getRealPath();
+            $outputPath = $this->getParameter('kernel.project_dir')
+                . '/public/audio/' . uniqid() . '.mp3';
+            $finalAudioPath = $this->audioConversion->convertToMp3($tempPath, $outputPath);
+
+            $track->setAudioFile('/audio/' . basename($finalAudioPath));
+        }
+
+        $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
+        if (isset($checkTrack['error'])) {
+            return $this->json($checkTrack, 400);
+        }
+        $em->persist($track);
+        $em->flush();
+        return $this->json(['success' => true]);
+    }
 }

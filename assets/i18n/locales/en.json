@@ -39,5 +39,9 @@
         "tag4": "Jazz west-africain",
         "tag5": "Soul",
         "link": "Découvrez notre musique"
+    },
+    "music": {
+        "title": "Our music",
+        "subtitle": "Listen"
     }
 }

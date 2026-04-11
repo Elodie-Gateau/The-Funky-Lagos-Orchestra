@@ -24,8 +24,7 @@ const description = computed(() => {
 
 <template>
 <section id="about">
-    <SectionTitle :title="t('nav.about')" />
-    <h3>{{ t('about.subtitle')}}</h3>
+    <SectionTitle :title="t('nav.about')" :subtitle="t('about.subtitle')" />
     <img v-if="groupImage" :src="groupImage" :alt="t('main.title')" />
     <h4>{{ t('about.subtitle2.part1')}} <span>{{t('about.subtitle2.part2')}}</span> {{t('about.subtitle2.part3')}}</h4>
     <p v-if="description">{{ description }}</p>

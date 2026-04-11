@@ -11,7 +11,7 @@ final class Version20260328164935 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add status to tracks with constraint';
+        return '';
     }
 
     public function up(Schema $schema): void

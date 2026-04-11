@@ -1,99 +1,116 @@
 <script setup>
-import {ref} from "vue";
+import { ref, watch, computed } from "vue"
 
-const emit = defineEmits(["close"]);
+const props = defineProps({
+    track: { type: Object, default: null }
+})
+const emit = defineEmits(["close"])
 
-const isSaving = ref(false);
-const successMessage = ref('');
-const errorMessage = ref('');
-const title = ref('');
-const artist = ref('');
-const album = ref('');
-const status = ref('');
-const audioFile = ref(null);
-const duration = ref(0);
+const isSaving = ref(false)
+const successMessage = ref('')
+const errorMessage = ref('')
+const title = ref('')
+const artist = ref('')
+const album = ref('')
+const status = ref('')
+const audioFile = ref(null)
+const duration = ref(0)
+const isVisible = ref(false)
 
-// Récupération de l'upload du fichier audio
+// Pré-remplissage en mode édition
+watch(() => props.track, (t) => {
+    if (t) {
+        title.value = t.title ?? ''
+        artist.value = t.artist ?? ''
+        album.value = t.album ?? ''
+        status.value = t.status ?? ''
+        duration.value = t.duration ?? 0
+        isVisible.value = t.visible
+    }
+}, { immediate: true })
+
+const isEditMode = computed(() => props.track !== null)
+
 const handleAudioUpload = (event) => {
-    audioFile.value = event.target.files[0];
-
-    // Récupération de la durée du track après chargement
-    const tempUrl = URL.createObjectURL(audioFile.value);
-    const audio = new Audio(tempUrl);
+    audioFile.value = event.target.files[0]
+    const tempUrl = URL.createObjectURL(audioFile.value)
+    const audio = new Audio(tempUrl)
     audio.addEventListener('loadedmetadata', () => {
-        const totalSeconds = Math.round(audio.duration);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        duration.value = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        URL.revokeObjectURL(tempUrl);
-    });
+        const totalSeconds = Math.round(audio.duration)
+        const minutes = Math.floor(totalSeconds / 60)
+        const seconds = totalSeconds % 60
+        duration.value = `${minutes}:${seconds.toString().padStart(2, '0')}`
+        URL.revokeObjectURL(tempUrl)
+    })
 }
-
 
 async function handleSubmit() {
     isSaving.value = true
     successMessage.value = ''
     errorMessage.value = ''
-    const formData = new FormData();
-    formData.append('title', title.value);
-    formData.append('artist', artist.value);
-    formData.append('album', album.value);
-    formData.append('status', status.value);
-    formData.append('duration', duration.value);
-    formData.append('audioFile', audioFile.value);
+
+    const formData = new FormData()
+    formData.append('title', title.value)
+    formData.append('artist', artist.value)
+    formData.append('album', album.value)
+    formData.append('status', status.value)
+    formData.append('duration', duration.value)
+    formData.append('isVisible', isVisible.value)
+    if (audioFile.value) formData.append('audioFile', audioFile.value)
+
+    const url = isEditMode.value
+        ? `/api/admin/tracks/${props.track.id}`
+        : '/api/admin/tracks/add'
+    const method = isEditMode.value ? 'POST' : 'POST'
+
     try {
-        await fetch('/api/admin/music/add', {
-            method: 'POST',
-            credentials: 'include',
-            body: formData
-        })
-        successMessage.value = 'Morceau ajouté avec succès.'
+        await fetch(url, { method, credentials: 'include', body: formData })
+        successMessage.value = isEditMode.value ? 'Morceau modifié.' : 'Morceau ajouté.'
+        emit('close')
     } catch {
-        errorMessage.value = 'Une erreur est survenue lors de la sauvegarde.'
+        errorMessage.value = 'Une erreur est survenue.'
     } finally {
         isSaving.value = false
     }
-    emit('close');
 }
 </script>
 
 <template>
-<section class="track-form">
-    <h3>Ajouter un morceau</h3>
-    <div>
+    <section class="track-form">
+        <h3>{{ isEditMode ? 'Modifier le morceau' : 'Ajouter un morceau' }}</h3>
         <div>
-            <label for="title">Titre du morceau</label>
-            <input type="text" id="title" v-model="title" placeholder="Ex: Babayaga" />
+            <div>
+                <label for="title">Titre</label>
+                <input type="text" id="title" v-model="title" />
+            </div>
+            <div>
+                <label for="artist">Artiste</label>
+                <input type="text" id="artist" v-model="artist" />
+            </div>
+            <div>
+                <label for="audio">Fichier audio{{ isEditMode ? ' (laisser vide pour conserver)' : '' }}</label>
+                <input type="file" id="audio" accept="audio/mpeg,audio/ogg,video/mp4,audio/mp4,audio/x-m4a" @change="handleAudioUpload" />
+            </div>
+            <div>
+                <label for="album">Album</label>
+                <input type="text" id="album" v-model="album" />
+            </div>
+            <div>
+                <label for="status">Statut</label>
+                <select id="status" v-model="status">
+                    <option value="Brouillon">Brouillon</option>
+                    <option value="Publié">Publié</option>
+                </select>
+            </div>
+            <div>
+                <label for="isVisible">Publier sur la page d'accueil ?</label>
+                <input type="checkbox" name="isVisible" id="isVisible" v-model="isVisible">
+            </div>
+            <p v-if="successMessage">{{ successMessage }}</p>
+            <p v-if="errorMessage">{{ errorMessage }}</p>
+            <button @click="handleSubmit" :disabled="isSaving">
+                {{ isSaving ? 'Sauvegarde...' : (isEditMode ? 'Modifier' : 'Ajouter') }}
+            </button>
         </div>
-        <div>
-            <label for="artist">Artiste</label>
-            <input type="text" id="artist" v-model="artist" value="The Funky Lagos Orchestra" />
-        </div>
-        <div>
-            <label for="audio">Fichier audio (MP3 / MP4)</label>
-            <input type="file" id="audio" accept="audio/mpeg,audio/ogg,video/mp4,audio/mp4,audio/x-m4a" @change="handleAudioUpload" />
-        </div>
-        <div>
-            <label for="album">Album</label>
-            <input type="text" id="album" v-model="album" />
-        </div>
-        <div>
-            <label for="status">Statut</label>
-            <select id="status" v-model="status">
-                <option value="Brouillon">Brouillon</option>
-                <option value="Publié">Publié</option>
-            </select>
-        </div>
-        <button
-            class="btn btn--primary"
-            @click="handleSubmit"
-            :disabled="isSaving">
-            {{ isSaving ? 'Sauvegarde...' : 'Ajouter' }}
-        </button>
-    </div>
-</section>
+    </section>
 </template>
-
-<style scoped>
-
-</style>
