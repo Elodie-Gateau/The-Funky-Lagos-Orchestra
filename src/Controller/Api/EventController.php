@@ -25,7 +25,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/events/home', methods: ['GET'])]
-    public function getVisibleTracks(EventRepository $eventRepository): JsonResponse
+    public function getNextEvents(EventRepository $eventRepository): JsonResponse
     {
         $today = new \DateTime();
         $events = $eventRepository->findAllNext();
