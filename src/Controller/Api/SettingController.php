@@ -84,4 +84,56 @@ final class SettingController extends AbstractController
 
         return $this->json(['success' => true]);
     }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin/settings/descriptions', methods: ['POST'])]
+    public function updateSettingsContacts(
+        Request $request,
+        SettingRepository $repo,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $settingsMap = [
+            'phone' => ['name' => SettingName::Phone, 'method' => 'setContent'],
+            'email' => ['name' => SettingName::Email, 'method' => 'setLink'],
+            'facebook' => ['name' => SettingName::Facebook, 'method' => 'setLink'],
+            'instagram' => ['name' => SettingName::Instagram, 'method' => 'setLink'],
+            'youtube' => ['name' => SettingName::YouTube, 'method' => 'setLink'],
+            'soundcloud' => ['name' => SettingName::SoundCloud, 'method' => 'setLink'],
+        ];
+
+        foreach ($settingsMap as $field => $config) {
+            if (isset($data[$field]) && $data[$field] !== null) {
+                $this->updateSetting(
+                    $repo,
+                    $em,
+                    $config['name'],
+                    $data[$field],
+                    $config['method']
+                );
+            }
+        }
+
+        $em->flush();
+
+        return $this->json(['success' => true]);
+    }
+
+    private function updateSetting(
+        SettingRepository $repo,
+        EntityManagerInterface $em,
+        SettingName $settingName,
+        string $value,
+        string $method
+    ): void {
+        $setting = $repo->findOneBy(['name' => $settingName]);
+
+        if ($setting) {
+            $setting->$method($value);
+            $setting->setUpdatedAt(new \DateTimeImmutable());
+            $setting->setUpdatedBy($this->getUser());
+            $em->persist($setting);
+        }
+    }
 }

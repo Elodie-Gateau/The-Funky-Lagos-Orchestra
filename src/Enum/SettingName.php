@@ -6,5 +6,10 @@ enum SettingName: string
 {
     case Photo = 'Photo';
     case Description = 'Description';
-    case MusicTags = 'MusicTags';
+    case Email = 'Email';
+    case Phone = 'Phone';
+    case Facebook = 'Facebook';
+    case Instagram = 'Instagram';
+    case YouTube = 'YouTube';
+    case SoundCloud = 'SoundCloud';
 }

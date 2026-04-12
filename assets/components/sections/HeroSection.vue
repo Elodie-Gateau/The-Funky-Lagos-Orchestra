@@ -35,4 +35,8 @@ const { t, locale } = useI18n()
     }
 }
 
+img {
+    max-height: 60vh;
+}
+
 </style>

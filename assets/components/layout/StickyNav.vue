@@ -33,4 +33,16 @@ const { t, locale } = useI18n()
     }
 
 }
+
+.logo {
+    display: flex;
+    width: 100%;
+    height: 5rem;
+    border-bottom: solid 2px grey;
+
+    img {
+        width: 30%;
+    }
+}
+
 </style>

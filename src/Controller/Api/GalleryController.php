@@ -30,14 +30,41 @@ class GalleryController extends AbstractController
         Request $request,
         EntityManagerInterface $em
     ): JsonResponse {
-        $photo = new Photo();
         $imageFile = $request->files->get('image');
 
-        $photo->setPath($imageFile);
+        if (!$imageFile || $imageFile->getError() !== UPLOAD_ERR_OK) {
+            return $this->json(['error' => 'Fichier manquant'], 400);
+        }
+
+        $filename = uniqid() . '.' . $imageFile->guessExtension();
+        $imageFile->move(
+            $this->getParameter('kernel.project_dir') . '/public/images/gallery',
+            $filename
+        );
+
+        $photo = new Photo();
+        $photo->setPath('/images/gallery/' . $filename);
 
         $em->persist($photo);
         $em->flush();
+
         return $this->json(['success' => true]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin/photo/{id}/delete', methods: ['DELETE'])]
+    public function deletePhoto(
+        Photo $photo,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $oldPath = $this->getParameter('kernel.project_dir') . '/public' . $photo->getPath();
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
+        }
+
+        $em->remove($photo);
+        $em->flush();
+
+        return $this->json(['success' => true]);
+    }
 }

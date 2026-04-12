@@ -49,7 +49,10 @@
     "event": {
         "title": "Calendar",
         "subtitle": "Next shows",
-        "meta_title": "Events",
-        "link": "See all shows"
+        "meta_title": "Events"
+    },
+    "gallery": {
+        "title": "Gallery",
+        "subtitle": "In picture"
     }
 }

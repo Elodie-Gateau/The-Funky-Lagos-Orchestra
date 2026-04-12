@@ -50,5 +50,9 @@
         "title": "Agenda",
         "subtitle": "Prochains concerts",
         "meta_title": "Événements"
+    },
+    "gallery": {
+        "title": "Galerie",
+        "subtitle": "En images"
     }
 }

@@ -15,8 +15,8 @@ const { t, locale } = useI18n()
     <AppHeader/>
     <AboutSection />
     <MusicSection />
-    <GallerySection />
     <EventsSection />
+    <GallerySection />
     <ContactSection />
     <AppFooter/>
 </template>

@@ -24,6 +24,8 @@ class Setting
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $content = null;
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -152,6 +154,16 @@ class Setting
     public function setDescriptionEn(?string $description_en): void
     {
         $this->description_en = $description_en;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setPhone(?string $content): void
+    {
+        $this->content = $content;
     }
 
 }
