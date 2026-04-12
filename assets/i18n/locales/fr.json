@@ -54,5 +54,20 @@
     "gallery": {
         "title": "Galerie",
         "subtitle": "En images"
+    },
+    "contact": {
+        "title": "Contact",
+        "subtitle": "Échanger",
+        "email": "Email",
+        "phone": "Téléphone",
+        "socials": "Réseaux sociaux",
+        "name": "Nom",
+        "placeholder_name": "Votre nom",
+        "placeholder_email": "votre@email.com",
+        "subject": "Sujet",
+        "placeholder_subject": "Objet de votre message",
+        "message": "Message",
+        "placeholder_message": "Votre message...",
+        "send": "Envoyer"
     }
 }

@@ -21,14 +21,49 @@ final class SettingController extends AbstractController
     #[Route('/settings', methods: ['GET'])]
     public function getSettings(SettingRepository $settingRepository): JsonResponse
     {
-        $imageSetting = $settingRepository->findOneBy(['name' => SettingName::Photo]);
-        $descriptions = $settingRepository->findOneBy(['name' => SettingName::Description]);
+        $settings = $settingRepository->findAll();
+        foreach ($settings as $setting) {
+            switch ($setting->getName()) {
+                case SettingName::Photo:
+                    $image = $setting->getImage() ? '/uploads/' . $setting->getImage() : null;
+                    break;
+                case SettingName::Description:
+                    $descriptionFr = $setting->getDescriptionFr() ?? null;
+                    $descriptionEn = $setting->getDescriptionEn() ?? $setting->getDescriptionFr();
+                    break;
+                case SettingName::Email:
+                    $email = $setting->getLink() ?? null;
+                    break;
+                case SettingName::Phone:
+                    $phone = $setting->getContent() ?? null;
+                    break;
+                case SettingName::Facebook:
+                    $facebook = $setting->getLink() ?? null;
+                    break;
+                case SettingName::Instagram:
+                    $instagram = $setting->getLink() ?? null;
+                    break;
+                case SettingName::YouTube:
+                    $youtube = $setting->getLink() ?? null;
+                    break;
+                case SettingName::SoundCloud:
+                    $soundcloud = $setting->getLink() ?? null;
+                    break;
+            }
+        }
+
         return $this->json([
-            'image' => $imageSetting?->getImage() ? '/uploads/' . $imageSetting->getImage() : null,
+            'image' => $image,
             'descriptions' => [
-                'description_fr' => $descriptions?->getDescriptionFr(),
-                'description_en' => $descriptions?->getDescriptionEn()
-            ]
+                'description_fr' => $descriptionFr,
+                'description_en' => $descriptionEn
+            ],
+            'email' => $email,
+            'phone' => $phone,
+            'facebook' => $facebook,
+            'instagram' => $instagram,
+            'youtube' => $youtube,
+            'soundcloud' => $soundcloud
         ]);
     }
 
@@ -86,7 +121,7 @@ final class SettingController extends AbstractController
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/settings/descriptions', methods: ['POST'])]
+    #[Route('/admin/settings/contacts', methods: ['POST'])]
     public function updateSettingsContacts(
         Request $request,
         SettingRepository $repo,

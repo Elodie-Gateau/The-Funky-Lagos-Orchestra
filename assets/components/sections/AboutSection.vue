@@ -35,7 +35,7 @@ const description = computed(() => {
         <span>{{ t('about.tag4')}}</span>
         <span>{{ t('about.tag5')}}</span>
     </div>
-    <a href="#music">{{ t('about.link')}}</a>
+    <a href="/music">{{ t('about.link')}}</a>
 </section>
 </template>
 

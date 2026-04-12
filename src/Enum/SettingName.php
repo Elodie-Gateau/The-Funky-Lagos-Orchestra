@@ -7,7 +7,7 @@ enum SettingName: string
     case Photo = 'Photo';
     case Description = 'Description';
     case Email = 'Email';
-    case Phone = 'Phone';
+    case Phone = 'Téléphone';
     case Facebook = 'Facebook';
     case Instagram = 'Instagram';
     case YouTube = 'YouTube';
