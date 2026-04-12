@@ -72,5 +72,10 @@
         "is_sending": "Envoi...",
         "success": "Votre message a bien été envoyé, nous vous répondrons au plus vite !",
         "error": "Une erreur s'est produite, merci de réessayer."
+    },
+    "footer" : {
+        "mentions": "Tous droits réservés",
+        "made_part1": "Made with ",
+        "made_part2": " in Vendée"
     }
 }
