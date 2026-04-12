@@ -26,6 +26,27 @@ onMounted(async() => {
     soundcloud.value = data.soundcloud;
 })
 
+const form = ref({ name: '', from: '', subject: '', message: '' })
+const status = ref(null)
+
+async function submit() {
+    status.value = 'sending'
+    try {
+        const res = await fetch('/api/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(form.value),
+        })
+        if (res.ok) {
+            status.value = 'success'
+            form.value = { name: '', from: '', subject: '', message: '' }
+        } else {
+            status.value = 'error'
+        }
+    } catch {
+        status.value = 'error'
+    }
+}
 </script>
 
 <template>
@@ -55,6 +76,28 @@ onMounted(async() => {
                     :soundcloud= "soundcloud"
                 />
             </div>
+        </div>
+        <div>
+            <form @submit.prevent="submit">
+                <label for="name">{{ t('contact.name') }}</label>
+                <input id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
+
+                <label for="email">{{ t('contact.email') }}</label>
+                <input id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
+
+                <label for="subject">{{ t('contact.subject') }}</label>
+                <input id="subject" v-model="form.subject" type="text" :placeholder="t('contact.placeholder_subject')" required />
+
+                <label for="message">{{ t('contact.message') }}</label>
+                <textarea id="message" v-model="form.message" :placeholder="t('contact.placeholder_message')" required />
+
+                <button type="submit" :disabled="status === 'sending'">
+                    {{ status === 'sending' ? t('contact.is_sending') : t('contact.send') }}
+                </button>
+
+                <p v-if="status === 'success'">{{ t('contact.success') }}</p>
+                <p v-if="status === 'error'">{{ t('contact.error') }}</p>
+            </form>
         </div>
     </section>
 </template>

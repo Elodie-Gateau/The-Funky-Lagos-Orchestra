@@ -63,11 +63,14 @@
         "socials": "Social media",
         "name": "Name",
         "placeholder_name": "Your name",
-        "placeholder_email": "your@email.com",
+        "placeholder_email": "your{'@'}email.com",
         "subject": "Subject",
         "placeholder_subject": "Subject of your message",
         "message": "Message",
         "placeholder_message": "Your message...",
-        "send": "Send"
+        "send": "Send",
+        "is_sending": "Sending...",
+        "success": "Your message has been sent successfully, we'll get back to you as soon as possible!",
+        "error": "An error occurred, please try again."
     }
 }

@@ -1,6 +1,5 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import {ref} from "vue";
 
 defineProps({
     facebook: String,

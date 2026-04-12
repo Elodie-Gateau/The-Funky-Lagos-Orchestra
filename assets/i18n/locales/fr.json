@@ -63,11 +63,14 @@
         "socials": "Réseaux sociaux",
         "name": "Nom",
         "placeholder_name": "Votre nom",
-        "placeholder_email": "votre@email.com",
+        "placeholder_email": "votre{'@'}email.com",
         "subject": "Sujet",
         "placeholder_subject": "Objet de votre message",
         "message": "Message",
         "placeholder_message": "Votre message...",
-        "send": "Envoyer"
+        "send": "Envoyer",
+        "is_sending": "Envoi...",
+        "success": "Votre message a bien été envoyé, nous vous répondrons au plus vite !",
+        "error": "Une erreur s'est produite, merci de réessayer."
     }
 }
