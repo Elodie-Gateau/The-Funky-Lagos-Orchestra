@@ -161,7 +161,7 @@ class Setting
         return $this->content;
     }
 
-    public function setPhone(?string $content): void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }

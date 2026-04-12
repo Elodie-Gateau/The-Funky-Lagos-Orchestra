@@ -162,13 +162,14 @@ final class SettingController extends AbstractController
         string $value,
         string $method
     ): void {
-        $setting = $repo->findOneBy(['name' => $settingName]);
+        $setting = $repo->findOneBy(['name' => $settingName]) ?? new Setting();
 
-        if ($setting) {
+        if (!$setting->getName()) {
+            $setting->setName($settingName);
+        }
             $setting->$method($value);
             $setting->setUpdatedAt(new \DateTimeImmutable());
             $setting->setUpdatedBy($this->getUser());
             $em->persist($setting);
-        }
     }
 }
