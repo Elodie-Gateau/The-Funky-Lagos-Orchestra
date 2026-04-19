@@ -37,3 +37,4 @@ docker-compose.yaml
 
 /public/uploads/*
 !/public/uploads/.gitkeep
+cookies.txt
