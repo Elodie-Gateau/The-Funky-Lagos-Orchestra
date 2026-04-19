@@ -70,7 +70,8 @@ class MusicController extends AbstractController
         }
         $tempPath = $audioFile->getRealPath();
         $outputPath = $this->getParameter('kernel.project_dir')
-            . '/public/audio/' . uniqid() . '.mp3';
+            . '/public/audio/' . bin2hex(random_bytes(16)) . '.mp3';
+
         $finalAudioPath = $this->audioConversion->convertToMp3($tempPath, $outputPath);
 
         $track->setAudioFile('/audio/' . basename($finalAudioPath));

@@ -39,11 +39,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $surname = null;
 
-    public function __construct()
-    {
-        $this->musicTags = new ArrayCollection();
-        $this->musicTagsUpdated = new ArrayCollection();
-    }
     public function getId(): ?int
     {
         return $this->id;

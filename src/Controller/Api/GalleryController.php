@@ -35,8 +35,11 @@ class GalleryController extends AbstractController
         if (!$imageFile || $imageFile->getError() !== UPLOAD_ERR_OK) {
             return $this->json(['error' => 'Fichier manquant'], 400);
         }
-
-        $filename = uniqid() . '.' . $imageFile->guessExtension();
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (!in_array($imageFile->getMimeType(), $allowedMimes)) {
+            return $this->json(['error' => 'Format non autorisé'], 400);
+        }
+        $filename = bin2hex(random_bytes(16)) . '.' . $imageFile->guessExtension();
         $imageFile->move(
             $this->getParameter('kernel.project_dir') . '/public/images/gallery',
             $filename

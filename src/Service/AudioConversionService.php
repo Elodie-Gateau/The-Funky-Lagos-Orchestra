@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 
-class AudioConversionService
+readonly class AudioConversionService
 {
+    public function __construct(private LoggerInterface $logger) {}
     public function convertToMp3(string $inputPath, string $outputPath): string
     {
         if ($this->isMp3($inputPath)) {
@@ -19,7 +21,8 @@ class AudioConversionService
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
+            $this->logger->error('FFmpeg error: ' . $process->getErrorOutput());
+            throw new \RuntimeException('La conversion audio a échoué.');
         }
 
         return $outputPath;

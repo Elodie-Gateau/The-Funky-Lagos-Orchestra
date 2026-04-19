@@ -22,6 +22,15 @@ final class SettingController extends AbstractController
     public function getSettings(SettingRepository $settingRepository): JsonResponse
     {
         $settings = $settingRepository->findAll();
+        $image = null;
+        $descriptionEn = null;
+        $descriptionFr = null;
+        $email = null;
+        $phone = null;
+        $facebook = null;
+        $instagram = null;
+        $youtube = null;
+        $soundcloud = null;
         foreach ($settings as $setting) {
             switch ($setting->getName()) {
                 case SettingName::Photo:
@@ -80,7 +89,7 @@ final class SettingController extends AbstractController
         $file = $request->files->get('imageFile');
 
         if ($file) {
-            $filename = uniqid() . '.' . $file->guessExtension();
+            $filename = bin2hex(random_bytes(16)) . '.' . $file->guessExtension();
             $file->move($this->getParameter('uploads_dir'), $filename);
 
             if ($setting->getImage()) {

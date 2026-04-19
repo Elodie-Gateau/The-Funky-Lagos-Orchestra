@@ -27,7 +27,6 @@ class EventController extends AbstractController
     #[Route('/events/home', methods: ['GET'])]
     public function getNextEvents(EventRepository $eventRepository): JsonResponse
     {
-        $today = new \DateTime();
         $events = $eventRepository->findAllNext();
         return $this->json([
             'events' => $events,
@@ -40,9 +39,14 @@ class EventController extends AbstractController
         Request $request,
         EntityManagerInterface $em
     ): JsonResponse {
+        try {
+            $date = new \DateTime($request->request->get('date') ?? '');
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Date invalide'], 400);
+        }
         $event = new Event();
         $event->setName($request->request->get('name'));
-        $event->setDate(new \DateTime($request->request->get('date')));
+        $event->setDate($date);
         $event->setLocation($request->request->get('location'));
         $event->setHost($request->request->get('host'));
 
