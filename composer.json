@@ -88,10 +88,6 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "test": [
-            "docker compose up -d",
-            "php bin/phpunit --configuration phpunit.dist.xml --testdox"
         ]
     },
     "conflict": {
