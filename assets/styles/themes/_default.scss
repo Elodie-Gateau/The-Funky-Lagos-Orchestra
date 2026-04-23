@@ -2,7 +2,7 @@
 
 :root {
     --background:              #{$color-cream};
-    --background-secondary:    #{$color-cream-dark};
+    --background-secondary:    #{$color-cream-medium};
     --background-tertiary:     #{$color-white};
     --background-footer:       #110500;
     --background-button:       #{$color-red};
@@ -13,7 +13,7 @@
     --text-footer:             #{$color-cream};
     --title:                   #{$color-brown};
     --title-secondary:         #{$color-navy};
-    --text:                    #{$color-brown};
+    --text:                    #{$color-text};
     --secondary:               #{$color-red};
     --accent:                  #{$color-gold};
     --background-accent:       #{$color-red};

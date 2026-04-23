@@ -12,6 +12,25 @@ const { locale } = useI18n()
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '/assets/styles/utils/variables' as *;
 
+    .lang-switcher {
+        display: flex;
+        align-items: center;
+        gap: $size-6;
+        color: var(--border-color);
+
+        button {
+            font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: $size-12;
+            font-weight: 800;
+            color: var(--border-color);
+        }
+
+        .active {
+            color: var(--text);
+        }
+
+    }
 </style>

@@ -6,11 +6,6 @@ html {
     height: 100%;
 }
 
-body {
-    width: 100%;
-    margin-top: $size-48;
-}
-
 li {
     list-style: none;
 }
@@ -18,4 +13,23 @@ li {
 a {
     text-decoration: none;
     color: #000;
+}
+
+section {
+    padding: $size-64 $size-18 $size-64 $size-18;
+}
+
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
+}
+
+svg {
+    color: var(--text);
+}
+
+hr {
+    border: none;
 }

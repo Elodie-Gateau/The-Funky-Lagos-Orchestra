@@ -1,0 +1,21 @@
+@use "../utils/variables" as *;
+
+.button {
+    padding: $size-10 $size-26;
+    color: var(--text-button);
+    border-radius: $size-6;
+    background: var(--background-button);
+    font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: $size-12;
+    letter-spacing: .08em;
+    display: flex;
+    cursor: pointer;
+    align-self: flex-start;
+
+}
+
+.button::after {
+    content: " →";
+}

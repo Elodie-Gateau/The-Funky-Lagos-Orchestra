@@ -1,15 +1,16 @@
 // Palette nominative FLO
 $color-cream:      #EDE5C8;
-$color-cream-dark: #E0D8BB;
+$color-cream-medium: #E0D8BB;
+$color-cream-dark: rgb(208, 199, 168);
 $color-brown:      #2A1000;
-$color-brown-mid:  #6B3510;
+$color-brown-mid:  #6b3510;
 $color-red:        #C42B1C;
 $color-navy:       #1A237E;
 $color-gold:       #C8943A;
 $color-gold-light: #F0C060;
 
 // Couleurs principales
-$color-text:          $color-brown;
+$color-text:          $color-brown-mid;
 $color-text-eco:      $color-cream;
 $color-secondary:     $color-red;
 $color-secondary-eco: $color-red;

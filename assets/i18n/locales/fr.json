@@ -1,6 +1,9 @@
 {
     "main": {
         "title": "The Funky Lagos Orchestra",
+        "title_part1": "The Funky",
+        "title_part2": "Lagos",
+        "title_part3": "Orchestra",
         "logo": "Logo de The Funky Lagos Orchestra"
     },
     "nav": {

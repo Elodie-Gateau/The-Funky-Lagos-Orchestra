@@ -5,8 +5,8 @@ import MobileMenu from "./MobileMenu.vue";
 </script>
 
 <template>
-    <MobileMenu/>
     <HeroSection />
+    <MobileMenu/>
     <StickyNav />
 </template>
 
