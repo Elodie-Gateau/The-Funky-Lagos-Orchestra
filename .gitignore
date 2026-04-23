@@ -23,6 +23,7 @@
 .DS_Store
 .env.dev
 .env.local
+.env.compose
 
 
 
