@@ -1,14 +1,24 @@
+// Palette nominative FLO
+$color-cream:      #EDE5C8;
+$color-cream-dark: #E0D8BB;
+$color-brown:      #2A1000;
+$color-brown-mid:  #6B3510;
+$color-red:        #C42B1C;
+$color-navy:       #1A237E;
+$color-gold:       #C8943A;
+$color-gold-light: #F0C060;
+
 // Couleurs principales
-$color-text: #0E0D09;
-$color-text-eco: #e6e6e6;
-$color-secondary: #95321E;
-$color-secondary-eco: #95321E;
-$color-blue: #517085;
-$color-blue-eco: #517085;
-$color-light: #F3EDC9;
-$color-light-eco: #F3EDC9;
-$color-accent: #BE8A2D;
-$color-accent-eco: #BE8A2D;
+$color-text:          $color-brown;
+$color-text-eco:      $color-cream;
+$color-secondary:     $color-red;
+$color-secondary-eco: $color-red;
+$color-blue:          $color-navy;
+$color-blue-eco:      $color-navy;
+$color-light:         $color-cream;
+$color-light-eco:     $color-cream-dark;
+$color-accent:        $color-gold;
+$color-accent-eco:    $color-gold-light;
 $color-error: rgb(197, 18, 18);
 $color-error-eco: rgb(236, 97, 97);
 $color-success: #1d8b4e;
@@ -66,6 +76,7 @@ $size-34: 2.125rem; // 34px
 $size-36: 2.25rem; // 36px
 $size-38: 2.375rem; // 38px
 $size-40: 2.5rem; // 40px
+$size-44: 2.75rem; // 44px
 $size-48: 3rem; // 48px
 $size-56: 3.5rem; // 56px
 $size-64: 4rem; // 64px
