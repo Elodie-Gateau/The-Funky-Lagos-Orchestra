@@ -56,7 +56,7 @@ class MusicController extends AbstractController
         $track->setAlbum($request->request->get('album'));
         $track->setDuration($request->request->get('duration'));
         $track->setStatus($request->request->get('status'));
-        $track->setIsVisible($request->request->get('isVisible'));
+        $track->setIsVisible($request->request->get('isVisible') === 'true');
 
         $audioFile = $request->files->get('audioFile');
         if (!$audioFile) {
