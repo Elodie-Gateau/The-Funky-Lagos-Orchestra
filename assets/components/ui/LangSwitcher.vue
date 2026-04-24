@@ -29,8 +29,7 @@ const { locale } = useI18n()
         }
 
         .active {
-            color: var(--text);
+            color: var(--title);
         }
-
     }
 </style>

@@ -40,12 +40,13 @@ h2::before {
 }
 
 h3 {
+    color: var(--title);
     font-size: $size-28;
     font-weight: 800;
 }
 
 hr{
-    background: linear-gradient(90deg, var(--background-button), var(--accent));
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
     width: $size-48;
     height: 3.5px;
     border-radius: 2px;

@@ -4,7 +4,6 @@
     --background:              #{$color-cream};
     --background-secondary:    #{$color-cream-medium};
     --background-tertiary:     #{$color-white};
-    --background-footer:       #110500;
     --background-button:       #{$color-red};
     --background-button-hover: #a82215;
     --background-input:        #{$color-cream-dark};
@@ -15,6 +14,8 @@
     --title-secondary:         #{$color-navy};
     --text:                    #{$color-text};
     --secondary:               #{$color-red};
+    --gradient-start:          #{$color-red};
+    --gradient-end:            #{$color-gold};
     --accent:                  #{$color-gold};
     --background-accent:       #{$color-red};
     --notice:                  #{$color-notice};

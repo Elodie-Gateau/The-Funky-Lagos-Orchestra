@@ -40,6 +40,11 @@ onMounted(async() => {
 </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "/assets/styles/utils/variables" as *;
+@use "/assets/styles/utils/breakpoints" as *;
 
+#tracks {
+    display:flex;
+}
 </style>

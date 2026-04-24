@@ -13,11 +13,13 @@ const { t, locale } = useI18n()
 
 <template>
     <AppHeader/>
-    <AboutSection />
-    <MusicSection />
-    <EventsSection />
-    <GallerySection />
-    <ContactSection />
+    <main>
+        <AboutSection />
+        <MusicSection />
+        <EventsSection />
+        <GallerySection />
+        <ContactSection />
+    </main>
     <AppFooter/>
 </template>
 

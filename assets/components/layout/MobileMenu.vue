@@ -32,6 +32,7 @@ const isOpen = ref(false)
 
 .mobile-menu {
     background-color: var(--background);
+    color: var(--title);
     width: 100%;
     display: flex;
     justify-content: space-between;
