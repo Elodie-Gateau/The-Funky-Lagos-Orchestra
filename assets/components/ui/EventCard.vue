@@ -1,6 +1,7 @@
 <script setup>
 import {useI18n} from "vue-i18n";
 import {MapPin} from "@lucide/vue";
+import {dateFormatDay, dateFormatMonth} from "../../composables/dateFormat.js";
 
 const { t } = useI18n();
 
@@ -16,10 +17,17 @@ defineProps({
 
 <template>
     <li>
-        {{ event.date }}
-        {{ event.name }}
-        <MapPin /> {{ event.location }}
-        {{ event.host ?? '' }}
+        <div>
+            <span>{{ dateFormatDay(event.date) }}</span>
+            <span>{{ dateFormatMonth(event.date) }}</span>
+        </div>
+        <div>
+            <span>{{ event.name }}</span>
+            <div>
+                <MapPin /> <span>{{ event.location }}</span>
+            </div>
+            <span>{{ event.host ?? '' }}</span>
+        </div>
     </li>
 </template>
 
