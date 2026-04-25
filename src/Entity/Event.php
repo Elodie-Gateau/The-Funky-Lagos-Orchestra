@@ -28,6 +28,9 @@ class Event
     private ?string $location = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $host = null;
 
     #[Assert\NotBlank(message: "Le nom de l'événement est obligatoire")]
@@ -100,6 +103,18 @@ class Event
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

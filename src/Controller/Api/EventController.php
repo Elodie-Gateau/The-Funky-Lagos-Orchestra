@@ -48,6 +48,7 @@ class EventController extends AbstractController
         $event->setName($request->request->get('name'));
         $event->setDate($date);
         $event->setLocation($request->request->get('location'));
+        $event->setCity($request->request->get('city'));
         $event->setHost($request->request->get('host'));
 
         $em->persist($event);
@@ -62,6 +63,7 @@ class EventController extends AbstractController
         $event->setName($request->request->get('name'));
         $event->setDate(new \DateTime($request->request->get('date')));
         $event->setLocation($request->request->get('location'));
+        $event->setCity($request->request->get('city'));
         $event->setHost($request->request->get('host'));
 
         $em->persist($event);

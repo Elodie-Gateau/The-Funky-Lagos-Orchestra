@@ -11,16 +11,18 @@ const successMessage = ref('')
 const errorMessage = ref('')
 const name = ref('')
 const location = ref('')
+const city = ref('')
 const date = ref('')
 const host = ref('')
 const isEditMode = computed(() => props.event !== null)
 
 watch(() => props.event, (t) => {
     if (t) {
-        name.value = t.title ?? ''
-        location.value = t.artist ?? ''
-        date.value = t.album ?? ''
-        host.value = t.duration ?? 0
+        name.value = t.name ?? ''
+        location.value = t.location ?? ''
+        date.value = t.city ?? ''
+        city.value = t.city ?? ''
+        host.value = t.host ?? ''
     }
 }, { immediate: true })
 
@@ -32,6 +34,7 @@ async function handleSubmit() {
     const formData = new FormData()
     formData.append('name', name.value)
     formData.append('location', location.value)
+    formData.append('city', city.value)
     formData.append('date', date.value)
     formData.append('host', host.value)
 
@@ -67,6 +70,10 @@ async function handleSubmit() {
             <div>
                 <label for="location">Lieu de l'événement</label>
                 <input type="text" id="location" v-model="location" />
+            </div>
+            <div>
+                <label for="city">Ville de l'événement</label>
+                <input type="text" id="city" v-model="city" />
             </div>
             <div>
                 <label for="host">Organisateur de l'événement</label>

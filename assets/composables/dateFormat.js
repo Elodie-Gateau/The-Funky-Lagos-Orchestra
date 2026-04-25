@@ -7,3 +7,6 @@ export function dateFormatMonth(date) {
     return new Date(date)
         .toLocaleDateString('fr-FR', {month: 'short'} );
 }
+
+
+//TODO: add i18n
