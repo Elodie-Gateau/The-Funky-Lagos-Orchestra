@@ -13,9 +13,14 @@
     display: flex;
     cursor: pointer;
     align-self: flex-start;
-
+    transition: backgroud .2s, transform .2s;
 }
 
 .button::after {
-    content: " →";
+    content: "  →";
+}
+
+.button:hover {
+    background: var(--background-button-hover);
+    transform: translateY(-2px);
 }

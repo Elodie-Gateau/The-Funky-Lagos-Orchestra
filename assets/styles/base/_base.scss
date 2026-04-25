@@ -6,13 +6,16 @@ html {
     height: 100%;
 }
 
+main {
+    color: var(--text);
+}
+
 li {
     list-style: none;
 }
 
 a {
     text-decoration: none;
-    color: #000;
 }
 
 section {

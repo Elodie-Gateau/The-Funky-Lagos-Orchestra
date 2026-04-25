@@ -49,7 +49,6 @@ const description = computed(() => {
     display: flex;
     flex-direction: column;
     gap: $size-22;
-
 }
 
 img {
@@ -68,6 +67,7 @@ h4 {
         color: var(--secondary);
     }
 }
+
 
 .music-tags {
     display: flex;
