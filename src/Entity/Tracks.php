@@ -44,12 +44,6 @@ class Tracks
     #[ORM\Column(length: 255)]
     private ?string $album = null;
 
-    #[Assert\Choice(choices: ['Brouillon', 'Publié'])]
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
-    private ?string $status = null;
-
     #[ORM\Column]
     private ?bool $isVisible = null;
 
@@ -145,16 +139,6 @@ class Tracks
         $this->album = $album;
 
         return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): void
-    {
-        $this->status = $status;
     }
 
     public function isVisible(): ?bool

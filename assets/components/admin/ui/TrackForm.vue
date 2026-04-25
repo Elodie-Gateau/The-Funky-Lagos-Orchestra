@@ -12,7 +12,6 @@ const errorMessage = ref('')
 const title = ref('')
 const artist = ref('')
 const album = ref('')
-const status = ref('')
 const audioFile = ref(null)
 const duration = ref(0)
 const isVisible = ref(false)
@@ -23,7 +22,6 @@ watch(() => props.track, (t) => {
         title.value = t.title ?? ''
         artist.value = t.artist ?? ''
         album.value = t.album ?? ''
-        status.value = t.status ?? ''
         duration.value = t.duration ?? 0
         isVisible.value = t.visible
     }
@@ -53,7 +51,6 @@ async function handleSubmit() {
     formData.append('title', title.value)
     formData.append('artist', artist.value)
     formData.append('album', album.value)
-    formData.append('status', status.value)
     formData.append('duration', duration.value)
     formData.append('isVisible', isVisible.value)
     if (audioFile.value) formData.append('audioFile', audioFile.value)
@@ -94,13 +91,6 @@ async function handleSubmit() {
             <div>
                 <label for="album">Album</label>
                 <input type="text" id="album" v-model="album" />
-            </div>
-            <div>
-                <label for="status">Statut</label>
-                <select id="status" v-model="status">
-                    <option value="Brouillon">Brouillon</option>
-                    <option value="Publié">Publié</option>
-                </select>
             </div>
             <div>
                 <label for="isVisible">Publier sur la page d'accueil ?</label>
