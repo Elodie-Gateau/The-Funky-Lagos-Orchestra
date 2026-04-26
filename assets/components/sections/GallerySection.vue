@@ -20,10 +20,14 @@ onMounted(async() => {
 <template>
     <section v-if="photos.length > 0" id="gallery">
         <SectionTitle :title="t('gallery.title')" :subtitle="t('gallery.subtitle')" />
-        <GallerySwiper :photos="photos" />
+        <div class="gallery-container">
+            <GallerySwiper :photos="photos" />
+        </div>
     </section>
 </template>
 
 <style scoped>
-
+.gallery-container {
+    width: 100%;
+}
 </style>

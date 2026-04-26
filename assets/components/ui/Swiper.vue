@@ -55,15 +55,32 @@ defineProps({
         </swiper-slide>
     </swiper>
 </template>
-<style scoped>
+<style lang="scss">
+@use "/assets/styles/utils/variables" as *;
+
 img {
     max-width: 100%;
 }
-/*
-.mySwiper {
-    --swiper-pagination-color: #your-color;
-    --swiper-pagination-bullet-inactive-color: #your-color;
-    --swiper-pagination-bullet-inactive-opacity: 0.4;
+.thumbsSwiper {
+    .swiper-slide {
+        opacity: 0.35;
+    }
+    .swiper-slide-thumb-active {
+        opacity: 1;
+    }
 }
- */
+
+.mainSwiper {
+    --swiper-pagination-color: var(--secondary);
+    --swiper-pagination-bullet-inactive-color: var(--text);
+    --swiper-pagination-bullet-inactive-opacity: 0.4;
+
+    .swiper-button-prev > svg,
+    .swiper-button-next > svg{
+        width: 30px;
+        height: 30px;
+        color: var(--secondary);
+        border-radius: 50%;
+    }
+}
 </style>
