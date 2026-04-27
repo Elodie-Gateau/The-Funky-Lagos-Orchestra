@@ -1,0 +1,15 @@
+@use "../utils/variables" as *;
+
+.form-error{
+    color: var(--error);
+    background: color-mix(in srgb, var(--error) 10%, transparent);
+    border-radius: $size-8;
+    padding: $size-10 $size-18;
+    margin: $size-10 0;
+}
+
+input.input-error, textarea.input-error{
+    color: color-mix(in srgb, var(--error) 50%, transparent) !important;
+    background: color-mix(in srgb, var(--error) 10%, transparent) !important;
+    border: 2px solid var(--error) !important;
+}

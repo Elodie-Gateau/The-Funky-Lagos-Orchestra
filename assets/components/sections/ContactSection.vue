@@ -30,10 +30,12 @@ onMounted(async() => {
 })
 
 const form = ref({ name: '', from: '', subject: '', message: '' })
+const formErrors = ref({})
 const status = ref(null)
 
 async function submit() {
     status.value = 'sending'
+    formErrors.value = {}
     try {
         const res = await fetch('/api/email', {
             method: 'POST',
@@ -43,6 +45,10 @@ async function submit() {
         if (res.ok) {
             status.value = 'success'
             form.value = { name: '', from: '', subject: '', message: '' }
+        } else if (res.status === 422) {
+            const data = await res.json()
+            formErrors.value = data.errors ?? {}
+            status.value = null
         } else {
             status.value = 'error'
         }
@@ -84,24 +90,31 @@ async function submit() {
                 />
             </div>
         </div>
-        <div>
+        <div class="contact-form">
             <form @submit.prevent="submit">
-                <label for="name">{{ t('contact.name') }}</label>
-                <input id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
-
-                <label for="email">{{ t('contact.email') }}</label>
-                <input id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
-
-                <label for="subject">{{ t('contact.subject') }}</label>
-                <input id="subject" v-model="form.subject" type="text" :placeholder="t('contact.placeholder_subject')" required />
-
-                <label for="message">{{ t('contact.message') }}</label>
-                <textarea id="message" v-model="form.message" :placeholder="t('contact.placeholder_message')" required />
-
-                <button type="submit" :disabled="status === 'sending'">
-                    {{ status === 'sending' ? t('contact.is_sending') : t('contact.send') }}
-                </button>
-
+                <div class="form-item">
+                    <label for="name">{{ t('contact.name') }}</label>
+                    <input :class="{ 'input-error': formErrors.name }" id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
+                    <span v-if="formErrors.name" class="form-error">{{ formErrors.name }}</span>
+                </div>
+                <div class="form-item">
+                    <label for="email">{{ t('contact.email') }}</label>
+                    <input :class="{ 'input-error': formErrors.from }" id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
+                    <span v-if="formErrors.from" class="form-error">{{ formErrors.from }}</span>
+                </div>
+                <div class="form-item">
+                    <label for="subject">{{ t('contact.subject') }}</label>
+                    <input :class="{ 'input-error': formErrors.subject }" id="subject" v-model="form.subject" type="text" :placeholder="t('contact.placeholder_subject')" required />
+                    <span v-if="formErrors.subject" class="form-error">{{ formErrors.subject }}</span>
+                </div>
+                <div class="form-item">
+                    <label for="message">{{ t('contact.message') }}</label>
+                    <textarea :class="{ 'input-error': formErrors.message }" id="message" v-model="form.message" :placeholder="t('contact.placeholder_message')" required />
+                    <span v-if="formErrors.message" class="form-error">{{ formErrors.message }}</span>
+                </div>
+                    <button class="button" type="submit" :disabled="status === 'sending'">
+                        {{ status === 'sending' ? t('contact.is_sending') : t('contact.send') }}
+                    </button>
                 <p v-if="status === 'success'">{{ t('contact.success') }}</p>
                 <p v-if="status === 'error'">{{ t('contact.error') }}</p>
             </form>
@@ -145,5 +158,25 @@ async function submit() {
         flex-direction: column;
         gap: $size-16;
     }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    button {
+        background-color: var(--accent);
+        color: var(--background);
+        font-weight: 800;
+        padding: $size-12 $size-24;
+        transition: all .2s;
+        border: 2px solid var(--background);
+    }
+    button:hover {
+        background-color: var(--background);
+        border: 2px solid var(--accent);
+        color: var(--accent);
+        transform: translateY(0px);
+    }
 }
+
 </style>
