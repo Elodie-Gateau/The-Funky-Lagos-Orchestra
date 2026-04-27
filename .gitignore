@@ -40,3 +40,4 @@ docker-compose.yaml
 !/public/uploads/.gitkeep
 cookies.txt
 .idea/
+.env.test
