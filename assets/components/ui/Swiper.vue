@@ -55,7 +55,7 @@ defineProps({
         </swiper-slide>
     </swiper>
 </template>
-<style lang="scss">
+<style scoped lang="scss">
 @use "/assets/styles/utils/variables" as *;
 
 img {

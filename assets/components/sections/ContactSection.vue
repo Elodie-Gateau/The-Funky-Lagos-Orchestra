@@ -10,6 +10,9 @@ const { t, locale } = useI18n();
 
 const email = ref(null);
 const phone = ref(null);
+const phoneWhatsApp = computed(() =>
+    phone.value ? '33' + phone.value.slice(1) : null
+)
 const facebook = ref(null);
 const instagram = ref(null);
 const youtube = ref(null);
@@ -52,22 +55,26 @@ async function submit() {
 <template>
     <section id="contact">
         <SectionTitle :title="t('contact.title')" :subtitle="t('contact.subtitle')" />
-        <div>
-            <div>
-                <Mail />
+        <div class="contact-container">
+            <div class="contact-item">
+                <div class="icon">
+                    <a :href="`mailto:${email}`" target="_blank" rel="noopener noreferrer"><Mail /></a>
+                </div>
                 <div>
                     <h4>{{ t('contact.email') }}</h4>
                     <p>{{ email }}</p>
                 </div>
             </div>
-            <div>
-                <Phone />
+            <div class="contact-item">
+                <div class="icon">
+                    <a :href="`https://wa.me/${phoneWhatsApp}`" target="_blank" rel="noopener noreferrer"><Phone /></a>
+                </div>
                 <div>
                     <h4>{{ t('contact.phone') }}</h4>
                     <p>{{ phone }}</p>
                 </div>
             </div>
-            <div>
+            <div class="contact-socials">
                 <h4>{{ t('contact.socials') }}</h4>
                 <Socials
                     :facebook= "facebook"
@@ -102,6 +109,41 @@ async function submit() {
     </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "/assets/styles/utils/variables" as *;
 
+#contact {
+    h4 {
+        font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: var(--gradient-end);
+        font-size: $size-12;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+    }
+
+    .contact-container {
+        display: flex;
+        flex-direction: column;
+        gap: $size-26;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: $size-16;
+
+        p{
+            font-size: $size-16;
+            color: var(--text);
+            opacity: .8;
+        }
+    }
+
+    .contact-socials {
+        display: flex;
+        flex-direction: column;
+        gap: $size-16;
+    }
+}
 </style>

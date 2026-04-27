@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Setting;
 use App\Enum\SettingName;
-use App\Form\SettingType;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 #[Route('/api')]
@@ -113,13 +113,36 @@ final class SettingController extends AbstractController
     public function updateSettingsDescriptions(
         Request $request,
         SettingRepository $repo,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        ValidatorInterface $validator
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
+        $constraints = new Assert\Collection([
+            'fields' => [
+                'description_fr' => new Assert\Optional([
+                    new Assert\Length(max: 2000, maxMessage: '2000 caractères maximum'),
+                ]),
+                'description_en' => new Assert\Optional([
+                    new Assert\Length(max: 2000, maxMessage: '2000 caractères maximum'),
+                ]),
+            ],
+        ]);
+
+        $violations = $validator->validate($data, $constraints);
+
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $field = trim($violation->getPropertyPath(), '[]');
+                $errors[$field] = $violation->getMessage();
+            }
+            return $this->json(['errors' => $errors], 422);
+        }
+
         $setting = $repo->findOneBy(['name' => SettingName::Description]) ?? new Setting();
-        $setting->setDescriptionFr($data['description_fr'] ?? null);
-        $setting->setDescriptionEn($data['description_en'] ?? null);
+        $setting->setDescriptionFr(\strip_tags($data['description_fr'] ?? ''));
+        $setting->setDescriptionEn(\strip_tags($data['description_en'] ?? ''));
         $setting->setUpdatedAt(new \DateTimeImmutable());
         $setting->setUpdatedBy($this->getUser());
 
@@ -134,9 +157,55 @@ final class SettingController extends AbstractController
     public function updateSettingsContacts(
         Request $request,
         SettingRepository $repo,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        ValidatorInterface $validator
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+
+        $constraints = new Assert\Collection([
+            'allowExtraFields' => true,
+            'fields' => [
+                'phone' => new Assert\Optional([
+                    new Assert\NotBlank(),
+                    new Assert\Regex(
+                        pattern: '/^0[1-9][0-9]{8}$/',
+                        message: 'Numéro de téléphone invalide (format attendu: 0612345678).'
+                    ),
+                ]),
+                'email'=> new Assert\Optional([
+                    new Assert\NotBlank(),
+                    new Assert\Email(message: 'Adresse email invalide'),
+                ]),
+                'facebook'  => new Assert\Optional([$this->urlConstraint('facebook.com')]),
+                'instagram' => new Assert\Optional([$this->urlConstraint('instagram.com')]),
+                'youtube'   => new Assert\Optional([$this->urlConstraint('youtube.com')]),
+                'soundcloud'=> new Assert\Optional([$this->urlConstraint('soundcloud.com')]),
+            ],
+        ]);
+
+        $violations = $validator->validate($data, $constraints);
+
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $field = trim($violation->getPropertyPath(), '[]');
+                $errors[$field] = $violation->getMessage();
+            }
+            return $this->json(['errors' => $errors], 422);
+        }
+
+        if (isset($data['phone'])) {
+            $data['phone'] = strip_tags($data['phone']);
+        }
+        if (isset($data['email'])) {
+            $data['email'] = strip_tags($data['email']);
+        }
+
+        foreach (['facebook', 'instagram', 'youtube', 'soundcloud'] as $field) {
+            if (isset($data[$field])) {
+                $data[$field] = strip_tags($data[$field]);
+            }
+        }
 
         $settingsMap = [
             'phone' => ['name' => SettingName::Phone, 'method' => 'setContent'],
@@ -180,5 +249,13 @@ final class SettingController extends AbstractController
             $setting->setUpdatedAt(new \DateTimeImmutable());
             $setting->setUpdatedBy($this->getUser());
             $em->persist($setting);
+    }
+
+    private function urlConstraint(string $domain): Assert\Regex
+    {
+        return new Assert\Regex(
+            pattern: '/^https?:\/\/(www\.)?' . preg_quote($domain, '/') . '\/.+/',
+            message: "L'URL doit être un profil $domain valide (ex: https://$domain/monprofil)",
+        );
     }
 }

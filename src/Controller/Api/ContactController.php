@@ -7,17 +7,18 @@ namespace App\Controller\Api;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ContactController extends AbstractController
 {
     #[Route('/api/email')]
-    public function sendEmail(Request $request, MailerInterface $mailer, RateLimiterFactoryInterface $anonymousApiLimiter): JsonResponse
+    public function sendEmail(Request $request, MailerInterface $mailer, RateLimiterFactoryInterface $anonymousApiLimiter, ValidatorInterface $validator): JsonResponse
     {
         $limiter = $anonymousApiLimiter->create($request->getClientIp());
         if (false === $limiter->consume(1)->isAccepted()) {
@@ -25,25 +26,62 @@ class ContactController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        $name = $data['name'] ?? '';
-        $from = $data['from'] ?? '';
-        $subject = $data['subject'] ?? '';
-        $message = $data['message'] ?? '';
+        $constraints = new Assert\Collection([
+            'name'    => [
+                new Assert\NotBlank(message: 'Le nom est requis'),
+                new Assert\Length(max: 100, maxMessage: '100 caractères maximum'),
+                new Assert\Regex(
+                    pattern: '/^[\p{L}\p{N}\s\-\'.]+$/u',
+                    message: 'Caractères non autorisés',
+                ),
+            ],
+            'from'    => [
+                new Assert\NotBlank(message: "L'email est requis"),
+                new Assert\Email(message: 'Adresse email invalide'),
+                new Assert\Regex(
+                    pattern: '/[\r\n]/',
+                    message: 'Caractères non autorisés',
+                    match: false,
+                ),
+            ],
+            'subject' => [
+                new Assert\NotBlank(message: 'Le sujet est requis'),
+                new Assert\Length(max: 200, maxMessage: '200 caractères maximum'),
+                new Assert\Regex(
+                    pattern: '/^[\p{L}\p{N}\s\-\'.]+$/u',
+                    message: 'Caractères non autorisés',
+                ),
+            ],
+            'message' => [
+                new Assert\NotBlank(message: 'Le message est requis'),
+                new Assert\Length(
+                    min: 10, minMessage: '10 caractères minimum',
+                    max: 2000, maxMessage: '2000 caractères maximum'
+                )
+            ],
+        ]);
 
-        if( empty($name) || empty($from) || empty($subject) || empty($message)) {
-            return $this->json(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
+        $violations = $validator->validate($data, $constraints);
+
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $field = trim($violation->getPropertyPath(), '[]');
+                $errors[$field] = $violation->getMessage();
+            }
+            return $this->json(['errors' => $errors], 422);
         }
 
-        if (!filter_var($from, FILTER_VALIDATE_EMAIL)) {
-            return $this->json(['error' => 'Invalid email address'], Response::HTTP_BAD_REQUEST);
-        }
+        $data['name']    = strip_tags($data['name']);
+        $data['subject'] = strip_tags($data['subject']);
+        $data['message'] = strip_tags($data['message']);
 
         $email = (new Email())
             ->from('contact@thefunkylagosorchestra.com')
             ->to('contact@thefunkylagosorchestra.com')
-            ->replyTo($from)
-            ->subject("[$subject] - $name")
-            ->text("De : $name <$from>\n\n$message");
+            ->replyTo($data['from'])
+            ->subject('[' . $data['subject'] . '] - ' . $data['name'])
+            ->text('De : ' . $data['name'] . ' <' . $data['from'] . ">\n\n" . $data['message']);
 
         $mailer->send($email);
 

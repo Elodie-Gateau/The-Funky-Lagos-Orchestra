@@ -1,0 +1,37 @@
+@use "../utils/variables" as *;
+
+.icon {
+    background-color: color-mix(in srgb, var(--text-button) 7%, transparent);
+    width: $size-40;
+    height: $size-40;
+    border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--text-button) 35%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+    cursor: pointer;
+
+    & > a{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    & > a > svg{
+        width: $size-20;
+        height: $size-20;
+    }
+}
+
+.icon:hover {
+    background-color: color-mix(in srgb, var(--accent) 25%, transparent);
+    border: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    transform: translateY(-2px);
+
+    & > svg{
+        color: var(--gradient-end);
+    }
+}
+
+
