@@ -47,6 +47,40 @@ onMounted(async() => {
     </nav>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '/assets/styles/utils/variables' as *;
+@use '/assets/styles/utils/breakpoints' as *;
+
+nav {
+    height: 100%;
+    width: 100%;
+    ul {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        li {
+            display: flex;
+            background-color: inherit;
+            text-transform: uppercase;
+            width: 100%;
+            height: 100%;
+            justify-content: flex-end;
+            align-items: center;
+
+            a{
+                display: flex;
+                align-items: center;
+                width: 100%;
+                text-align: right;
+                height: 100%;
+                border : 2px solid red;
+                color: var(--background);
+            }
+        }
+    }
+}
 
 </style>

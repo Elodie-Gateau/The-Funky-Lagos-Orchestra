@@ -1,5 +1,5 @@
 @use "../utils/variables" as *;
-@use "../themes/default" as *;
+@use "../utils/breakpoints" as *;
 
 html {
     background: var(--background);
@@ -36,4 +36,10 @@ svg {
 
 hr {
     border: none;
+}
+
+@media (min-width: $md) {
+    section {
+        padding: $size-80 $size-40;
+    }
 }
