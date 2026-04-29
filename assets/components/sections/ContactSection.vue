@@ -170,6 +170,8 @@ async function submit() {
         padding: $size-12 $size-24;
         transition: all .2s;
         border: 2px solid var(--background);
+        font-size: $size-14;
+        cursor: pointer;
     }
     button:hover {
         background-color: var(--background);
