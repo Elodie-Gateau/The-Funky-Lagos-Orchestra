@@ -92,15 +92,17 @@ async function submit() {
         </div>
         <div class="contact-form">
             <form @submit.prevent="submit">
-                <div class="form-item">
-                    <label for="name">{{ t('contact.name') }}</label>
-                    <input :class="{ 'input-error': formErrors.name }" id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
-                    <span v-if="formErrors.name" class="form-error">{{ formErrors.name }}</span>
-                </div>
-                <div class="form-item">
-                    <label for="email">{{ t('contact.email') }}</label>
-                    <input :class="{ 'input-error': formErrors.from }" id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
-                    <span v-if="formErrors.from" class="form-error">{{ formErrors.from }}</span>
+                <div class="form-row">
+                    <div class="form-item">
+                        <label for="name">{{ t('contact.name') }}</label>
+                        <input :class="{ 'input-error': formErrors.name }" id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
+                        <span v-if="formErrors.name" class="form-error">{{ formErrors.name }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="email">{{ t('contact.email') }}</label>
+                        <input :class="{ 'input-error': formErrors.from }" id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
+                        <span v-if="formErrors.from" class="form-error">{{ formErrors.from }}</span>
+                    </div>
                 </div>
                 <div class="form-item">
                     <label for="subject">{{ t('contact.subject') }}</label>
@@ -124,6 +126,7 @@ async function submit() {
 
 <style scoped lang="scss">
 @use "/assets/styles/utils/variables" as *;
+@use "/assets/styles/utils/breakpoints" as *;
 
 #contact {
     h4 {
@@ -163,6 +166,12 @@ async function submit() {
         width: 100%;
     }
 
+    .form-row{
+        display: flex;
+        flex-direction: column;
+        gap: $size-16;
+    }
+
     button {
         background-color: var(--accent);
         color: var(--background);
@@ -178,6 +187,25 @@ async function submit() {
         border: 2px solid var(--accent);
         color: var(--accent);
         transform: translateY(0px);
+    }
+}
+
+@media(min-width: $md) {
+
+    #contact {
+        .contact-container {
+            align-self: flex-start;
+        }
+
+        .form-row {
+            flex-direction: row;
+            gap: $size-16;
+
+            .form-item {
+                flex: 45%;
+            }
+        }
+
     }
 }
 

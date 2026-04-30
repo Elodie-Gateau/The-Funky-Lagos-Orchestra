@@ -9,7 +9,7 @@ main > section {
     &:nth-child(2),
     &:last-child{
         --background:          #{$color-brown};
-        --secondary:           #{$color-gold};
+        --secondary:           #{$color-gold-light};
         --title:               #{$color-cream};
         --text:                #{$color-cream};
         --gradient-start :     #{$color-gold};

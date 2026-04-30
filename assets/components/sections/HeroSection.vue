@@ -48,6 +48,7 @@ onUnmounted(() => {
 
 <template>
     <section class="hero">
+        
         <svg class="sun-rays" viewBox="-500 -500 1000 1000" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <g :transform="`rotate(${sunAngle})`">
                 <!-- Rayons cardinaux -->
@@ -86,12 +87,6 @@ onUnmounted(() => {
             </h1>
             <h2>{{ t('home.subtitle') }}</h2>
         </div>
-
-        <div class="menu">
-            <div class="nav">
-                <NavMenu/>
-            </div>
-        </div>
     </section>
 </template>
 
@@ -99,9 +94,6 @@ onUnmounted(() => {
 @use '/assets/styles/utils/breakpoints' as *;
 @use '/assets/styles/utils/variables' as *;
 
-.nav {
-    display: none;
-}
 
 .hero {
     position: relative;
@@ -125,14 +117,14 @@ onUnmounted(() => {
             flex-direction: column;
             row-gap: 3.2px;
             line-height: 1;
-            color: #{$color-cream};
+            color: var(--background);
 
             span {
                 display: block;
             }
 
             span:nth-child(2) {
-                color: #{$color-gold};
+                color: var(--accent);
                 font-size: $size-22;
                 margin-top: $size-6;
                 font-weight: 800;
@@ -143,7 +135,7 @@ onUnmounted(() => {
             text-align: center;
             font-size: $size-14;
             font-weight: 600;
-            color: #{$color-gold-light};
+            color: var(--accent-light);
             margin-top: $size-10;
         }
     }
@@ -173,8 +165,26 @@ img {
 }
 
 @media (min-width: $md) {
-    .nav {
-        display: block;
+    .hero {
+        height: 94vh;
+       .title {
+           margin-top: $size-64;
+
+           h1 {
+               span:nth-child(2) {
+                   margin-top: $size-12;
+                   font-size: $size-34;
+               }
+           }
+
+           h2 {
+               margin-top: $size-40;
+               font-size: $size-16;
+           }
+
+
+       }
     }
 }
+
 </style>

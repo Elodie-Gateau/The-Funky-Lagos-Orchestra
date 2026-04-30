@@ -29,6 +29,32 @@ onMounted(async() => {
     </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '/assets/styles/utils/breakpoints' as *;
+@use '/assets/styles/utils/variables' as *;
 
+#events {
+    ul{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: $size-30;
+
+        li{
+        width: 100%;
+            height: $size-96;
+        }
+    }
+}
+
+@media (min-width: $md) {
+    #events {
+        ul{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: $size-40;
+        }
+    }
+}
 </style>

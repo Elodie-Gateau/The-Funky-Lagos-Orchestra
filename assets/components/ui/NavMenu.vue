@@ -42,7 +42,7 @@ onMounted(async() => {
             <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('music')">{{ t('nav.music') }}</a></li>
             <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
             <li v-if="events.length > 0"><a href="#" @click.prevent="scrollTo('events')">{{ t('nav.events') }}</a></li>
-            <li><a href="#">{{ t('nav.contact')}}</a></li>
+            <li><a href="#" @click.prevent="scrollTo('contact')">{{ t('nav.contact') }}</a></li>
         </ul>
     </nav>
 </template>
@@ -52,14 +52,9 @@ onMounted(async() => {
 @use '/assets/styles/utils/breakpoints' as *;
 
 nav {
-    height: 100%;
-    width: 100%;
     ul {
-        height: 100%;
-        width: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-between;
 
         li {
             display: flex;
@@ -76,7 +71,6 @@ nav {
                 width: 100%;
                 text-align: right;
                 height: 100%;
-                border : 2px solid red;
                 color: var(--background);
             }
         }

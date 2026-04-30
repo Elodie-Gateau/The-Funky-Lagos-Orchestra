@@ -17,6 +17,11 @@ const isOpen = ref(false)
         </button>
     </div>
 
+    <div class="desktop-nav">
+        <NavMenu />
+        <LangSwitcher />
+    </div>
+
     <Transition name="backdrop">
         <div v-if="isOpen" class="backdrop" @click="isOpen = false" />
     </Transition>
@@ -44,6 +49,7 @@ const isOpen = ref(false)
 @use '/assets/styles/utils/variables' as *;
 @use '/assets/styles/utils/breakpoints' as *;
 
+/* ── Barre mobile ── */
 .mobile-menu {
     background-color: var(--background);
     color: var(--title);
@@ -58,6 +64,10 @@ const isOpen = ref(false)
     box-shadow: 0 2px 12px rgba(42, 16, 0, 0.04);
     height: 10vh;
     z-index: 50;
+
+    @media (min-width: $md) {
+        display: none;
+    }
 }
 
 .hamburger {
@@ -78,6 +88,73 @@ const isOpen = ref(false)
 
         &.short {
             width: 14px;
+        }
+    }
+}
+
+/* ── Nav desktop ── */
+.desktop-nav {
+    display: none;
+
+    @media (min-width: $md) {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        border-bottom: 1px solid rgba(42, 16, 0, 0.08);
+        box-shadow: 0 2px 12px rgba(42, 16, 0, 0.04);
+        height: 6vh;
+        z-index: 999;
+        background-color: var(--background);
+
+        :deep(nav) {
+            width: 100%;
+            ul {
+                padding: $size-20;
+
+                li {
+                    box-shadow: none;
+                    justify-content: center;
+
+                    a{
+                        justify-content: center;
+                        color: var(--title);
+                        font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                        font-size: $size-12;
+                        font-weight: 600;
+                        letter-spacing: 0.15em;
+                        width: auto;
+                        height: auto;
+                        position: relative;
+                    }
+
+                    a:hover {
+                        color: var(--secondary);
+                    }
+
+                    a::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        height: 1.5px;
+                        background-color: var(--secondary);
+                        width: 0;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    a:hover::after {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        :deep(.lang-switcher) {
+            width: 10%;
+            justify-content: flex-start;
         }
     }
 }
@@ -128,34 +205,9 @@ const isOpen = ref(false)
 /* ── Header du panneau ── */
 .panel-header {
     padding: $size-18 $size-22;
-    border-bottom: 1px solid rgba(42, 16, 0, 0.07);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-}
-
-.panel-label {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-
-    strong {
-        font-family: 'Raleway', sans-serif;
-        font-weight: 800;
-        font-size: $size-12;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #{$color-brown};
-    }
-
-    span {
-        font-family: 'Raleway', sans-serif;
-        font-weight: 600;
-        font-size: 9px;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #{$color-gold};
-    }
 }
 
 .btn-close {
@@ -176,7 +228,7 @@ const isOpen = ref(false)
     }
 }
 
-/* ── Navigation ── */
+/* ── Navigation dans le panel ── */
 .panel-nav {
     flex: 1;
     overflow-y: auto;
@@ -232,31 +284,5 @@ const isOpen = ref(false)
     flex-direction: column;
     gap: $size-10;
     align-items: stretch;
-}
-
-.btn-cta {
-    padding: 13px;
-    background: #{$color-red};
-    color: #{$color-cream};
-    border: none;
-    border-radius: 6px;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 700;
-    font-size: $size-12;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.15s;
-
-    &:hover {
-        background: #a82215;
-    }
-}
-
-@media (min-width: $md) {
-    .mobile-menu {
-        display: none;
-    }
 }
 </style>

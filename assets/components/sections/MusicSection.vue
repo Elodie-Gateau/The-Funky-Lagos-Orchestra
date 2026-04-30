@@ -37,6 +37,7 @@ onMounted(async() => {
     display: flex;
     flex-direction: column;
     gap: $size-10;
+    width: 100%;
 }
 
 .button {
@@ -48,5 +49,12 @@ onMounted(async() => {
 .button:hover {
     background-color: color-mix(in srgb, var(--secondary) 12%, transparent);
     border: 2px solid var(--gradient-end);
+}
+
+
+@media (min-width: $md) {
+    #tracks {
+
+    }
 }
 </style>

@@ -31,6 +31,7 @@ defineProps({
 
 <style scoped lang="scss">
 @use "/assets/styles/utils/variables" as *;
+@use "/assets/styles/utils/breakpoints" as *;
 
 li {
     border: 1px solid color-mix(in srgb, var(--text-button) 7%, transparent);
@@ -93,6 +94,12 @@ li.active {
 
     button > svg {
         color: var(--gradient-end);
+    }
+}
+
+@media (min-width: $md) {
+    li {
+        grid-template-columns: $size-72 1fr $size-72;
     }
 }
 </style>
