@@ -18,8 +18,10 @@ const isOpen = ref(false)
     </div>
 
     <div class="desktop-nav">
-        <NavMenu />
-        <LangSwitcher />
+        <div class="wrapper">
+            <NavMenu />
+            <LangSwitcher />
+        </div>
     </div>
 
     <Transition name="backdrop">
@@ -97,10 +99,8 @@ const isOpen = ref(false)
     display: none;
 
     @media (min-width: $md) {
-        display: flex;
+        display: block;
         width: 100%;
-        justify-content: center;
-        align-items: center;
         position: sticky;
         top: 0;
         border-bottom: 1px solid rgba(42, 16, 0, 0.08);
@@ -109,55 +109,70 @@ const isOpen = ref(false)
         z-index: 999;
         background-color: var(--background);
 
-        :deep(nav) {
+        .wrapper {
+            display: flex;
             width: 100%;
-            ul {
-                padding: $size-20;
+            justify-content: center;
+            align-items: center;
+            height: 6vh;
 
-                li {
-                    box-shadow: none;
-                    justify-content: center;
+            :deep(nav) {
+                width: 100%;
+                ul {
+                    padding: $size-20;
 
-                    a{
+                    li {
+                        box-shadow: none;
                         justify-content: center;
-                        color: var(--title);
-                        font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                        font-size: $size-12;
-                        font-weight: 600;
-                        letter-spacing: 0.15em;
-                        width: auto;
-                        height: auto;
-                        position: relative;
-                    }
 
-                    a:hover {
-                        color: var(--secondary);
-                    }
+                        a{
+                            justify-content: center;
+                            color: var(--title);
+                            font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                            font-size: $size-12;
+                            font-weight: 600;
+                            letter-spacing: 0.15em;
+                            width: auto;
+                            height: auto;
+                            position: relative;
+                        }
 
-                    a::after {
-                        content: '';
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        height: 1.5px;
-                        background-color: var(--secondary);
-                        width: 0;
-                        transition: all 0.3s ease-in-out;
-                    }
+                        a:hover {
+                            color: var(--secondary);
+                        }
 
-                    a:hover::after {
-                        width: 100%;
+                        a::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            height: 1.5px;
+                            background-color: var(--secondary);
+                            width: 0;
+                            transition: all 0.3s ease-in-out;
+                        }
+
+                        a:hover::after {
+                            width: 100%;
+                        }
                     }
                 }
             }
-        }
+            }
 
-        :deep(.lang-switcher) {
-            width: 10%;
-            justify-content: flex-start;
+            :deep(.lang-switcher) {
+                width: 10%;
+                justify-content: flex-start;
+            }
+    }
+
+}
+    @media (min-width: $lg) {
+        .wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
         }
     }
-}
 
 /* ── Backdrop ── */
 .backdrop {

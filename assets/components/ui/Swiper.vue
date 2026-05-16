@@ -62,6 +62,7 @@ img {
     max-width: 100%;
 }
 .thumbsSwiper {
+    cursor: pointer;
     .swiper-slide {
         opacity: 0.35;
     }
@@ -77,10 +78,10 @@ img {
 
     .swiper-button-prev > svg,
     .swiper-button-next > svg{
-        width: 30px;
-        height: 30px;
+        width: $size-30;
+        height: $size-30;
         color: var(--secondary);
-        border-radius: 50%;
+        border-radius: 100%;
     }
 }
 </style>

@@ -3,6 +3,7 @@ import { ref, watch, computed } from "vue"
 
 const props = defineProps({
     track: { type: Object, default: null }
+    , albums: { type: Array, default: [] }
 })
 const emit = defineEmits(["close"])
 
@@ -14,16 +15,16 @@ const artist = ref('')
 const album = ref('')
 const audioFile = ref(null)
 const duration = ref(0)
-const isVisible = ref(false)
+const visibility = ref(false)
 
 // Pré-remplissage en mode édition
-watch(() => props.track, (t) => {
+watch(() => props.track, async (t) => {
     if (t) {
         title.value = t.title ?? ''
         artist.value = t.artist ?? ''
-        album.value = t.album ?? ''
+        album.value = t.album?.id ?? ''
         duration.value = t.duration ?? 0
-        isVisible.value = t.visible
+        visibility.value = t.isVisible ?? false
     }
 }, { immediate: true })
 
@@ -52,12 +53,12 @@ async function handleSubmit() {
     formData.append('artist', artist.value)
     formData.append('album', album.value)
     formData.append('duration', duration.value)
-    formData.append('isVisible', isVisible.value)
+    formData.append('isVisible', visibility.value)
     if (audioFile.value) formData.append('audioFile', audioFile.value)
 
     const url = isEditMode.value
-        ? `/api/admin/tracks/${props.track.id}`
-        : '/api/admin/tracks/add'
+        ? `/api/admin/track/${props.track.id}`
+        : '/api/admin/track/add'
     const method = isEditMode.value ? 'POST' : 'POST'
 
     try {
@@ -90,11 +91,13 @@ async function handleSubmit() {
             </div>
             <div>
                 <label for="album">Album</label>
-                <input type="text" id="album" v-model="album" />
+                <select id="album" v-model="album">
+                    <option v-for="album in albums" :key="album.id" :value="album.id">{{ album.name }}</option>
+                </select>
             </div>
             <div>
-                <label for="isVisible">Publier sur la page d'accueil ?</label>
-                <input type="checkbox" name="isVisible" id="isVisible" v-model="isVisible">
+                <label for="visibility">Publier sur la page d'accueil ?</label>
+                <input type="checkbox" name="visibility" id="visibility" v-model="visibility">
             </div>
             <p v-if="successMessage">{{ successMessage }}</p>
             <p v-if="errorMessage">{{ errorMessage }}</p>

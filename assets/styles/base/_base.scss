@@ -6,6 +6,9 @@ html {
     height: 100%;
 }
 
+body {
+    overflow-x: hidden;
+}
 main {
     color: var(--text);
 }

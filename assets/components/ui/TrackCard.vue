@@ -22,7 +22,7 @@ defineProps({
         </button>
         <div class="track-info">
             <span>{{ track.title }}</span>
-            <span>{{ track.album }}</span>
+            <span>{{ track.album.name }}</span>
             <span>{{ t('main.title') }}</span>
         </div>
         <span class="track-duration">{{ track.duration }}</span>

@@ -61,65 +61,67 @@ async function submit() {
 <template>
     <section id="contact">
         <SectionTitle :title="t('contact.title')" :subtitle="t('contact.subtitle')" />
-        <div class="contact-container">
-            <div class="contact-item">
-                <div class="icon">
-                    <a :href="`mailto:${email}`" target="_blank" rel="noopener noreferrer"><Mail /></a>
-                </div>
-                <div>
-                    <h4>{{ t('contact.email') }}</h4>
-                    <p>{{ email }}</p>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="icon">
-                    <a :href="`https://wa.me/${phoneWhatsApp}`" target="_blank" rel="noopener noreferrer"><Phone /></a>
-                </div>
-                <div>
-                    <h4>{{ t('contact.phone') }}</h4>
-                    <p>{{ phone }}</p>
-                </div>
-            </div>
-            <div class="contact-socials">
-                <h4>{{ t('contact.socials') }}</h4>
-                <Socials
-                    :facebook= "facebook"
-                    :instagram= "instagram"
-                    :youtube= "youtube"
-                    :soundcloud= "soundcloud"
-                />
-            </div>
-        </div>
-        <div class="contact-form">
-            <form @submit.prevent="submit">
-                <div class="form-row">
-                    <div class="form-item">
-                        <label for="name">{{ t('contact.name') }}</label>
-                        <input :class="{ 'input-error': formErrors.name }" id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
-                        <span v-if="formErrors.name" class="form-error">{{ formErrors.name }}</span>
+        <div class="contact-wrapper">
+            <div class="contact-container">
+                <div class="contact-item">
+                    <div class="icon">
+                        <a :href="`mailto:${email}`" target="_blank" rel="noopener noreferrer"><Mail /></a>
                     </div>
-                    <div class="form-item">
-                        <label for="email">{{ t('contact.email') }}</label>
-                        <input :class="{ 'input-error': formErrors.from }" id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
-                        <span v-if="formErrors.from" class="form-error">{{ formErrors.from }}</span>
+                    <div>
+                        <h4>{{ t('contact.email') }}</h4>
+                        <p>{{ email }}</p>
                     </div>
                 </div>
-                <div class="form-item">
-                    <label for="subject">{{ t('contact.subject') }}</label>
-                    <input :class="{ 'input-error': formErrors.subject }" id="subject" v-model="form.subject" type="text" :placeholder="t('contact.placeholder_subject')" required />
-                    <span v-if="formErrors.subject" class="form-error">{{ formErrors.subject }}</span>
+                <div class="contact-item">
+                    <div class="icon">
+                        <a :href="`https://wa.me/${phoneWhatsApp}`" target="_blank" rel="noopener noreferrer"><Phone /></a>
+                    </div>
+                    <div>
+                        <h4>{{ t('contact.phone') }}</h4>
+                        <p>{{ phone }}</p>
+                    </div>
                 </div>
-                <div class="form-item">
-                    <label for="message">{{ t('contact.message') }}</label>
-                    <textarea :class="{ 'input-error': formErrors.message }" id="message" v-model="form.message" :placeholder="t('contact.placeholder_message')" required />
-                    <span v-if="formErrors.message" class="form-error">{{ formErrors.message }}</span>
+                <div class="contact-socials">
+                    <h4>{{ t('contact.socials') }}</h4>
+                    <Socials
+                        :facebook= "facebook"
+                        :instagram= "instagram"
+                        :youtube= "youtube"
+                        :soundcloud= "soundcloud"
+                    />
                 </div>
-                    <button class="button" type="submit" :disabled="status === 'sending'">
-                        {{ status === 'sending' ? t('contact.is_sending') : t('contact.send') }}
-                    </button>
-                <p v-if="status === 'success'">{{ t('contact.success') }}</p>
-                <p v-if="status === 'error'">{{ t('contact.error') }}</p>
-            </form>
+            </div>
+            <div class="contact-form">
+                <form @submit.prevent="submit">
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="name">{{ t('contact.name') }}</label>
+                            <input :class="{ 'input-error': formErrors.name }" id="name" v-model="form.name" type="text" :placeholder="t('contact.placeholder_name')" required />
+                            <span v-if="formErrors.name" class="form-error">{{ formErrors.name }}</span>
+                        </div>
+                        <div class="form-item">
+                            <label for="email">{{ t('contact.email') }}</label>
+                            <input :class="{ 'input-error': formErrors.from }" id="email" v-model="form.from" type="email" :placeholder="t('contact.placeholder_email')" required />
+                            <span v-if="formErrors.from" class="form-error">{{ formErrors.from }}</span>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label for="subject">{{ t('contact.subject') }}</label>
+                        <input :class="{ 'input-error': formErrors.subject }" id="subject" v-model="form.subject" type="text" :placeholder="t('contact.placeholder_subject')" required />
+                        <span v-if="formErrors.subject" class="form-error">{{ formErrors.subject }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="message">{{ t('contact.message') }}</label>
+                        <textarea :class="{ 'input-error': formErrors.message }" id="message" v-model="form.message" :placeholder="t('contact.placeholder_message')" required />
+                        <span v-if="formErrors.message" class="form-error">{{ formErrors.message }}</span>
+                    </div>
+                        <button class="button" type="submit" :disabled="status === 'sending'">
+                            {{ status === 'sending' ? t('contact.is_sending') : t('contact.send') }}
+                        </button>
+                    <p v-if="status === 'success'">{{ t('contact.success') }}</p>
+                    <p v-if="status === 'error'">{{ t('contact.error') }}</p>
+                </form>
+            </div>
         </div>
     </section>
 </template>
@@ -138,74 +140,104 @@ async function submit() {
         text-transform: uppercase;
     }
 
-    .contact-container {
-        display: flex;
-        flex-direction: column;
-        gap: $size-26;
-    }
+    .contact-wrapper {
 
-    .contact-item {
-        display: flex;
-        align-items: center;
-        gap: $size-16;
-
-        p{
-            font-size: $size-16;
-            color: var(--text);
-            opacity: .8;
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            gap: $size-26;
         }
-    }
 
-    .contact-socials {
-        display: flex;
-        flex-direction: column;
-        gap: $size-16;
-    }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: $size-16;
 
-    .contact-form {
-        width: 100%;
-    }
+            p{
+                font-size: $size-16;
+                color: var(--text);
+                opacity: .8;
+            }
+        }
 
-    .form-row{
-        display: flex;
-        flex-direction: column;
-        gap: $size-16;
-    }
+        .contact-socials {
+            display: flex;
+            flex-direction: column;
+            gap: $size-16;
+        }
 
-    button {
-        background-color: var(--accent);
-        color: var(--background);
-        font-weight: 800;
-        padding: $size-12 $size-24;
-        transition: all .2s;
-        border: 2px solid var(--background);
-        font-size: $size-14;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: var(--background);
-        border: 2px solid var(--accent);
-        color: var(--accent);
-        transform: translateY(0px);
+        .contact-form {
+            width: 100%;
+        }
+
+        .form-row{
+            display: flex;
+            flex-direction: column;
+            gap: $size-16;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: var(--background);
+            font-weight: 800;
+            padding: $size-12 $size-24;
+            transition: all .2s;
+            border: 2px solid var(--background);
+            font-size: $size-14;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: var(--background);
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            transform: translateY(0px);
+        }
     }
 }
 
 @media(min-width: $md) {
 
     #contact {
-        .contact-container {
-            align-self: flex-start;
-        }
+        .contact-wrapper {
 
-        .form-row {
-            flex-direction: row;
-            gap: $size-16;
+            .contact-container {
+                align-self: flex-start;
+            }
 
-            .form-item {
-                flex: 45%;
+            .form-row {
+                flex-direction: row;
+                gap: $size-16;
+
+                .form-item {
+                    flex: 45%;
+                }
             }
         }
 
+    }
+}
+
+@media(min-width: $lg) {
+    #contact{
+        .contact-wrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+
+            .contact-container {
+                width: 45%;
+            }
+
+            .contact-form {
+                width: 45%;
+
+                form {
+                    margin: 0;
+                }
+            }
+        }
     }
 }
 

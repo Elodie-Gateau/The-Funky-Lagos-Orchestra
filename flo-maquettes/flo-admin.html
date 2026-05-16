@@ -1547,7 +1547,7 @@
     document.querySelectorAll('.sidebar__item').forEach(i => i.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-    const labels = { dashboard:'Dashboard', tracks:'Tracks', events:'Événements', gallery:'Galerie', settings:'Paramètres' };
+    const labels = { dashboard:'Dashboard', tracks:'Track', events:'Événements', gallery:'Galerie', settings:'Paramètres' };
     document.getElementById('breadcrumbCurrent').textContent = labels[pageId] || pageId;
     // close mobile sidebar
     document.getElementById('sidebar').classList.remove('open');

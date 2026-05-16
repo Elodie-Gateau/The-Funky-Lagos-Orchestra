@@ -21,12 +21,12 @@ h4 {
 }
 
 h1 {
-    font-size: $size-40;
+    font-size: clamp($size-40, 7.5vw, $size-80);
     text-align: left;
 }
 
 h2 {
-    font-size: $size-24;
+    font-size: clamp($size-14, 4.5vw, $size-38);
     text-align: left;
 }
 
@@ -38,22 +38,18 @@ h3 {
     body {
         font-size: $size-16;
     }
-    h1 {
-        font-size: $size-56;
-    }
-    h2 {
-        font-size: $size-32;
-    }
     button,
     a {
         font-size: $size-16;
     }
 }
 @media (min-width: $lg) {
-    h1 {
-        font-size: $size-48;
-    }
-    h2 {
-        font-size: $size-36;
+
+    main {
+        section > * {
+        max-width: 1000px;
+        margin: 0 auto;
+
+        }
     }
 }
