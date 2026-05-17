@@ -40,8 +40,8 @@ onMounted(async() => {
             <li><a href="/">{{ t('nav.home') }}</a></li>
             <li><a href="#" @click.prevent="scrollTo('about')">{{ t('nav.about') }}</a></li>
             <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('music')">{{ t('nav.music') }}</a></li>
-            <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
             <li v-if="events.length > 0"><a href="#" @click.prevent="scrollTo('events')">{{ t('nav.events') }}</a></li>
+            <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
             <li><a href="#" @click.prevent="scrollTo('contact')">{{ t('nav.contact') }}</a></li>
         </ul>
     </nav>
