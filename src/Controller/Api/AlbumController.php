@@ -33,6 +33,12 @@ class AlbumController extends AbstractController
                     'duration'  => $track->getDuration(),
                     'audioFile' => $track->getAudioFile(),
                     'isVisible' => $track->isVisible(),
+                    'album'     => [
+                        'id'     => $album->getId(),
+                        'name'  => $album->getName(),
+                        'year'  => $album->getYear(),
+                        'cover' => $album->getCover()
+                    ]
                 ], $album->getTracks()->toArray()),
             ], $albumRepository->findAll()),
         ]);

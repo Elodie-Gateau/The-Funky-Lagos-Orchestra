@@ -4,7 +4,7 @@ import StickyMenu from "./StickyMenu.vue";
 </script>
 
 <template>
-    <HeroSection />
+
     <StickyMenu/>
 </template>
 

@@ -53,7 +53,7 @@ async function handleSubmit() {
     formData.append('artist', artist.value)
     formData.append('album', album.value)
     formData.append('duration', duration.value)
-    formData.append('isVisible', visibility.value)
+    formData.append('visibility', visibility.value)
     if (audioFile.value) formData.append('audioFile', audioFile.value)
 
     const url = isEditMode.value

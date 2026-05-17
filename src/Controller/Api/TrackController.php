@@ -73,6 +73,28 @@ class TrackController extends AbstractController
             ], $tracks),
         ]);
     }
+
+    #[Route('/tracks/others', methods: ['GET'])]
+    public function getOthersTracks(TrackRepository $tracksRepository): JsonResponse
+    {
+        $tracks = $tracksRepository->findby(['visibility' => false]);
+        return $this->json([
+            'tracks' => array_map(fn(Track $track) => [
+                'id'        => $track->getId(),
+                'title'     => $track->getTitle(),
+                'artist'    => $track->getArtist(),
+                'duration'  => $track->getDuration(),
+                'audioFile' => $track->getAudioFile(),
+                'visibility' => $track->isVisible(),
+                'album'     => [
+                    'id'    => $track->getAlbum()?->getId(),
+                    'name' => $track->getAlbum()?->getName(),
+                    'year' => $track->getAlbum()?->getYear(),
+                    'cover' => $track->getAlbum()?->getCover(),
+                ],
+            ], $tracks),
+        ]);
+    }
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/track/add', methods: ['POST'])]
     public function addTrack(
@@ -116,10 +138,11 @@ class TrackController extends AbstractController
         $finalAudioPath = $this->audioConversion->convertToMp3($tempPath, $outputPath);
 
         $track->setAudioFile('/audio/' . basename($finalAudioPath));
-
-        $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
-        if (isset($checkTrack['error'])) {
-            return $this->json($checkTrack, 400);
+        if($track->isVisible()) {
+            $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
+            if (isset($checkTrack['error'])) {
+                return $this->json($checkTrack, 400);
+            }
         }
         $em->persist($track);
         $em->flush();
@@ -170,15 +193,16 @@ class TrackController extends AbstractController
         if ($audioFile && $audioFile->getError() === UPLOAD_ERR_OK) {
             $tempPath = $audioFile->getRealPath();
             $outputPath = $this->getParameter('kernel.project_dir')
-                . '/public/audio/' . uniqid() . '.mp3';
+                . '/public/audio/' . bin2hex(random_bytes(16)) . '.mp3';
             $finalAudioPath = $this->audioConversion->convertToMp3($tempPath, $outputPath);
 
             $track->setAudioFile('/audio/' . basename($finalAudioPath));
         }
-
-        $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
-        if (isset($checkTrack['error'])) {
-            return $this->json($checkTrack, 400);
+        if($track->isVisible()){
+            $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
+            if (isset($checkTrack['error'])) {
+                return $this->json($checkTrack, 400);
+            }
         }
         $em->persist($track);
         $em->flush();

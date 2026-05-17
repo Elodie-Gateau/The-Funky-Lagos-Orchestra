@@ -12,6 +12,7 @@ const { t, locale } = useI18n()
 </script>
 
 <template>
+    <HeroSection />
     <AppHeader/>
     <main>
         <AboutSection />

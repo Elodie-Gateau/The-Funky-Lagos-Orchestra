@@ -81,5 +81,9 @@
         "mentions": "Tous droits réservés",
         "made_part1": "Made with ",
         "made_part2": " in Vendée"
+    },
+    "discography" : {
+        "title" : "Discographie",
+        "subtitle" : "Albums"
     }
 }

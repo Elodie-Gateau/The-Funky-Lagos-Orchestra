@@ -7,15 +7,20 @@ import { ref, onMounted } from "vue";
 
 const { t } = useI18n();
 const tracks = ref([]);
+const othersTracks = ref([]);
 
+onMounted(async () => {
+    const [res, resOthers] = await Promise.all([
+        fetch("/api/tracks/home", { credentials: 'include' }),
+        fetch("/api/tracks/others", { credentials: 'include' })
+    ]);
 
-onMounted(async() => {
-    const res = await fetch("/api/tracks/home", {credentials: 'include'})
     const data = await res.json();
-    data.tracks.forEach((track) => {
-            tracks.value.push(track);
-    })
-})
+    const dataOthers = await resOthers.json();
+
+    tracks.value = data.tracks;
+    othersTracks.value = dataOthers.tracks;
+});
 
 </script>
 
@@ -25,7 +30,7 @@ onMounted(async() => {
     <ul id="tracks">
         <TrackCard v-for="track in tracks" :key="track.id" :track="track" />
     </ul>
-    <a class="button" href="/music">{{ t('music.link') }}</a>
+    <a v-if = "othersTracks.length > 0" class="button" href="/music">{{ t('music.link') }}</a>
 </section>
 </template>
 

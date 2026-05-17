@@ -8,9 +8,20 @@ html {
 
 body {
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+#app {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 main {
     color: var(--text);
+    flex: 1;
 }
 
 li {
