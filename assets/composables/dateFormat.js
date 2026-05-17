@@ -1,12 +1,14 @@
-export function dateFormatDay(date) {
+export function dateFormatDay(date, locale = 'fr-FR') {
     return new Date(date)
-        .toLocaleDateString('fr-FR', {day: 'numeric'} );
+        .toLocaleDateString(locale, {day: 'numeric'} );
 }
 
-export function dateFormatMonth(date) {
+export function dateFormatMonth(date, locale = 'fr-FR') {
     return new Date(date)
-        .toLocaleDateString('fr-FR', {month: 'short'} );
+        .toLocaleDateString(locale, {month: 'short'} );
 }
 
-
-//TODO: add i18n
+export function dateFormatYear(date) {
+    return new Date(date)
+        .getFullYear();
+}

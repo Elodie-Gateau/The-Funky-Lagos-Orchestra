@@ -1,9 +1,9 @@
 <script setup>
 import {useI18n} from "vue-i18n";
 import { Icon } from '@iconify/vue';
-import {dateFormatDay, dateFormatMonth} from "../../composables/dateFormat.js";
+import {dateFormatDay, dateFormatMonth, dateFormatYear} from "../../composables/dateFormat.js";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 defineProps({
     event: {
@@ -18,8 +18,9 @@ defineProps({
 <template>
     <li>
         <div class="event-date">
-            <span>{{ dateFormatDay(event.date) }}</span>
-            <span>{{ dateFormatMonth(event.date) }}</span>
+            <span>{{ dateFormatDay(event.date, locale) }}</span>
+            <span>{{ dateFormatMonth(event.date, locale) }}</span>
+            <span>{{ dateFormatYear(event.date) }}</span>
         </div>
         <div class="event-info">
             <span>{{ event.name }}</span>
