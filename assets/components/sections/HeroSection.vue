@@ -152,6 +152,8 @@ onUnmounted(() => {
             .wrapper {
                 display: flex;
                 gap: $size-16;
+                width: 100%;
+                justify-content: center;
             }
 
             span {
@@ -213,6 +215,10 @@ onUnmounted(() => {
 
         .hero-container {
             width: 60%;
+
+            img {
+                max-height: 60vh;
+            }
         }
 
        .title {

@@ -59,7 +59,13 @@ onMounted(async () => {
 
 @media (min-width: $md) {
     #tracks {
+        max-width: 70%;
+    }
+}
 
+@media (min-width: $lg) {
+    #tracks {
+        max-width: 40%;
     }
 }
 </style>
