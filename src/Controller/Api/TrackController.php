@@ -103,7 +103,7 @@ class TrackController extends AbstractController
     ): JsonResponse {
         $track = new Track();
         $track->setTitle($request->request->get('title'));
-        $track->setArtist($request->request->get('artist'));
+        $track->setArtist('The Funky Lagos Orchestra');
         $track->setDuration($request->request->get('duration'));
         $track->setVisibility($request->request->get('visibility') === 'true');
 
@@ -171,7 +171,7 @@ class TrackController extends AbstractController
     public function updateTrack(Track $track, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $track->setTitle($request->request->get('title'));
-        $track->setArtist($request->request->get('artist'));
+        $track->setArtist('The Funky Lagos Orchestra');
         $track->setDuration($request->request->get('duration'));
         $track->setVisibility($request->request->get('visibility') === 'true');
         $audioFile = $request->files->get('audioFile');

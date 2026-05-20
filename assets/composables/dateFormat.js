@@ -12,3 +12,8 @@ export function dateFormatYear(date) {
     return new Date(date)
         .getFullYear();
 }
+
+export function formatDate(date, locale = 'fr-FR') {
+    return new Date(date)
+        .toLocaleDateString(locale, {day: 'numeric', month: 'short', year: 'numeric'} );
+}

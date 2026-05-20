@@ -1,24 +1,29 @@
 <script setup>
-import {useRouter} from "vue-router";
-import {useAuthStore} from "../../../stores/auth.js";
+import { ExternalLink } from '@lucide/vue'
 
-const router = useRouter();
-const auth = useAuthStore()
-async function handleLogout() {
-    await auth.logout()
-    router.push('/login')
-}
+const props = defineProps({
+  pageTitle: { type: String, default: 'Admin' }
+})
+const emit = defineEmits(['toggle-sidebar'])
 </script>
 
 <template>
-    <h1>Espace Administrateur</h1>
-    <p>Bonjour {{ auth.user?.surname }} !</p>
-    <div class="admin-header">
-        <span>{{ auth.user?.email }}</span>
-        <button @click="handleLogout">Déconnexion</button>
+  <header class="admin-topbar">
+    <div class="admin-topbar__left">
+      <button class="admin-topbar__hamburger" @click="emit('toggle-sidebar')" aria-label="Ouvrir le menu">
+        <span /><span /><span />
+      </button>
+      <nav class="admin-topbar__breadcrumb" aria-label="Fil d'Ariane">
+        <span>Admin</span>
+        <span class="sep">›</span>
+        <span class="current">{{ pageTitle }}</span>
+      </nav>
     </div>
+    <div class="admin-topbar__right">
+      <a href="/" target="_blank" class="admin-topbar__site-link">
+        <ExternalLink />
+        Voir le site
+      </a>
+    </div>
+  </header>
 </template>
-
-<style scoped>
-
-</style>
