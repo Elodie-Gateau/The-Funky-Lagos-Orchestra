@@ -36,16 +36,18 @@ class TrackController extends AbstractController
         $tracks = $tracksRepository->findAll();
         return $this->json([
             'tracks' => array_map(fn(Track $track) => [
-                'id'        => $track->getId(),
-                'title'     => $track->getTitle(),
-                'artist'    => $track->getArtist(),
-                'duration'  => $track->getDuration(),
-                'audioFile' => $track->getAudioFile(),
-                'visibility' => $track->isVisible(),
-                'album'     => [
+                'id'            => $track->getId(),
+                'title'         => $track->getTitle(),
+                'artist'        => $track->getArtist(),
+                'duration'      => $track->getDuration(),
+                'audioFile'     => $track->getAudioFile(),
+                'visibility'    => $track->isVisible(),
+                'homePosition'  => $track->getHomePosition(),
+                'albumPosition' => $track->getAlbumPosition(),
+                'album'         => [
                     'id'    => $track->getAlbum()?->getId(),
-                    'name' => $track->getAlbum()?->getName(),
-                    'year' => $track->getAlbum()?->getYear(),
+                    'name'  => $track->getAlbum()?->getName(),
+                    'year'  => $track->getAlbum()?->getYear(),
                     'cover' => $track->getAlbum()?->getCover(),
                 ],
             ], $tracks),
@@ -55,19 +57,20 @@ class TrackController extends AbstractController
     #[Route('/tracks/home', methods: ['GET'])]
     public function getVisibleTracks(TrackRepository $tracksRepository): JsonResponse
     {
-        $tracks = $tracksRepository->findby(['visibility' => true]);
+        $tracks = $tracksRepository->findVisibleOrderedByHomePosition();
         return $this->json([
             'tracks' => array_map(fn(Track $track) => [
-                'id'        => $track->getId(),
-                'title'     => $track->getTitle(),
-                'artist'    => $track->getArtist(),
-                'duration'  => $track->getDuration(),
-                'audioFile' => $track->getAudioFile(),
-                'visibility' => $track->isVisible(),
-                'album'     => [
+                'id'            => $track->getId(),
+                'title'         => $track->getTitle(),
+                'artist'        => $track->getArtist(),
+                'duration'      => $track->getDuration(),
+                'audioFile'     => $track->getAudioFile(),
+                'visibility'    => $track->isVisible(),
+                'homePosition'  => $track->getHomePosition(),
+                'album'         => [
                     'id'    => $track->getAlbum()?->getId(),
-                    'name' => $track->getAlbum()?->getName(),
-                    'year' => $track->getAlbum()?->getYear(),
+                    'name'  => $track->getAlbum()?->getName(),
+                    'year'  => $track->getAlbum()?->getYear(),
                     'cover' => $track->getAlbum()?->getCover(),
                 ],
             ], $tracks),
@@ -95,10 +98,12 @@ class TrackController extends AbstractController
             ], $tracks),
         ]);
     }
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/track/add', methods: ['POST'])]
     public function addTrack(
         Request $request,
+        TrackRepository $trackRepository,
         EntityManagerInterface $em
     ): JsonResponse {
         $track = new Track();
@@ -120,6 +125,7 @@ class TrackController extends AbstractController
         assert($album instanceof Album);
 
         $track->setAlbum($album);
+        $track->setAlbumPosition($album->getTracks()->count() + 1);
 
         $audioFile = $request->files->get('audioFile');
         if (!$audioFile) {
@@ -143,6 +149,8 @@ class TrackController extends AbstractController
             if (isset($checkTrack['error'])) {
                 return $this->json($checkTrack, 400);
             }
+            $visibleCount = $trackRepository->count(['visibility' => true]);
+            $track->setHomePosition($visibleCount + 1);
         }
         $em->persist($track);
         $em->flush();
@@ -151,8 +159,11 @@ class TrackController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/track/{id}/delete', methods: ['DELETE'])]
-    public function deleteTrack(Track $track, EntityManagerInterface $em): JsonResponse
-    {
+    public function deleteTrack(
+        Track $track,
+        TrackRepository $trackRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
         if ($track->isVisible()) {
             return $this->json(['error' => 'Impossible de supprimer un track visible sur la home page'], 400);
         }
@@ -161,19 +172,60 @@ class TrackController extends AbstractController
             unlink($audioPath);
         }
 
+        $deletedAlbumPosition = $track->getAlbumPosition();
+        $albumId = $track->getAlbum()->getId();
+
         $em->remove($track);
         $em->flush();
+
+        if ($deletedAlbumPosition !== null) {
+            $albumTracks = $trackRepository->findBy(['album' => $albumId]);
+            foreach ($albumTracks as $t) {
+                if ($t->getAlbumPosition() !== null && $t->getAlbumPosition() > $deletedAlbumPosition) {
+                    $t->setAlbumPosition($t->getAlbumPosition() - 1);
+                    $em->persist($t);
+                }
+            }
+            $em->flush();
+        }
+
         return $this->json(['success' => true]);
     }
 
     #[Route('/admin/track/{id}', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function updateTrack(Track $track, Request $request, EntityManagerInterface $em): JsonResponse
-    {
+    public function updateTrack(
+        Track $track,
+        Request $request,
+        TrackRepository $trackRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $newVisibility = $request->request->get('visibility') === 'true';
+        $oldVisibility = $track->isVisible();
+
+        if ($newVisibility && !$oldVisibility) {
+            $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
+            if (isset($checkTrack['error'])) {
+                return $this->json($checkTrack, 400);
+            }
+            $visibleCount = $trackRepository->count(['visibility' => true]);
+            $track->setHomePosition($visibleCount + 1);
+        } elseif (!$newVisibility && $oldVisibility) {
+            $track->setHomePosition(null);
+            $visibleTracks = $trackRepository->findVisibleOrderedByHomePosition();
+            $pos = 1;
+            foreach ($visibleTracks as $t) {
+                if ($t->getId() !== $track->getId()) {
+                    $t->setHomePosition($pos++);
+                    $em->persist($t);
+                }
+            }
+        }
+
         $track->setTitle($request->request->get('title'));
         $track->setArtist('The Funky Lagos Orchestra');
         $track->setDuration($request->request->get('duration'));
-        $track->setVisibility($request->request->get('visibility') === 'true');
+        $track->setVisibility($newVisibility);
         $audioFile = $request->files->get('audioFile');
 
         $albumId = (int) $request->request->get('album');
@@ -188,6 +240,10 @@ class TrackController extends AbstractController
 
         assert($album instanceof Album);
 
+        if ($track->getAlbum()->getId() !== $album->getId()) {
+            $track->setAlbumPosition($album->getTracks()->count() + 1);
+        }
+
         $track->setAlbum($album);
 
         if ($audioFile && $audioFile->getError() === UPLOAD_ERR_OK) {
@@ -198,15 +254,89 @@ class TrackController extends AbstractController
 
             $track->setAudioFile('/audio/' . basename($finalAudioPath));
         }
-        if($track->isVisible()){
-            $checkTrack = $this->checkTrackVisibility->checkVisibility($track);
-            if (isset($checkTrack['error'])) {
-                return $this->json($checkTrack, 400);
-            }
-        }
+
         $em->persist($track);
         $em->flush();
         return $this->json(['success' => true]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin/track/{id}/visibility', methods: ['PATCH'])]
+    public function toggleVisibility(
+        Track $track,
+        TrackRepository $trackRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $newVisibility = !$track->isVisible();
+
+        if ($newVisibility) {
+            $checkResult = $this->checkTrackVisibility->checkVisibility($track);
+            if (isset($checkResult['error'])) {
+                return $this->json($checkResult, 400);
+            }
+            $visibleCount = $trackRepository->count(['visibility' => true]);
+            $track->setHomePosition($visibleCount + 1);
+        } else {
+            $track->setHomePosition(null);
+            $visibleTracks = $trackRepository->findVisibleOrderedByHomePosition();
+            $pos = 1;
+            foreach ($visibleTracks as $t) {
+                if ($t->getId() !== $track->getId()) {
+                    $t->setHomePosition($pos++);
+                    $em->persist($t);
+                }
+            }
+        }
+
+        $track->setVisibility($newVisibility);
+        $em->persist($track);
+        $em->flush();
+
+        return $this->json(['success' => true, 'visibility' => $newVisibility]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin/tracks/reorder', methods: ['POST'])]
+    public function reorderHomeTracks(
+        Request $request,
+        TrackRepository $trackRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+        $ids = $data['ids'] ?? [];
+
+        foreach ($ids as $position => $id) {
+            $track = $trackRepository->find((int) $id);
+            if ($track && $track->isVisible()) {
+                $track->setHomePosition($position + 1);
+                $em->persist($track);
+            }
+        }
+
+        $em->flush();
+        return $this->json(['success' => true]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin/album/{albumId}/tracks/reorder', methods: ['POST'])]
+    public function reorderAlbumTracks(
+        int $albumId,
+        Request $request,
+        TrackRepository $trackRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+        $ids = $data['ids'] ?? [];
+
+        foreach ($ids as $position => $id) {
+            $track = $trackRepository->find((int) $id);
+            if ($track && $track->getAlbum()->getId() === $albumId) {
+                $track->setAlbumPosition($position + 1);
+                $em->persist($track);
+            }
+        }
+
+        $em->flush();
+        return $this->json(['success' => true]);
+    }
 }

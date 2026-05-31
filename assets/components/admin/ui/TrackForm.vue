@@ -103,7 +103,12 @@ async function handleSubmit() {
         emit('close')
       } else {
         if (audioFile.value) uploadState.value = 'error'
-        errorMessage.value = 'Une erreur est survenue.'
+        try {
+          const response = JSON.parse(xhr.responseText)
+          errorMessage.value = response.error || 'Une erreur est survenue.'
+        } catch {
+          errorMessage.value = 'Une erreur est survenue.'
+        }
       }
       resolve()
     })

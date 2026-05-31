@@ -3,10 +3,14 @@ import { ref, onMounted } from 'vue'
 import { X, Pencil, Trash2, Plus, MapPin } from '@lucide/vue'
 import AdminLayout from '../../components/admin/layout/AdminLayout.vue'
 import EventForm from '../../components/admin/ui/EventForm.vue'
+import ConfirmModal from '../../components/admin/ui/ConfirmModal.vue'
+import { useConfirm } from '../../composables/useConfirm.js'
+import {formatDate} from "../../composables/dateFormat.js";
 
 const events = ref([])
 const showModal = ref(false)
 const editingEvent = ref(null)
+const { confirmState, confirm, onConfirm, onCancel } = useConfirm()
 
 onMounted(async () => {
   const res = await fetch('/api/events', { credentials: 'include' })
@@ -20,9 +24,11 @@ const refreshEvents = async () => {
   events.value = data.events
 }
 
-const deleteEvent = async (id) => {
-  await fetch(`/api/admin/event/${id}/delete`, { method: 'DELETE', credentials: 'include' })
-  events.value = events.value.filter(e => e.id !== id)
+const deleteEvent = async (event) => {
+  const ok = await confirm(`Supprimer l'événement "${event.name}" ?`)
+  if (!ok) return
+  await fetch(`/api/admin/event/${event.id}/delete`, { method: 'DELETE', credentials: 'include' })
+  events.value = events.value.filter(e => e.id !== event.id)
 }
 
 function openModal(event = null) {
@@ -64,7 +70,7 @@ function openModal(event = null) {
           </thead>
           <tbody>
             <tr v-for="event in events" :key="event.id">
-              <td data-label="Date"><strong>{{ event.date }}</strong></td>
+              <td data-label="Date"><strong>{{ formatDate(event.date) }}</strong></td>
               <td data-label="Événement">{{ event.name }}</td>
               <td data-label="Lieu">
                 <span class="venue-cell">
@@ -82,7 +88,7 @@ function openModal(event = null) {
                   <button
                     class="admin-btn admin-btn--danger admin-btn--icon admin-btn--sm"
                     title="Supprimer"
-                    @click="deleteEvent(event.id)"
+                    @click="deleteEvent(event)"
                   ><Trash2 /></button>
                 </div>
               </td>
@@ -94,6 +100,13 @@ function openModal(event = null) {
         </table>
       </div>
     </div>
+
+    <ConfirmModal
+      v-if="confirmState"
+      :message="confirmState.message"
+      @confirm="onConfirm"
+      @cancel="onCancel"
+    />
 
     <Teleport to="body">
       <div v-if="showModal" class="admin-modal-backdrop" @click.self="showModal = false">

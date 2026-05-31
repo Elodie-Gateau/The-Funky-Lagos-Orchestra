@@ -16,6 +16,19 @@ class TrackRepository extends ServiceEntityRepository
         parent::__construct($registry, Track::class);
     }
 
+    public function findVisibleOrderedByHomePosition(): array
+    {
+        $results = $this->createQueryBuilder('t')
+            ->where('t.visibility = :v')
+            ->setParameter('v', true)
+            ->getQuery()
+            ->getResult();
+
+        usort($results, fn($a, $b) => ($a->getHomePosition() ?? PHP_INT_MAX) <=> ($b->getHomePosition() ?? PHP_INT_MAX));
+
+        return $results;
+    }
+
 //    /**
 //     * @return Track[] Returns an array of Track objects
 //     */

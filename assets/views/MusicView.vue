@@ -25,15 +25,17 @@ onMounted(async() => {
 <template>
     <AppHeader/>
     <main>
-        <SectionTitle :title="t('discography.subtitle')" :subtitle="t('discography.title')" />
-        <section v-for="album in albums" :key="album.id">
-            <div class="wrapper">
-                <img :src="album.cover" alt="album.name">
-                <SectionTitle :title="String(album.year)" :subtitle="album.name" />
+        <section>
+            <SectionTitle :title="t('discography.subtitle')" :subtitle="t('discography.title')" />
+            <div class="albums" v-for="album in albums" :key="album.id">
+                <div class="wrapper">
+                    <img :src="album.cover" alt="album.name">
+                    <SectionTitle :title="String(album.year)" :subtitle="album.name" />
+                </div>
+                <ul id="tracks">
+                    <TrackCard v-for="track in album.tracks" :key="track.id" :track="track" />
+                </ul>
             </div>
-            <ul id="tracks">
-                <TrackCard v-for="track in album.tracks" :key="track.id" :track="track" />
-            </ul>
         </section>
     </main>
     <AppFooter/>
@@ -45,11 +47,12 @@ onMounted(async() => {
 
 main {
     padding-top: $size-40;
+    background-color: #{$color-brown};
 
-    section {
-        --background:          #{$color-brown};
-    }
 }
+    .albums {
+        margin-bottom: $size-56;
+    }
 
 img {
     width: 100%;
@@ -66,7 +69,7 @@ img {
 }
 
 @media (min-width: $md) {
-    section {
+    .albums {
         display: flex;
         flex-direction: row;
         gap: $size-20;
@@ -92,8 +95,8 @@ img {
 
 @media (min-width: $lg) {
     main {
-        max-width: 1000px;
-        margin: 0 auto;
+        width: 100%;
+
     }
 }
 </style>

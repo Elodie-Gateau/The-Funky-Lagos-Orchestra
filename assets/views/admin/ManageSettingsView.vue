@@ -245,16 +245,62 @@ async function handleSave() {
   </AdminLayout>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/breakpoints' as *;
+
 .img-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f6f6f6;
-  border: 1px dashed #d0c7a8;
-  border-radius: 0.5rem;
+  background: $color-gray-100;
+  border: 1px dashed $color-cream-dark;
+  border-radius: $size-8;
   height: 120px;
-  color: #838383;
-  font-size: 0.875rem;
+  color: $color-gray-300;
+  font-size: $size-14;
+}
+
+.admin-settings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $size-24;
+  padding: $size-20;
+
+  @media (min-width: $md) {
+    grid-template-columns: 1fr 1fr;
+    padding: $size-24;
+  }
+}
+
+.admin-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+
+  &--full { grid-column: 1 / -1; }
+
+  &__title {
+    font-family: "Raleway", system-ui, sans-serif;
+    font-size: $size-10;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: $color-red;
+    padding-bottom: $size-8;
+    border-bottom: 2px solid $color-cream-dark;
+  }
+}
+
+.admin-settings-actions {
+  padding: $size-16 $size-20;
+  border-top: 1px solid $color-cream-dark;
+  display: flex;
+  gap: $size-12;
+  justify-content: flex-end;
+
+  @media (min-width: $md) {
+    padding: $size-20 $size-24;
+  }
 }
 </style>

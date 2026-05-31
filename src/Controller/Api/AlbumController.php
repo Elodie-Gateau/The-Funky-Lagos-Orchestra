@@ -21,26 +21,34 @@ class AlbumController extends AbstractController
     public function getAlbums(AlbumRepository $albumRepository): JsonResponse
     {
         return $this->json([
-            'albums' => array_map(fn(Album $album) => [
-                'id'     => $album->getId(),
-                'name'  => $album->getName(),
-                'year'  => $album->getYear(),
-                'cover' => $album->getCover(),
-                'tracks' => array_map(fn(Track $track) => [
-                    'id'        => $track->getId(),
-                    'title'     => $track->getTitle(),
-                    'artist'    => $track->getArtist(),
-                    'duration'  => $track->getDuration(),
-                    'audioFile' => $track->getAudioFile(),
-                    'isVisible' => $track->isVisible(),
-                    'album'     => [
-                        'id'     => $album->getId(),
-                        'name'  => $album->getName(),
-                        'year'  => $album->getYear(),
-                        'cover' => $album->getCover()
-                    ]
-                ], $album->getTracks()->toArray()),
-            ], $albumRepository->findAll()),
+            'albums' => array_map(function(Album $album) {
+                $tracks = $album->getTracks()->toArray();
+                usort($tracks, fn($a, $b) =>
+                    ($a->getAlbumPosition() ?? PHP_INT_MAX) <=> ($b->getAlbumPosition() ?? PHP_INT_MAX)
+                );
+                return [
+                    'id'     => $album->getId(),
+                    'name'   => $album->getName(),
+                    'year'   => $album->getYear(),
+                    'cover'  => $album->getCover(),
+                    'tracks' => array_map(fn(Track $track) => [
+                        'id'            => $track->getId(),
+                        'title'         => $track->getTitle(),
+                        'artist'        => $track->getArtist(),
+                        'duration'      => $track->getDuration(),
+                        'audioFile'     => $track->getAudioFile(),
+                        'isVisible'     => $track->isVisible(),
+                        'homePosition'  => $track->getHomePosition(),
+                        'albumPosition' => $track->getAlbumPosition(),
+                        'album'         => [
+                            'id'    => $album->getId(),
+                            'name'  => $album->getName(),
+                            'year'  => $album->getYear(),
+                            'cover' => $album->getCover(),
+                        ],
+                    ], $tracks),
+                ];
+            }, $albumRepository->findAll()),
         ]);
     }
 

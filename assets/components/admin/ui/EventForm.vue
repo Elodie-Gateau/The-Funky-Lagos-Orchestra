@@ -53,7 +53,7 @@ async function handleSubmit() {
   <div class="event-form">
     <div class="admin-form-group">
       <label for="ev-name">Nom de l'événement *</label>
-      <input type="text" id="ev-name" v-model="name" placeholder="Festival World Sounds" />
+      <input type="text" id="ev-name" v-model="name" placeholder="Festival de la Côte" />
     </div>
     <div class="admin-form-row">
       <div class="admin-form-group">
@@ -62,12 +62,12 @@ async function handleSubmit() {
       </div>
       <div class="admin-form-group">
         <label for="ev-city">Ville *</label>
-        <input type="text" id="ev-city" v-model="city" placeholder="Nantes" />
+        <input type="text" id="ev-city" v-model="city" placeholder="Les Sables d'Olonne" />
       </div>
     </div>
     <div class="admin-form-group">
       <label for="ev-location">Salle / Lieu</label>
-      <input type="text" id="ev-location" v-model="location" placeholder="Le Stereolux" />
+      <input type="text" id="ev-location" v-model="location" placeholder="Salle des Atlantes" />
     </div>
     <div class="admin-form-group">
       <label for="ev-host">Organisateur</label>

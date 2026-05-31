@@ -51,3 +51,125 @@ const labels = {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use '../../../styles/utils/variables' as *;
+
+.upload-item {
+  border: 1.5px solid $color-cream-dark;
+  border-radius: $size-6;
+  background: $color-white;
+  padding: $size-12 $size-14;
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $size-8;
+
+    > .ti {
+      color: $color-brown-mid;
+      font-size: $size-18;
+      flex-shrink: 0;
+    }
+  }
+
+  &__name {
+    flex: 1;
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: $size-14;
+    font-weight: 600;
+    color: $color-brown;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__size {
+    font-size: $size-12;
+    color: $color-gray-300;
+    flex-shrink: 0;
+  }
+
+  &__action {
+    width: $size-24;
+    height: $size-24;
+    border-radius: 50%;
+    border: none;
+    background: $color-gray-175;
+    color: $color-brown;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .2s;
+    padding: 0;
+
+    .ti { font-size: $size-14; color: inherit; }
+
+    svg { width: $size-14; height: $size-14; }
+
+    &:hover { background: $color-gray-200; }
+  }
+
+  &__check {
+    color: $color-success;
+    font-size: $size-18;
+    flex-shrink: 0;
+  }
+
+  &__track {
+    height: 4px;
+    background: $color-gray-175;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  &__bar {
+    height: 100%;
+    border-radius: 99px;
+    background: $color-gold;
+    transition: width .3s ease;
+
+    &.done     { background: $color-success; }
+    &.error    { background: $color-red; }
+    &.loading  { background: $color-gold; }
+    &.ready    { background: $color-gold; }
+    &.idle     { background: $color-gray-200; }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px $size-8;
+    border-radius: 99px;
+    font-family: "Raleway", system-ui, sans-serif;
+    font-size: $size-10;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+
+    &.idle      { background: rgba($color-gray-300, .15); color: $color-gray-300; }
+    &.loading   { background: rgba($color-gold, .12);     color: $color-gold; }
+    &.ready     { background: rgba($color-gold, .15);     color: $color-gold; }
+    &.uploading { background: rgba($color-gold, .15);     color: $color-gold; }
+    &.done      { background: rgba($color-success, .15);  color: $color-success; }
+    &.error     { background: rgba($color-red, .15);      color: $color-red; }
+  }
+
+  &__pct {
+    font-size: $size-12;
+    color: $color-gray-300;
+    font-family: "Raleway", system-ui, sans-serif;
+  }
+}
+</style>

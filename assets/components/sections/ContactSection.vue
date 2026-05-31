@@ -221,17 +221,17 @@ async function submit() {
     #contact{
         .contact-wrapper {
             display: flex;
-            width: 50%;
+            width: 80%;
             justify-content: space-between;
             align-items: center;
             height: 100%;
 
             .contact-container {
-                width: 45%;
+                width: 50%;
             }
 
             .contact-form {
-                width: 45%;
+                width: 60%;
 
                 form {
                     margin: 0;

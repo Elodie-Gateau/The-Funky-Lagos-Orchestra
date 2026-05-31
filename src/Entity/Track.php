@@ -48,6 +48,12 @@ class Track
     #[ORM\Column]
     private ?bool $visibility = false;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $homePosition = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $albumPosition = null;
+
     public function __construct()
     {
         $this->Added_at = new \DateTimeImmutable();
@@ -150,6 +156,30 @@ class Track
     public function setVisibility(bool $visibility): static
     {
         $this->visibility = $visibility;
+
+        return $this;
+    }
+
+    public function getHomePosition(): ?int
+    {
+        return $this->homePosition;
+    }
+
+    public function setHomePosition(?int $homePosition): static
+    {
+        $this->homePosition = $homePosition;
+
+        return $this;
+    }
+
+    public function getAlbumPosition(): ?int
+    {
+        return $this->albumPosition;
+    }
+
+    public function setAlbumPosition(?int $albumPosition): static
+    {
+        $this->albumPosition = $albumPosition;
 
         return $this;
     }

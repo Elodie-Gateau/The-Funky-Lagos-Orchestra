@@ -58,11 +58,28 @@ defineProps({
 <style scoped lang="scss">
 @use "/assets/styles/utils/variables" as *;
 
+.swiper-zoom-container{
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: var(--background-footer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
 img {
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .thumbsSwiper {
     cursor: pointer;
+
+    .swiper-zoom-container {
+        background-color: transparent;
+    }
+
     .swiper-slide {
         opacity: 0.35;
     }

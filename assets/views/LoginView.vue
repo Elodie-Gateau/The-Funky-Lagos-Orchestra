@@ -29,7 +29,7 @@ async function handleLogin() {
 <template>
   <div class="admin-login">
     <div class="admin-login__card">
-      <div class="admin-login__logo">🎭</div>
+      <div class="admin-login__logo"><img src="/assets/images/logo.svg" alt="Logo"></div>
       <h1 class="admin-login__title">{{ t('main.title') }}</h1>
       <p class="admin-login__subtitle">{{ t('login.subtitle') }}</p>
 
@@ -66,3 +66,93 @@ async function handleLogin() {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use '../styles/utils/variables' as *;
+@use '../styles/utils/breakpoints' as *;
+
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-brown;
+  padding: $size-16;
+
+  &__card {
+    background: $color-white;
+    border-radius: $size-8;
+    box-shadow: 0 8px 32px rgba($color-brown, .3);
+    padding: $size-32 $size-24;
+    width: 100%;
+    max-width: 420px;
+
+    @media (min-width: $sm) {
+      padding: $size-40 $size-32;
+    }
+  }
+
+  &__logo {
+    width: $size-56;
+    height: $size-56;
+    border-radius: 50%;
+    background: $color-gold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $size-24;
+    margin: 0 auto $size-20;
+  }
+
+  &__title {
+    font-family: "Raleway", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: $size-20;
+    color: $color-brown;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: .04em;
+    margin: 0 0 $size-6;
+
+    @media (min-width: $sm) {
+      font-size: $size-22;
+    }
+  }
+
+  &__subtitle {
+    font-size: $size-14;
+    color: $color-gray-300;
+    text-align: center;
+    margin: 0 0 $size-28;
+    font-weight: 400;
+    text-transform: none;
+    font-family: "Nunito", system-ui, sans-serif;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+    margin: 0;
+
+    .admin-form-group input { background: $color-gray-100; }
+  }
+
+  &__error {
+    padding: $size-10 $size-14;
+    border-radius: $size-6;
+    background: rgba($color-red, .1);
+    color: $color-red;
+    font-size: $size-14;
+    text-align: center;
+  }
+
+  .admin-btn--primary {
+    width: 100%;
+    justify-content: center;
+    margin-top: $size-8;
+    padding: $size-14 $size-20;
+    font-size: $size-14;
+  }
+}
+</style>

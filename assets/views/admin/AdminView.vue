@@ -138,23 +138,77 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
   </AdminLayout>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/breakpoints' as *;
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
+  gap: $size-20;
 
-@media (min-width: 768px) {
-  .dashboard-grid {
+  @media (min-width: $md) {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.empty-row {
-  text-align: center;
-  padding: 2rem 1.25rem !important;
-  color: #838383;
-  font-style: italic;
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $size-16;
+  margin-bottom: $size-24;
+
+  @media (min-width: $md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $size-20;
+    margin-bottom: $size-32;
+  }
+}
+
+.admin-stat {
+  background: $color-white;
+  border-radius: $size-8;
+  padding: $size-16 $size-20;
+  box-shadow: 0 2px 8px rgba($color-brown, .06);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid $color-cream-dark;
+  gap: $size-12;
+
+  @media (min-width: $md) {
+    padding: $size-20 $size-24;
+  }
+
+  &__info { display: flex; flex-direction: column; gap: $size-4; }
+
+  &__label {
+    font-family: "Raleway", system-ui, sans-serif;
+    font-size: $size-10;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: $color-gray-300;
+  }
+
+  &__value {
+    font-family: "Raleway", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: $size-32;
+    color: $color-brown;
+    line-height: 1;
+  }
+
+  &__icon {
+    width: $size-44;
+    height: $size-44;
+    border-radius: $size-6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg { width: $size-22; height: $size-22; }
+  }
 }
 </style>
