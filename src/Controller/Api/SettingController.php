@@ -145,7 +145,7 @@ final class SettingController extends AbstractController
 
         $setting = $repo->findOneBy(['name' => SettingName::Description]) ?? new Setting();
         if (!$setting->getName()) {
-            $setting->setName(SettingName::Photo);
+            $setting->setName(SettingName::Description);
         }
         $setting->setDescriptionFr(\strip_tags($data['description_fr'] ?? ''));
         $setting->setDescriptionEn(\strip_tags($data['description_en'] ?? ''));
