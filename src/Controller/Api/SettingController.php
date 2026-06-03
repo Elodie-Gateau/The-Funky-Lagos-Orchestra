@@ -85,6 +85,9 @@ final class SettingController extends AbstractController
     ): JsonResponse {
         $setting = $repo->findOneBy(['name' => SettingName::Photo]) ?? new Setting();
 
+        if (!$setting->getName()) {
+            $setting->setName(SettingName::Photo);
+        }
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile|null $file */
         $file = $request->files->get('imageFile');
 
@@ -141,6 +144,9 @@ final class SettingController extends AbstractController
         }
 
         $setting = $repo->findOneBy(['name' => SettingName::Description]) ?? new Setting();
+        if (!$setting->getName()) {
+            $setting->setName(SettingName::Photo);
+        }
         $setting->setDescriptionFr(\strip_tags($data['description_fr'] ?? ''));
         $setting->setDescriptionEn(\strip_tags($data['description_en'] ?? ''));
         $setting->setUpdatedAt(new \DateTimeImmutable());
