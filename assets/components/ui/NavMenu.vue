@@ -9,20 +9,25 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const tracks = ref([]);
 const events = ref([]);
+const photos = ref([]);
 
 onMounted(async() => {
-    const res = await fetch("/api/tracks/home", {credentials: 'include'})
-    const data = await res.json();
-    data.tracks.forEach((track) => {
+    const [resTracks, resEvents, resPhotos] = await Promise.all([
+        fetch("/api/tracks/home", {credentials: 'include'}),
+        fetch("/api/events/home", {credentials: 'include'}),
+        fetch("/api/photos", {credentials: 'include'})
+        ]);
+    const dataTracks = await res.json();
+    const dataEvents = await res.json();
+    const dataPhotos = await res.json();
+    dataTracks.tracks.forEach((track) => {
         tracks.value.push(track);
     })
-})
-
-onMounted(async() => {
-    const res = await fetch("/api/events/home", {credentials: 'include'})
-    const data = await res.json();
-    data.events.forEach((event) => {
-        events.value.push(event);
+    dataEvents.events.forEach((event) => {
+        tracks.value.push(event);
+    })
+    dataPhotos.photos.forEach((photo) => {
+        photos.value.push(photo);
     })
 })
 
@@ -35,7 +40,7 @@ onMounted(async() => {
             <li><a href="#" @click.prevent="scrollTo('about')">{{ t('nav.about') }}</a></li>
             <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('music')">{{ t('nav.music') }}</a></li>
             <li v-if="events.length > 0"><a href="#" @click.prevent="scrollTo('events')">{{ t('nav.events') }}</a></li>
-            <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
+            <li v-if="photos.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
             <li><a href="#" @click.prevent="scrollTo('contact')">{{ t('nav.contact') }}</a></li>
         </ul>
     </nav>
