@@ -162,9 +162,8 @@ final class SettingController extends AbstractController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
-        $constraints = new Assert\Collection([
-            'allowExtraFields' => true,
-            'fields' => [
+        $constraints = new Assert\Collection(
+            fields: [
                 'phone' => new Assert\Optional([
                     new Assert\NotBlank(),
                     new Assert\Regex(
@@ -172,7 +171,7 @@ final class SettingController extends AbstractController
                         message: 'Numéro de téléphone invalide (format attendu: 0612345678).'
                     ),
                 ]),
-                'email'=> new Assert\Optional([
+                'email' => new Assert\Optional([
                     new Assert\NotBlank(),
                     new Assert\Email(message: 'Adresse email invalide'),
                 ]),
@@ -181,7 +180,8 @@ final class SettingController extends AbstractController
                 'youtube'   => new Assert\Optional([$this->urlConstraint('youtube.com')]),
                 'soundcloud'=> new Assert\Optional([$this->urlConstraint('soundcloud.com')]),
             ],
-        ]);
+            allowExtraFields: true
+        );
 
         $violations = $validator->validate($data, $constraints);
 
