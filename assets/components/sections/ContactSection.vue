@@ -59,7 +59,7 @@ async function submit() {
 </script>
 
 <template>
-    <section id="contact">
+    <section id="contact" class="section--dark">
         <SectionTitle :title="t('contact.title')" :subtitle="t('contact.subtitle')" />
         <div class="contact-wrapper">
             <div class="contact-container">

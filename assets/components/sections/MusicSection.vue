@@ -25,7 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
-<section v-if="tracks.length > 0" id="music">
+<section v-if="tracks.length > 0" id="music" class="section--dark">
     <SectionTitle :title="t('music.title')" :subtitle="t('music.subtitle')" />
     <ul id="tracks">
         <TrackCard v-for="track in tracks" :key="track.id" :track="track" />

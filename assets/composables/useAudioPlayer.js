@@ -41,7 +41,6 @@ function startFadeOut() {
 
 export function useAudioPlayer() {
     function togglePlay(track) {
-        console.log(track.audioFile)
         if (playingTrackId.value === track.id) {
             stopCurrent()
         } else {

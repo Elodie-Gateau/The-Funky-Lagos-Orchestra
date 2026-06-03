@@ -18,7 +18,7 @@ onMounted(async() => {
 </script>
 
 <template>
-    <section v-if="photos.length > 0" id="gallery">
+    <section v-if="photos.length > 0" id="gallery" class="section--medium">
         <SectionTitle :title="t('gallery.title')" :subtitle="t('gallery.subtitle')" />
         <div class="gallery-container">
             <GallerySwiper :photos="photos" />

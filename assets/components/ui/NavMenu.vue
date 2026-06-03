@@ -17,9 +17,9 @@ onMounted(async() => {
         fetch("/api/events/home", {credentials: 'include'}),
         fetch("/api/photos", {credentials: 'include'})
         ]);
-    const dataTracks = await res.json();
-    const dataEvents = await res.json();
-    const dataPhotos = await res.json();
+    const dataTracks = await resTracks.json();
+    const dataEvents = await resEvents.json();
+    const dataPhotos = await resPhotos.json();
     dataTracks.tracks.forEach((track) => {
         tracks.value.push(track);
     })
