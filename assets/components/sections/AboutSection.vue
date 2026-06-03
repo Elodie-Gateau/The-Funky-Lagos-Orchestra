@@ -4,15 +4,23 @@ import SectionTitle from "../ui/SectionTitle.vue";
 import { useI18n } from "vue-i18n";
 import {ref, onMounted, computed} from "vue";
 const { t, locale } = useI18n();
+import { useScrollTo } from '../../composables/scrollTo.js'
+const { scrollTo } = useScrollTo()
 
 const groupImage = ref(null);
 const descriptionsData = ref(null);
+const tracks = ref([]);
 
 onMounted(async() => {
-    const res = await fetch('/api/settings', {credentials: 'include'})
+    const [res, resOthers] = await Promise.all([
+        fetch('/api/settings', {credentials: 'include'}),
+        fetch('/api/tracks/others', {credentials: 'include'})
+        ]);
     const data = await res.json();
+    const dataOthers = await resOthers.json();
     groupImage.value = data.image;
     descriptionsData.value = data.descriptions;
+    tracks.value = dataOthers.tracks;
 })
 const description = computed(() => {
     if (locale.value === "en") {
@@ -35,9 +43,8 @@ const description = computed(() => {
                 <span>{{ t('about.tag2')}}</span>
                 <span>{{ t('about.tag3')}}</span>
                 <span>{{ t('about.tag4')}}</span>
-                <span>{{ t('about.tag5')}}</span>
             </div>
-            <a class="button" href="/music">{{ t('about.link')}}</a>
+            <a v-if = "tracks.length > 0" class="button" href="#" @click.prevent="scrollTo('music')">{{ t('about.link') }}</a>
         </div>
     </div>
 </section>

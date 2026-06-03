@@ -2,19 +2,13 @@
 import {useI18n} from "vue-i18n";
 import { useRouter } from 'vue-router'
 import {ref, onMounted} from "vue";
+import { useScrollTo } from '../../composables/scrollTo.js'
+const { scrollTo } = useScrollTo()
 
 const { t, locale } = useI18n()
 const router = useRouter()
 const tracks = ref([]);
 const events = ref([]);
-
-function scrollTo(id) {
-    router.push('/').then(() => {
-        setTimeout(() => {
-            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-        }, 100)
-    })
-}
 
 onMounted(async() => {
     const res = await fetch("/api/tracks/home", {credentials: 'include'})
