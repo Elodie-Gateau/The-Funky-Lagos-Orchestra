@@ -121,8 +121,8 @@ final class SettingController extends AbstractController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
-        $constraints = new Assert\Collection([
-            'fields' => [
+        $constraints = new Assert\Collection(
+            fields: [
                 'description_fr' => new Assert\Optional([
                     new Assert\Length(max: 2000, maxMessage: '2000 caractères maximum'),
                 ]),
@@ -130,7 +130,8 @@ final class SettingController extends AbstractController
                     new Assert\Length(max: 2000, maxMessage: '2000 caractères maximum'),
                 ]),
             ],
-        ]);
+            allowExtraFields: true
+        );
 
         $violations = $validator->validate($data, $constraints);
 
