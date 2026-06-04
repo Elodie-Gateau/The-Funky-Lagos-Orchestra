@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useAudioPlayer } from '../../composables/useAudioPlayer.js';
 
 const { t } = useI18n();
-const { playingTrackId, togglePlay } = useAudioPlayer();
+const { playingTrackId, togglePlay, currentTime } = useAudioPlayer();
 
 defineProps({
     track: {
@@ -25,7 +25,14 @@ defineProps({
             <span>{{ track.album.name }}</span>
             <span>{{ t('main.title') }}</span>
         </div>
-        <span class="track-duration">{{ track.duration }}</span>
+        <span class="track-duration">
+            <template v-if="playingTrackId === track.id">
+                0:{{ String(30 - currentTime).padStart(2, '0') }}
+            </template>
+            <template v-else>
+                {{ track.duration }}
+            </template>
+        </span>
     </li>
 </template>
 

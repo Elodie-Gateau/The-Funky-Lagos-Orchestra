@@ -109,7 +109,7 @@ class TrackController extends AbstractController
         $track = new Track();
         $track->setTitle($request->request->get('title'));
         $track->setArtist('The Funky Lagos Orchestra');
-        $track->setDuration($request->request->get('duration'));
+        $track->setDuration('0:30');
         $track->setVisibility($request->request->get('visibility') === 'true');
 
         $albumId = (int) $request->request->get('album');

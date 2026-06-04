@@ -48,13 +48,6 @@ const handleAudioUpload = (event) => {
   uploadProgress.value = 0
   const tempUrl = URL.createObjectURL(file)
   const audio = new Audio(tempUrl)
-  audio.addEventListener('loadedmetadata', () => {
-    const totalSeconds = Math.round(audio.duration)
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    duration.value = `${minutes}:${seconds.toString().padStart(2, '0')}`
-    URL.revokeObjectURL(tempUrl)
-  })
   simulateLocalRead()
 }
 
@@ -74,7 +67,7 @@ async function handleSubmit() {
   const formData = new FormData()
   formData.append('title', title.value)
   formData.append('album', album.value)
-  formData.append('duration', duration.value)
+  formData.append('duration', '0:30')
   formData.append('visibility', visibility.value)
   if (audioFile.value) {
     formData.append('audioFile', audioFile.value)

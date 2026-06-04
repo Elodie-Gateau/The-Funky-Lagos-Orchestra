@@ -1,58 +1,70 @@
 import { ref } from 'vue'
 
-const TOTAL_DURATION = 30000
-const FADE_DURATION = 4000
+const MAX_SECONDS = 30
+const FADE_START = 26
 const FADE_INTERVAL = 50
 
 const playingTrackId = ref(null)
 const audioInstance = ref(null)
-let stopTimer = null
+const currentTime = ref(0)
 let fadeTimer = null
 
-function clearTimers() {
-    if (stopTimer) { clearTimeout(stopTimer); stopTimer = null }
+function clearFade() {
     if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null }
 }
 
 function stopCurrent() {
-    clearTimers()
+    clearFade()
     if (audioInstance.value) {
         audioInstance.value.pause()
+        audioInstance.value.src = ''
         audioInstance.value = null
     }
     playingTrackId.value = null
-}
-
-function startFadeOut() {
-    if (!audioInstance.value) return
-    const steps = FADE_DURATION / FADE_INTERVAL
-    const volumeStep = audioInstance.value.volume / steps
-
-    fadeTimer = setInterval(() => {
-        if (!audioInstance.value) { clearTimers(); return }
-        const next = audioInstance.value.volume - volumeStep
-        if (next <= 0) {
-            stopCurrent()
-        } else {
-            audioInstance.value.volume = next
-        }
-    }, FADE_INTERVAL)
+    currentTime.value = 0
 }
 
 export function useAudioPlayer() {
     function togglePlay(track) {
         if (playingTrackId.value === track.id) {
             stopCurrent()
-        } else {
-            stopCurrent()
-            audioInstance.value = new Audio(track.audioFile)
-            audioInstance.value.play().catch(() => stopCurrent())
-            playingTrackId.value = track.id
-
-            stopTimer = setTimeout(startFadeOut, TOTAL_DURATION - FADE_DURATION)
-            audioInstance.value.addEventListener('ended', stopCurrent, { once: true })
+            return
         }
+
+        stopCurrent()
+
+        const audio = new Audio(track.audioFile)
+        audioInstance.value = audio
+
+        audio.addEventListener('timeupdate', () => {
+            currentTime.value = Math.floor(audio.currentTime)
+
+            if (audio.currentTime >= MAX_SECONDS) {
+                stopCurrent()
+                return
+            }
+
+            if (audio.currentTime >= FADE_START && !fadeTimer) {
+                const startVolume = audio.volume
+                const steps = (MAX_SECONDS - FADE_START) * 1000 / FADE_INTERVAL
+                const volumeStep = startVolume / steps
+
+                fadeTimer = setInterval(() => {
+                    if (!audioInstance.value) { clearFade(); return }
+                    const next = audioInstance.value.volume - volumeStep
+                    if (next <= 0) {
+                        stopCurrent()
+                    } else {
+                        audioInstance.value.volume = Math.max(0, next)
+                    }
+                }, FADE_INTERVAL)
+            }
+        })
+
+        audio.addEventListener('ended', stopCurrent, { once: true })
+        audio.play().catch(() => stopCurrent())
+        playingTrackId.value = track.id
     }
 
-    return { playingTrackId, togglePlay }
+    return { playingTrackId, togglePlay, currentTime }
 }

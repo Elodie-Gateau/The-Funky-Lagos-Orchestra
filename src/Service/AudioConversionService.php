@@ -10,13 +10,13 @@ readonly class AudioConversionService
     public function __construct(private LoggerInterface $logger) {}
     public function convertToMp3(string $inputPath, string $outputPath): string
     {
-        if ($this->isMp3($inputPath)) {
-            copy($inputPath, $outputPath);
-            return $outputPath;
-        }
+//        if ($this->isMp3($inputPath)) {
+//            copy($inputPath, $outputPath);
+//            return $outputPath;
+//        }
 
         $process = new Process([
-            'ffmpeg', '-i', $inputPath, '-q:a', '0', '-map', 'a', $outputPath
+            'ffmpeg', '-i', $inputPath, '-t', '30', '-q:a', '0', '-map', 'a', $outputPath
         ]);
         $process->run();
 
@@ -28,10 +28,10 @@ readonly class AudioConversionService
         return $outputPath;
     }
 
-    private function isMp3(string $filePath): bool
-    {
-        $mimeType = mime_content_type($filePath);
-        return in_array($mimeType, ['audio/mpeg', 'audio/mp3']);
-    }
+//    private function isMp3(string $filePath): bool
+//    {
+//        $mimeType = mime_content_type($filePath);
+//        return in_array($mimeType, ['audio/mpeg', 'audio/mp3']);
+//    }
 
 }
