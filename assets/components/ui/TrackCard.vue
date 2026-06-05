@@ -1,5 +1,4 @@
 <script setup>
-import { Icon } from '@iconify/vue';
 import { useI18n } from 'vue-i18n';
 import { useAudioPlayer } from '../../composables/useAudioPlayer.js';
 
@@ -17,8 +16,8 @@ defineProps({
 <template>
     <li :class="{ active: playingTrackId === track.id }">
         <button @click="togglePlay(track)">
-            <Icon icon="solar:pause-bold" v-if="playingTrackId === track.id" />
-            <Icon icon="mingcute:play-fill" v-else />
+            <svg v-if="playingTrackId === track.id" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg>
         </button>
         <div class="track-info">
             <span>{{ track.title }}</span>

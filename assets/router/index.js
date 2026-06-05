@@ -26,7 +26,7 @@ const routes = [
         },
         {
             path: '/music/',
-            component: MusicView,
+            component: () => import('../views/MusicView.vue'),
             meta: { titleKey: 'music.meta_title' }
         },
         {

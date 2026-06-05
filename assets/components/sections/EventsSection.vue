@@ -3,7 +3,6 @@
 import SectionTitle from "../ui/SectionTitle.vue";
 import { useI18n } from "vue-i18n";
 import {ref, onMounted} from "vue";
-import { MapPin } from '@lucide/vue';
 import EventCard from "../ui/EventCard.vue";
 
 const { t, locale } = useI18n();
