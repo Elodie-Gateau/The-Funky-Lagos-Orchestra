@@ -13,6 +13,7 @@
         "vite-plugin-symfony": "^8.2.3"
     },
     "dependencies": {
+        "@iconify/vue": "^5.0.1",
         "@lucide/vue": "^1.7.0",
         "pinia": "^3.0.4",
         "swiper": "^12.1.3",
