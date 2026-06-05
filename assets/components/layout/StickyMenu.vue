@@ -5,6 +5,11 @@ import NavMenu from "../ui/NavMenu.vue";
 import LangSwitcher from "../ui/LangSwitcher.vue";
 
 const isOpen = ref(false)
+const props = defineProps({
+    tracks: Array,
+    events: Array,
+    photos: Array,
+})
 </script>
 
 <template>
@@ -37,7 +42,7 @@ const isOpen = ref(false)
             </div>
 
             <div class="panel-nav" @click="isOpen = false">
-                <NavMenu />
+                <NavMenu :tracks="tracks" :events="events" :photos="photos"/>
             </div>
 
             <div class="panel-footer">

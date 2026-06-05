@@ -3,34 +3,25 @@
 import SectionTitle from "../ui/SectionTitle.vue";
 import TrackCard from "../ui/TrackCard.vue";
 import { useI18n } from "vue-i18n";
-import { ref, onMounted } from "vue";
+import { computed } from "vue";
 
 const { t } = useI18n();
-const tracks = ref([]);
-const othersTracks = ref([]);
 
-onMounted(async () => {
-    const [res, resOthers] = await Promise.all([
-        fetch("/api/tracks/home", { credentials: 'include' }),
-        fetch("/api/tracks/others", { credentials: 'include' })
-    ]);
+const props = defineProps({
+    tracks: Array, default: () => [],
+})
 
-    const data = await res.json();
-    const dataOthers = await resOthers.json();
-
-    tracks.value = data.tracks;
-    othersTracks.value = dataOthers.tracks;
-});
+const homeTracks = computed(() => props.tracks.filter(track => track.visibility))
 
 </script>
 
 <template>
-<section v-if="tracks.length > 0" id="music" class="section--dark">
+<section v-if="props.tracks.length > 0" id="music" class="section--dark">
     <SectionTitle :title="t('music.title')" :subtitle="t('music.subtitle')" />
     <ul id="tracks">
-        <TrackCard v-for="track in tracks" :key="track.id" :track="track" />
+        <TrackCard v-for="track in homeTracks" :key="track.id" :track="track" />
     </ul>
-    <a v-if = "othersTracks.length > 0" class="button" href="/music">{{ t('music.link') }}</a>
+    <a v-if = "props.tracks.length > homeTracks.length" class="button" href="/music">{{ t('music.link') }}</a>
 </section>
 </template>
 

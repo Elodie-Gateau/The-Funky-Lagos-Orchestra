@@ -7,24 +7,18 @@ import { MapPin } from '@lucide/vue';
 import EventCard from "../ui/EventCard.vue";
 
 const { t, locale } = useI18n();
-const events = ref([]);
 
-
-onMounted(async() => {
-    const res = await fetch("/api/events/home", {credentials: 'include'})
-    const data = await res.json();
-    data.events.forEach((event) => {
-        events.value.push(event);
-    })
+const props = defineProps({
+    events: { type: Array, default: () => [] },
 })
 
 </script>
 
 <template>
-    <section v-if="events.length > 0" id="events">
+    <section v-if="props.events.length > 0" id="events">
         <SectionTitle :title="t('event.title')" :subtitle="t('event.subtitle')" />
         <ul>
-            <EventCard v-for="event in events" :key="event.id" :event="event" />
+            <EventCard v-for="event in props.events" :key="event.id" :event="event" />
         </ul>
     </section>
 </template>

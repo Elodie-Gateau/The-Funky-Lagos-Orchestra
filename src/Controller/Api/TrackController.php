@@ -54,50 +54,50 @@ class TrackController extends AbstractController
         ]);
     }
 
-    #[Route('/tracks/home', methods: ['GET'])]
-    public function getVisibleTracks(TrackRepository $tracksRepository): JsonResponse
-    {
-        $tracks = $tracksRepository->findVisibleOrderedByHomePosition();
-        return $this->json([
-            'tracks' => array_map(fn(Track $track) => [
-                'id'            => $track->getId(),
-                'title'         => $track->getTitle(),
-                'artist'        => $track->getArtist(),
-                'duration'      => $track->getDuration(),
-                'audioFile'     => $track->getAudioFile(),
-                'visibility'    => $track->isVisible(),
-                'homePosition'  => $track->getHomePosition(),
-                'album'         => [
-                    'id'    => $track->getAlbum()?->getId(),
-                    'name'  => $track->getAlbum()?->getName(),
-                    'year'  => $track->getAlbum()?->getYear(),
-                    'cover' => $track->getAlbum()?->getCover(),
-                ],
-            ], $tracks),
-        ]);
-    }
-
-    #[Route('/tracks/others', methods: ['GET'])]
-    public function getOthersTracks(TrackRepository $tracksRepository): JsonResponse
-    {
-        $tracks = $tracksRepository->findby(['visibility' => false]);
-        return $this->json([
-            'tracks' => array_map(fn(Track $track) => [
-                'id'        => $track->getId(),
-                'title'     => $track->getTitle(),
-                'artist'    => $track->getArtist(),
-                'duration'  => $track->getDuration(),
-                'audioFile' => $track->getAudioFile(),
-                'visibility' => $track->isVisible(),
-                'album'     => [
-                    'id'    => $track->getAlbum()?->getId(),
-                    'name' => $track->getAlbum()?->getName(),
-                    'year' => $track->getAlbum()?->getYear(),
-                    'cover' => $track->getAlbum()?->getCover(),
-                ],
-            ], $tracks),
-        ]);
-    }
+//    #[Route('/tracks/home', methods: ['GET'])]
+//    public function getVisibleTracks(TrackRepository $tracksRepository): JsonResponse
+//    {
+//        $tracks = $tracksRepository->findVisibleOrderedByHomePosition();
+//        return $this->json([
+//            'tracks' => array_map(fn(Track $track) => [
+//                'id'            => $track->getId(),
+//                'title'         => $track->getTitle(),
+//                'artist'        => $track->getArtist(),
+//                'duration'      => $track->getDuration(),
+//                'audioFile'     => $track->getAudioFile(),
+//                'visibility'    => $track->isVisible(),
+//                'homePosition'  => $track->getHomePosition(),
+//                'album'         => [
+//                    'id'    => $track->getAlbum()?->getId(),
+//                    'name'  => $track->getAlbum()?->getName(),
+//                    'year'  => $track->getAlbum()?->getYear(),
+//                    'cover' => $track->getAlbum()?->getCover(),
+//                ],
+//            ], $tracks),
+//        ]);
+//    }
+//
+//    #[Route('/tracks/others', methods: ['GET'])]
+//    public function getOthersTracks(TrackRepository $tracksRepository): JsonResponse
+//    {
+//        $tracks = $tracksRepository->findby(['visibility' => false]);
+//        return $this->json([
+//            'tracks' => array_map(fn(Track $track) => [
+//                'id'        => $track->getId(),
+//                'title'     => $track->getTitle(),
+//                'artist'    => $track->getArtist(),
+//                'duration'  => $track->getDuration(),
+//                'audioFile' => $track->getAudioFile(),
+//                'visibility' => $track->isVisible(),
+//                'album'     => [
+//                    'id'    => $track->getAlbum()?->getId(),
+//                    'name' => $track->getAlbum()?->getName(),
+//                    'year' => $track->getAlbum()?->getYear(),
+//                    'cover' => $track->getAlbum()?->getCover(),
+//                ],
+//            ], $tracks),
+//        ]);
+//    }
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/track/add', methods: ['POST'])]

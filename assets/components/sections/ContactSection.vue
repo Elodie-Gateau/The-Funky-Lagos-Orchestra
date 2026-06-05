@@ -1,33 +1,26 @@
 <script setup>
 import SectionTitle from "../ui/SectionTitle.vue";
 import { useI18n } from "vue-i18n";
-import {ref, onMounted, computed} from "vue";
+import {ref, computed} from "vue";
 import { Mail, Phone,  } from '@lucide/vue';
 import Socials from "../ui/Socials.vue";
 
-
 const { t, locale } = useI18n();
 
-const email = ref(null);
-const phone = ref(null);
+const props = defineProps({
+    settings: { type: Object, default: null }
+})
+
+const email = computed(() => props.settings?.email)
+const phone = computed(() => props.settings?.phone)
+const facebook = computed(() => props.settings?.facebook)
+const instagram = computed(() => props.settings?.instagram)
+const youtube = computed(() => props.settings?.youtube)
+const soundcloud = computed(() => props.settings?.soundcloud)
+
 const phoneWhatsApp = computed(() =>
     phone.value ? '33' + phone.value.slice(1) : null
 )
-const facebook = ref(null);
-const instagram = ref(null);
-const youtube = ref(null);
-const soundcloud = ref(null);
-
-onMounted(async() => {
-    const res = await fetch('/api/settings', {credentials: 'include'})
-    const data = await res.json();
-    email.value = data.email;
-    phone.value = data.phone;
-    facebook.value = data.facebook;
-    instagram.value = data.instagram;
-    youtube.value = data.youtube;
-    soundcloud.value = data.soundcloud;
-})
 
 const form = ref({ name: '', from: '', subject: '', message: '' })
 const formErrors = ref({})

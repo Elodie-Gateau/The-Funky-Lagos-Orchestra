@@ -5,23 +5,17 @@ import {ref, onMounted} from "vue";
 import GallerySwiper from "../ui/Swiper.vue";
 
 const { t, locale } = useI18n();
-const photos = ref([]);
-
-
-onMounted(async() => {
-    const res = await fetch("/api/photos", {credentials: 'include'})
-    const data = await res.json();
-    data.photos.forEach((photo) => {
-        photos.value.push(photo);
-    })
+const props = defineProps({
+    photos: { type: Array, default: () => [] },
 })
+
 </script>
 
 <template>
-    <section v-if="photos.length > 0" id="gallery" class="section--medium">
+    <section v-if="props.photos.length > 0" id="gallery" class="section--medium">
         <SectionTitle :title="t('gallery.title')" :subtitle="t('gallery.subtitle')" />
         <div class="gallery-container">
-            <GallerySwiper :photos="photos" />
+            <GallerySwiper :photos="props.photos" />
         </div>
     </section>
 </template>

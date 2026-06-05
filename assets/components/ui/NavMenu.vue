@@ -7,28 +7,11 @@ const { scrollTo } = useScrollTo()
 
 const { t, locale } = useI18n()
 const router = useRouter()
-const tracks = ref([]);
-const events = ref([]);
-const photos = ref([]);
 
-onMounted(async() => {
-    const [resTracks, resEvents, resPhotos] = await Promise.all([
-        fetch("/api/tracks/home", {credentials: 'include'}),
-        fetch("/api/events/home", {credentials: 'include'}),
-        fetch("/api/photos", {credentials: 'include'})
-        ]);
-    const dataTracks = await resTracks.json();
-    const dataEvents = await resEvents.json();
-    const dataPhotos = await resPhotos.json();
-    dataTracks.tracks.forEach((track) => {
-        tracks.value.push(track);
-    })
-    dataEvents.events.forEach((event) => {
-        tracks.value.push(event);
-    })
-    dataPhotos.photos.forEach((photo) => {
-        photos.value.push(photo);
-    })
+const props = defineProps({
+    tracks: { type: Array, default: () => [] },
+    events: { type: Array, default: () => [] },
+    photos: { type: Array, default: () => [] },
 })
 
 </script>
@@ -38,9 +21,9 @@ onMounted(async() => {
         <ul>
             <li><a href="/">{{ t('nav.home') }}</a></li>
             <li><a href="#" @click.prevent="scrollTo('about')">{{ t('nav.about') }}</a></li>
-            <li v-if="tracks.length > 0"><a href="#" @click.prevent="scrollTo('music')">{{ t('nav.music') }}</a></li>
-            <li v-if="events.length > 0"><a href="#" @click.prevent="scrollTo('events')">{{ t('nav.events') }}</a></li>
-            <li v-if="photos.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
+            <li v-if="props.tracks?.length > 0"><a href="#" @click.prevent="scrollTo('music')">{{ t('nav.music') }}</a></li>
+            <li v-if="props.events?.length > 0"><a href="#" @click.prevent="scrollTo('events')">{{ t('nav.events') }}</a></li>
+            <li v-if="props.photos?.length > 0"><a href="#" @click.prevent="scrollTo('gallery')">{{ t('nav.gallery') }}</a></li>
             <li><a href="#" @click.prevent="scrollTo('contact')">{{ t('nav.contact') }}</a></li>
         </ul>
     </nav>
