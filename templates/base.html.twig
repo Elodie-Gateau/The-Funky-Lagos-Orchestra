@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Funky Lagos Orchestra</title>
+    {% if app.request.locale == 'fr' %}
+        <meta name="description" content="The Funky Lagos Orchestra : Afrobeat, afrofunk et funk en 9 musiciens, inspiré de Fela Kuti. À écouter, à danser, à se laisser porter par le rythme.">
+        <meta property="og:description" content="The Funky Lagos Orchestra : Afrobeat, afrofunk et funk en 9 musiciens, inspiré de Fela Kuti. À écouter, à danser, à se laisser porter par le rythme.">
+    {% else %}
+        <meta name="description" content="The Funky Lagos Orchestra : Afrobeat, afrofunk and funk with 9 musicians, inspired by Fela Kuti. To listen, to dance, to let yourself be carried away by the rhythm.">
+        <meta property="og:description" content="The Funky Lagos Orchestra : Afrobeat, afrofunk and funk with 9 musicians, inspired by Fela Kuti. To listen, to dance, to let yourself be carried away by the rhythm.">
+    {% endif %}
+    <meta property="og:title" content="The Funky Lagos Orchestra">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.thefunkylagosorchestra.com">
+    <meta property="og:image" content="https://www.thefunkylagosorchestra.com/logo.svg">
+
     <link rel="preload" as="image" href="{{ asset('logo.svg') }}" fetchpriority="high">
     <link rel="icon" type="image/svg+xml" href="{{ asset('logo.svg') }}">
     {{ vite_entry_link_tags('app') }}
