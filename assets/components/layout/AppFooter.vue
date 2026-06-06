@@ -29,7 +29,7 @@ const { t, locale } = useI18n();
     align-items: center;
     justify-content: center;
     font-size: $size-14;
-    color: color-mix(in srgb, var(--background) 50%, transparent);
+    color: color-mix(in srgb, var(--background) 70%, transparent);
 
     p {
         text-align: center;
