@@ -18,6 +18,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
               cd /home/ubuntu/The-Funky-Lagos-Orchestra
+              git fetch origin main
+              git checkout -- .
+              git clean -fd
               git pull origin main
               docker compose --env-file .env.local -f compose.prod.yaml build
               docker compose --env-file .env.local -f compose.prod.yaml up -d
