@@ -1,0 +1,42 @@
+services:
+  database:
+    image: mysql:8.0
+    container_name: symfony_mysql
+    env_file:
+      - .env.local
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - database_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  app:
+    build: .
+    container_name: symfony_app
+    env_file:
+      - .env.local
+    environment:
+      APP_ENV: prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - uploads:/var/www/html/public/uploads
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - sessions:/var/www/html/var/sessions
+      - audio:/var/www/html/public/audio
+      - images:/var/www/html/public/images
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  database_data:
+  uploads:
+  sessions:
+  audio:
+  images:
