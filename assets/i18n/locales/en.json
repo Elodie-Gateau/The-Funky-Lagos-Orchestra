@@ -13,7 +13,9 @@
         "music": "Music",
         "gallery": "Gallery",
         "events": "Events",
-        "contact": "Contact"
+        "contact": "Contact",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
     },
     "home": {
         "subtitle": "Official website"
@@ -47,7 +49,8 @@
         "title": "Our music",
         "subtitle": "Listen",
         "meta_title": "Musics",
-        "link": "See all tracks"
+        "link": "See all tracks",
+        "play": "Play"
     },
     "event": {
         "title": "Calendar",
@@ -74,7 +77,9 @@
         "send": "Send",
         "is_sending": "Sending...",
         "success": "Your message has been sent successfully, we'll get back to you as soon as possible!",
-        "error": "An error occurred, please try again."
+        "error": "An error occurred, please try again.",
+        "sendEmail": "Send an email",
+        "call": "Call"
     },
     "footer" : {
         "mentions": "All rights reserved",

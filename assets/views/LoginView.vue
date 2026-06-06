@@ -59,7 +59,7 @@ async function handleLogin() {
 
         <p v-if="error" class="admin-login__error">{{ error }}</p>
 
-        <button type="submit" class="admin-btn admin-btn--primary" :disabled="loading">
+        <button type="submit" :aria-label="loading ? t('login.connexion') : t('login.sign-in')" class="admin-btn admin-btn--primary" :disabled="loading">
           {{ loading ? t('login.connexion') : t('login.sign-in') }}
         </button>
       </form>

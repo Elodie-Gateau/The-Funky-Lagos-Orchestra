@@ -15,7 +15,7 @@ defineProps({
 
 <template>
     <li :class="{ active: playingTrackId === track.id }">
-        <button @click="togglePlay(track)">
+        <button :aria-label="`${t('music.play')} ${track.title}`" @click="togglePlay(track)">
             <svg v-if="playingTrackId === track.id" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg>
         </button>
@@ -49,7 +49,7 @@ li {
     gap: $size-14;
     padding: $size-14 $size-20;
     background-color: color-mix(in srgb, var(--background-accent) 12%, transparent);
-    color: color-mix(in srgb, var(--text-button) 38%, transparent);
+    color: color-mix(in srgb, var(--text-button) 50%, transparent);
 
     button {
         background: linear-gradient(135deg, var(--background-accent), var(--background));
