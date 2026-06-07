@@ -88,8 +88,8 @@ class PhotoController extends AbstractController
         $this->photoConversionService->convertToWebp(
             inputPath: $tempPath,
             outputPath: $webpPath,
-            maxWidth: 1200,
-            maxHeight: 1200,
+            maxWidth: 1000,
+            maxHeight: 1000,
             quality: 82
         );
 

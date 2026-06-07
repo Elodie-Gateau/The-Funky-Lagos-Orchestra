@@ -106,8 +106,8 @@ final class SettingController extends AbstractController
             $filename = $this->photoConversionService->convertToWebp(
                 inputPath: $file->getPathname(),
                 outputPath: $uploadsDir . '/' . bin2hex(random_bytes(16)) . '.webp',
-                maxWidth: 800,
-                maxHeight: 800,
+                maxWidth: 400,
+                maxHeight: 400,
                 quality: 82
             );
 
