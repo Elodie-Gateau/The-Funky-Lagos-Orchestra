@@ -7,6 +7,7 @@ namespace App\Controller\Api;
 use App\Entity\Album;
 use App\Entity\Track;
 use App\Repository\AlbumRepository;
+use App\Service\PhotoConversionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/api')]
 class AlbumController extends AbstractController
 {
+    public function __construct(private readonly PhotoConversionService $photoConversionService) {}
     #[Route('/albums', methods: ['GET'])]
     public function getAlbums(AlbumRepository $albumRepository): JsonResponse
     {
@@ -71,11 +73,9 @@ class AlbumController extends AbstractController
         if (!in_array($coverFile->getMimeType(), $allowedMimes)) {
             return $this->json(['error' => 'Format non autorisé'], 400);
         }
-        $filename = bin2hex(random_bytes(16)) . '.' . $coverFile->guessExtension();
-        $coverFile->move(
-            $this->getParameter('kernel.project_dir') . '/public/images/albums',
-            $filename
-        );
+        $filename = bin2hex(random_bytes(16)) . '.webp';
+        $destPath = $this->getParameter('kernel.project_dir') . '/public/images/albums/' . $filename;
+        $this->photoConversionService->convertToWebp($coverFile->getPathname(), $destPath, 300, 300);
 
         $album->setCover('/images/albums/' . $filename);
 
@@ -99,11 +99,24 @@ class AlbumController extends AbstractController
             if (!in_array($coverFile->getMimeType(), $allowedMimes)) {
                 return $this->json(['error' => 'Format non autorisé'], 400);
             }
-            $filename = bin2hex(random_bytes(16)) . '.' . $coverFile->guessExtension();
-            $coverFile->move(
-                $this->getParameter('kernel.project_dir') . '/public/images/albums',
-                $filename
+            $oldCover = $album->getCover();
+            if ($oldCover) {
+                $oldPath = $this->getParameter('kernel.project_dir') . '/public' . $oldCover;
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+            }
+
+            $albumsDir = $this->getParameter('kernel.project_dir') . '/public/images/albums';
+            $filename = bin2hex(random_bytes(16)) . '.webp';
+            $destPath = $albumsDir . '/' . $filename;
+
+            $this->photoConversionService->convertToWebp(
+                $coverFile->getPathname(),
+                $destPath,
+                300, 300
             );
+
             $album->setCover('/images/albums/' . $filename);
         }
 
