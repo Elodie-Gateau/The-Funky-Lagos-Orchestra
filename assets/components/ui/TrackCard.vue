@@ -19,11 +19,14 @@ const trackTitle = computed(() => {
 
 <template>
     <li :class="{ active: playingTrackId === track.id }">
-        <button :aria-label="`${t('music.play')} ${track.title}`" @click="togglePlay(track)">
+        <button
+            :aria-label="`${t('music.play')} ${track.title}`"
+            :style="{ backgroundImage: `url(${track.album.cover})` }"
+            @click="togglePlay(track)"
+        >
             <svg v-if="playingTrackId === track.id" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg>
         </button>
-        <img :src="track.album.cover" :alt="track.album.name" width="75" height="75">
         <div class="track-info">
             <span>{{ trackTitle }}</span>
             <span>{{ track.album.name }}</span>
@@ -49,7 +52,7 @@ li {
     cursor: pointer;
     border-radius: $size-6;
     display: grid;
-    grid-template-columns: $size-48 $size-48 1fr auto;
+    grid-template-columns: $size-72 1fr auto;
     align-items: center;
     gap: $size-14;
     padding: $size-14 $size-20;
@@ -57,23 +60,35 @@ li {
     color: color-mix(in srgb, var(--text-button) 50%, transparent);
 
     button {
-        background: linear-gradient(135deg, var(--background-accent), var(--background));
-        width: $size-48;
-        height: $size-48;
-        border-radius: $size-6;
-    }
-
-    button > svg {
-        color: var(--title);
-        width: $size-24;
-        height: $size-24;
-    }
-
-    img {
-        border-radius: $size-6;
-        object-fit: cover;
         width: $size-72;
         height: $size-72;
+        border-radius: $size-6;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        // Overlay sombre pour que l'icône soit lisible
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.35);
+            transition: background-color 0.2s ease;
+        }
+
+        &:hover::before {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        svg {
+            position: relative; // au-dessus du ::before
+            z-index: 1;
+            color: #fff;
+            width: $size-24;
+            height: $size-24;
+        }
     }
 
     .track-info {
@@ -110,14 +125,23 @@ li:hover {
 li.active {
     background-color: color-mix(in srgb, var(--background-accent-hover) 12%, transparent);
 
-    button > svg {
+    button svg {
         color: var(--gradient-end);
+    }
+
+    button::before {
+        background-color: rgba(0, 0, 0, 0.25);
     }
 }
 
 @media (min-width: $md) {
     li {
-        grid-template-columns: $size-72 $size-72 1fr $size-72;
+        grid-template-columns: $size-72 1fr $size-72;
+    }
+
+    button {
+        width: $size-72 !important;
+        height: $size-72 !important;
     }
 }
 </style>
