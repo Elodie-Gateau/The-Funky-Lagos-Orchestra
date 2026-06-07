@@ -29,7 +29,7 @@ async function handleLogin() {
 <template>
   <div class="admin-login">
     <div class="admin-login__card">
-      <div class="admin-login__logo"><img src="/assets/images/logo.svg" alt="Logo"></div>
+      <div class="admin-login__logo"><img src="/assets/images/logo.webp" alt="Logo"></div>
       <h1 class="admin-login__title">{{ t('main.title') }}</h1>
       <p class="admin-login__subtitle">{{ t('login.subtitle') }}</p>
 

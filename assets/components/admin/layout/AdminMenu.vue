@@ -27,7 +27,7 @@ async function handleLogout() {
 <template>
   <aside :class="['admin-sidebar', { 'admin-sidebar--open': isOpen }]">
     <div class="admin-sidebar__header">
-      <div class="admin-sidebar__logo"><img src="/assets/images/logo.svg" alt="Logo"></div>
+      <div class="admin-sidebar__logo"><img src="/assets/images/logo.webp" alt="Logo"></div>
       <div class="admin-sidebar__brand">
           Espace Administrateur
       </div>
