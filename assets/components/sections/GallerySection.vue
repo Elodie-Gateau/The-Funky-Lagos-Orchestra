@@ -22,6 +22,6 @@ const props = defineProps({
 
 <style scoped>
 .gallery-container {
-    width: 100%;
+    width: 80%;
 }
 </style>
