@@ -6,8 +6,10 @@ namespace App\Controller\Api;
 
 use App\Entity\Photo;
 use App\Repository\PhotoRepository;
+use App\Service\PhotoConversionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,6 +18,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/api')]
 class PhotoController extends AbstractController
 {
+    public function __construct(private readonly PhotoConversionService $photoConversionService
+    ) {}
+    public function __invoke()
+    {
+
+    }
     #[Route('/photos', methods: ['GET'])]
     public function getPhotos(PhotoRepository $photoRepository): JsonResponse
     {
@@ -39,11 +47,8 @@ class PhotoController extends AbstractController
         if (!in_array($imageFile->getMimeType(), $allowedMimes)) {
             return $this->json(['error' => 'Format non autorisé'], 400);
         }
-        $filename = bin2hex(random_bytes(16)) . '.' . $imageFile->guessExtension();
-        $imageFile->move(
-            $this->getParameter('kernel.project_dir') . '/public/images/gallery',
-            $filename
-        );
+        $galleryDir = $this->getParameter('kernel.project_dir') . '/public/images/gallery';
+        $filename = $this->handlePhotoUpload($imageFile, $galleryDir);
 
         $photo = new Photo();
         $photo->setPath('/images/gallery/' . $filename);
@@ -69,5 +74,27 @@ class PhotoController extends AbstractController
         $em->flush();
 
         return $this->json(['success' => true]);
+    }
+
+    private function handlePhotoUpload(UploadedFile $file, string $directory): string
+    {
+        $tempFilename = bin2hex(random_bytes(16)) . '.' . $file->guessExtension();
+        $tempPath = $directory . '/' . $tempFilename;
+        $file->move($directory, $tempFilename);
+
+        $webpFilename = bin2hex(random_bytes(16)) . '.webp';
+        $webpPath = $directory . '/' . $webpFilename;
+
+        $this->photoConversionService->convertToWebp(
+            inputPath: $tempPath,
+            outputPath: $webpPath,
+            maxWidth: 1200,
+            maxHeight: 1200,
+            quality: 82
+        );
+
+        unlink($tempPath);
+
+        return $webpFilename;
     }
 }
