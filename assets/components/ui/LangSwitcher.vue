@@ -6,9 +6,9 @@ const { locale } = useI18n()
 
 <template>
     <div class="lang-switcher">
-        <button @click="locale = 'fr'" :class="{ active: locale === 'fr' }">FR</button>
+        <button aria-label="Français" @click="locale = 'fr'" :class="{ active: locale === 'fr' }">FR</button>
         <span>|</span>
-        <button @click="locale = 'en'" :class="{ active: locale === 'en' }">EN</button>
+        <button aria-label="English" @click="locale = 'en'" :class="{ active: locale === 'en' }">EN</button>
     </div>
 </template>
 

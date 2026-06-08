@@ -3,7 +3,8 @@ import { X } from '@lucide/vue';
 import { ref } from 'vue'
 import NavMenu from "../ui/NavMenu.vue";
 import LangSwitcher from "../ui/LangSwitcher.vue";
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const isOpen = ref(false)
 const props = defineProps({
     tracks: Array,
@@ -15,7 +16,7 @@ const props = defineProps({
 <template>
     <div class="mobile-menu">
         <LangSwitcher v-if="!isOpen" />
-        <button class="hamburger" @click="isOpen = true" aria-label="Ouvrir le menu">
+        <button class="hamburger" @click="isOpen = true" :aria-label="t('nav.openMenu')">
             <span />
             <span />
             <span class="short" />
@@ -36,7 +37,7 @@ const props = defineProps({
     <Transition name="panel">
         <aside v-if="isOpen" class="slide-panel">
             <div class="panel-header">
-                <button class="btn-close" @click="isOpen = false" aria-label="Fermer">
+                <button class="btn-close" @click="isOpen = false" :aria-label="t('nav.closeMenu')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>

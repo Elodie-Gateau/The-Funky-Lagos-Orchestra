@@ -77,7 +77,7 @@ onUnmounted(() => {
                     <polygon points="-4,-2 4,2 -155,-375" fill="rgba(200,148,58,0.18)"/>
                 </g>
             </svg>
-            <img src="/assets/images/logo.svg" fetchpriority="high" loading="eager" :alt="t('main.logo')">
+            <img src="/assets/images/logo.webp" fetchpriority="high" loading="eager" :alt="t('main.logo')">
         </div>
         <div class="title">
             <h1>
@@ -127,7 +127,7 @@ onUnmounted(() => {
             z-index: 0;
         }
         img {
-            width: 100%;
+            width: auto;
             display: block;
             max-height: 40vh;
             position: relative;
@@ -215,6 +215,8 @@ onUnmounted(() => {
 
         .hero-container {
             width: 60%;
+            display: flex;
+            justify-content: center;
 
             img {
                 max-height: 60vh;

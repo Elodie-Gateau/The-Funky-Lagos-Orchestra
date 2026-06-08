@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Setting;
 use App\Enum\SettingName;
 use App\Repository\SettingRepository;
+use App\Service\PhotoConversionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/api')]
 final class SettingController extends AbstractController
 {
+    public function __construct(private readonly PhotoConversionService $photoConversionService) {}
     #[Route('/settings', methods: ['GET'])]
     public function getSettings(SettingRepository $settingRepository): JsonResponse
     {
@@ -92,15 +94,24 @@ final class SettingController extends AbstractController
         $file = $request->files->get('imageFile');
 
         if ($file) {
-            $filename = bin2hex(random_bytes(16)) . '.' . $file->guessExtension();
-            $file->move($this->getParameter('uploads_dir'), $filename);
+            $uploadsDir = $this->getParameter('uploads_dir');
 
             if ($setting->getImage()) {
-                $oldPath = $this->getParameter('uploads_dir') . '/' . $setting->getImage();
-                if (file_exists($oldPath)) unlink($oldPath);
+                $oldPath = $uploadsDir . '/' . $setting->getImage();
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
             }
 
-            $setting->setImage($filename);
+            $filename = $this->photoConversionService->convertToWebp(
+                inputPath: $file->getPathname(),
+                outputPath: $uploadsDir . '/' . bin2hex(random_bytes(16)) . '.webp',
+                maxWidth: 400,
+                maxHeight: 400,
+                quality: 82
+            );
+
+            $setting->setImage(basename($filename));
             $setting->setUpdatedAt(new \DateTimeImmutable());
             $setting->setUpdatedBy($this->getUser());
         }

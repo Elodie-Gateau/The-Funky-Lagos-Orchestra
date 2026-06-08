@@ -13,7 +13,9 @@
         "music": "Musique",
         "gallery": "Galerie",
         "events": "Concerts",
-        "contact": "Contact"
+        "contact": "Contact",
+        "openMenu": "Ouvrir le menu",
+        "closeMenu": "Fermer le menu"
     },
     "home": {
         "subtitle": "Site officiel"
@@ -47,7 +49,8 @@
         "title": "Notre musique",
         "subtitle": "Écoutez",
         "meta_title": "Musiques",
-        "link": "Voir tous les morceaux"
+        "link": "Voir tous les morceaux",
+        "play": "Écouter"
     },
     "event": {
         "title": "Agenda",
@@ -74,7 +77,9 @@
         "send": "Envoyer",
         "is_sending": "Envoi...",
         "success": "Votre message a bien été envoyé, nous vous répondrons au plus vite !",
-        "error": "Une erreur s'est produite, merci de réessayer."
+        "error": "Une erreur s'est produite, merci de réessayer.",
+        "sendEmail": "Envoyer un email",
+        "call": "Appeler"
     },
     "footer" : {
         "mentions": "Tous droits réservés",

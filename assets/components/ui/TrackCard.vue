@@ -1,26 +1,34 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 import { useAudioPlayer } from '../../composables/useAudioPlayer.js';
+import { computed } from "vue";
 
 const { t } = useI18n();
 const { playingTrackId, togglePlay, currentTime } = useAudioPlayer();
 
-defineProps({
-    track: {
-        type: Object,
-        required: true,
-    },
-});
+const props = defineProps({
+    track: { type: Object, required: true }
+})
+
+const trackTitle = computed(() => {
+    const name = props.track.title
+    if (!name) return ''
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+})
 </script>
 
 <template>
     <li :class="{ active: playingTrackId === track.id }">
-        <button @click="togglePlay(track)">
+        <button
+            :aria-label="`${t('music.play')} ${track.title}`"
+            :style="{ backgroundImage: `url(${track.album.cover})` }"
+            @click="togglePlay(track)"
+        >
             <svg v-if="playingTrackId === track.id" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
             <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg>
         </button>
         <div class="track-info">
-            <span>{{ track.title }}</span>
+            <span>{{ trackTitle }}</span>
             <span>{{ track.album.name }}</span>
             <span>{{ t('main.title') }}</span>
         </div>
@@ -44,24 +52,43 @@ li {
     cursor: pointer;
     border-radius: $size-6;
     display: grid;
-    grid-template-columns: $size-48 1fr auto;
+    grid-template-columns: $size-72 1fr auto;
     align-items: center;
     gap: $size-14;
     padding: $size-14 $size-20;
     background-color: color-mix(in srgb, var(--background-accent) 12%, transparent);
-    color: color-mix(in srgb, var(--text-button) 38%, transparent);
+    color: color-mix(in srgb, var(--text-button) 50%, transparent);
 
     button {
-        background: linear-gradient(135deg, var(--background-accent), var(--background));
-        width: $size-48;
-        height: $size-48;
+        width: $size-72;
+        height: $size-72;
         border-radius: $size-6;
-    }
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
 
-    button > svg {
-        color: var(--title);
-        width: $size-24;
-        height: $size-24;
+        // Overlay sombre pour que l'icône soit lisible
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.35);
+            transition: background-color 0.2s ease;
+        }
+
+        &:hover::before {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        svg {
+            position: relative; // au-dessus du ::before
+            z-index: 1;
+            color: #fff;
+            width: $size-24;
+            height: $size-24;
+        }
     }
 
     .track-info {
@@ -98,14 +125,23 @@ li:hover {
 li.active {
     background-color: color-mix(in srgb, var(--background-accent-hover) 12%, transparent);
 
-    button > svg {
+    button svg {
         color: var(--gradient-end);
+    }
+
+    button::before {
+        background-color: rgba(0, 0, 0, 0.25);
     }
 }
 
 @media (min-width: $md) {
     li {
         grid-template-columns: $size-72 1fr $size-72;
+    }
+
+    button {
+        width: $size-72 !important;
+        height: $size-72 !important;
     }
 }
 </style>

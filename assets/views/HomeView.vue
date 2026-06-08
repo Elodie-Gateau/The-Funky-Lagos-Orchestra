@@ -1,14 +1,17 @@
 <script setup>
-import { useI18n } from 'vue-i18n'
-import { ref, onMounted } from 'vue'
+import {ref, onMounted, defineAsyncComponent} from 'vue'
 import HeroSection from "../components/sections/HeroSection.vue";
 import AboutSection from "../components/sections/AboutSection.vue";
 import MusicSection from "../components/sections/MusicSection.vue";
-import GallerySection from "../components/sections/GallerySection.vue";
 import EventsSection from "../components/sections/EventsSection.vue";
 import ContactSection from "../components/sections/ContactSection.vue";
 import AppHeader from "../components/layout/AppHeader.vue";
 import AppFooter from "../components/layout/AppFooter.vue";
+const GallerySection = defineAsyncComponent({
+    loader: () => import('../components/sections/GallerySection.vue'),
+    loadingComponent: { template: '<div></div>' },
+    delay: 0
+})
 
 const settings = ref(null);
 const tracks = ref([]);

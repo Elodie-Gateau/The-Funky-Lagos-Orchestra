@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 import { useI18n } from 'vue-i18n'
+import logoWebp from '../images/logo.webp'
 
 const email = ref('')
 const password = ref('')
@@ -29,7 +30,9 @@ async function handleLogin() {
 <template>
   <div class="admin-login">
     <div class="admin-login__card">
-      <div class="admin-login__logo"><img src="/assets/images/logo.svg" alt="Logo"></div>
+      <div class="admin-login__logo">
+          <img :src="logoWebp" alt="Logo" width="64" height="64">
+      </div>
       <h1 class="admin-login__title">{{ t('main.title') }}</h1>
       <p class="admin-login__subtitle">{{ t('login.subtitle') }}</p>
 
@@ -59,7 +62,7 @@ async function handleLogin() {
 
         <p v-if="error" class="admin-login__error">{{ error }}</p>
 
-        <button type="submit" class="admin-btn admin-btn--primary" :disabled="loading">
+        <button type="submit" :aria-label="loading ? t('login.connexion') : t('login.sign-in')" class="admin-btn admin-btn--primary" :disabled="loading">
           {{ loading ? t('login.connexion') : t('login.sign-in') }}
         </button>
       </form>
@@ -93,8 +96,8 @@ async function handleLogin() {
   }
 
   &__logo {
-    width: $size-56;
-    height: $size-56;
+    width: $size-64;
+    height: $size-64;
     border-radius: 50%;
     background: $color-gold;
     display: flex;
@@ -102,6 +105,13 @@ async function handleLogin() {
     justify-content: center;
     font-size: $size-24;
     margin: 0 auto $size-20;
+      overflow: hidden;
+      img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center top;
+      }
   }
 
   &__title {
