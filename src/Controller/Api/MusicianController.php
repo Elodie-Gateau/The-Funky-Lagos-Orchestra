@@ -73,7 +73,7 @@ class MusicianController extends AbstractController
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/admin/musician/delete/{id}', methods: ['POST'])]
+    #[Route('/admin/musician/delete/{id}', methods: ['DELETE'])]
     public function deleteMusician(Musician $musician): JsonResponse
     {
         $this->em->remove($musician);
