@@ -72,8 +72,8 @@ class RegenerateThumbnailsCommand extends Command
         foreach ($photos as $photo) {
             $this->regenerate(
                 $this->projectDir . '/public/' . ltrim($photo->getPath(), '/'),
-                250,
-                250,
+                600,
+                600,
                 $io
             );
         }
