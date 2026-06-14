@@ -337,7 +337,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         not_compromised_password?: bool|array{
  *             enabled?: bool|Param, // When disabled, compromised passwords will be accepted as valid. // Default: true
- *             endpoint?: scalar|Param|null, // API endpoint for the NotCompromisedPassword Validator. // Default: null
+ *             endpoint?: scalar|Param|null, // API endpoint for the NotCompromisedPassword EntityValidator. // Default: null
  *         },
  *         disable_translation?: bool|Param, // Default: false
  *         auto_mapping?: array<string, array{ // Default: []
