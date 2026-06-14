@@ -75,7 +75,7 @@ class AlbumController extends AbstractController
         }
         $filename = bin2hex(random_bytes(16)) . '.webp';
         $destPath = $this->getParameter('kernel.project_dir') . '/public/images/albums/' . $filename;
-        $this->photoConversionService->convertToWebp($coverFile->getPathname(), $destPath, 300, 300);
+        $this->photoConversionService->convertToWebp($coverFile->getPathname(), $destPath, 150, 150);
 
         $album->setCover('/images/albums/' . $filename);
 
@@ -114,7 +114,7 @@ class AlbumController extends AbstractController
             $this->photoConversionService->convertToWebp(
                 $coverFile->getPathname(),
                 $destPath,
-                300, 300
+                150, 150
             );
 
             $album->setCover('/images/albums/' . $filename);
