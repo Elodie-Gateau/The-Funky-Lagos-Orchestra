@@ -4,7 +4,7 @@ FROM php:8.4-fpm
 RUN apt-get update && apt-get install -y \
     git curl zip unzip nginx ffmpeg \
     libpng-dev libonig-dev libxml2-dev libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip opcache \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip opcache bcmath \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
