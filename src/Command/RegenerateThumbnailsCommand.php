@@ -6,6 +6,7 @@ use App\Repository\AlbumRepository;
 use App\Repository\PhotoRepository;
 use App\Repository\SettingRepository;
 use App\Service\PhotoConversionService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,7 @@ class RegenerateThumbnailsCommand extends Command
         private readonly PhotoRepository $photoRepository,
         private readonly SettingRepository $settingRepository,
         private readonly PhotoConversionService $photoConversionService,
+        private readonly EntityManagerInterface $entityManager,
         private readonly string $projectDir,
     ) {
         parent::__construct();
@@ -33,12 +35,35 @@ class RegenerateThumbnailsCommand extends Command
         $albums = $this->albumRepository->findAll();
         $io->section(sprintf('Albums (%d)', count($albums)));
         foreach ($albums as $album) {
-            $this->regenerate(
-                $this->projectDir . '/public/images/albums/' . $album->getCover(),
-                150,
-                150,
-                $io
-            );
+            $coverPath = ltrim($album->getCover(), '/');
+            $sourcePath = $this->projectDir . '/public/' . $coverPath;
+
+            if (!file_exists($sourcePath)) {
+                $io->warning("Fichier introuvable, ignoré : $sourcePath");
+                continue;
+            }
+
+            $pathInfo = pathinfo($coverPath);
+            $isAlreadyWebp = strtolower($pathInfo['extension']) === 'webp';
+
+            if ($isAlreadyWebp) {
+                // Régénération en place (cas Nexuma / Baba N'Goma)
+                $this->regenerate($sourcePath, 150, 150, $io);
+            } else {
+                // Conversion initiale PNG -> WebP avec les bonnes dimensions
+                $newCoverPath = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.webp';
+                $newFullPath = $this->projectDir . '/public/' . $newCoverPath;
+
+                try {
+                    $this->photoConversionService->convertToWebp($sourcePath, $newFullPath, 150, 150);
+                    $album->setCover('/' . $newCoverPath);
+                    $this->entityManager->flush();
+                    unlink($sourcePath);
+                    $io->writeln("OK (conversion initiale) : $newFullPath");
+                } catch (\RuntimeException $e) {
+                    $io->error("Échec sur $sourcePath : " . $e->getMessage());
+                }
+            }
         }
 
         // Photos galerie : 250x250
@@ -46,7 +71,7 @@ class RegenerateThumbnailsCommand extends Command
         $io->section(sprintf('Photos galerie (%d)', count($photos)));
         foreach ($photos as $photo) {
             $this->regenerate(
-                $this->projectDir . '/public/' . $photo->getPath(),
+                $this->projectDir . '/public/' . ltrim($photo->getPath(), '/'),
                 250,
                 250,
                 $io
@@ -61,7 +86,7 @@ class RegenerateThumbnailsCommand extends Command
                 continue;
             }
             $this->regenerate(
-                $this->projectDir . '/public/' . $setting->getImage(),
+                $this->projectDir . '/public/uploads/' . ltrim($setting->getImage(), '/'),
                 400,
                 400,
                 $io
@@ -79,7 +104,7 @@ class RegenerateThumbnailsCommand extends Command
             return;
         }
 
-        $tmpPath = $fullPath . '.tmp';
+        $tmpPath = dirname($fullPath) . '/' . uniqid('tmp_') . '.webp';
 
         try {
             $this->photoConversionService->convertToWebp($fullPath, $tmpPath, $width, $height);
