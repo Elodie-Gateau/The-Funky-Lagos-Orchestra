@@ -26,6 +26,7 @@ services:
       - "443:443"
     volumes:
       - uploads:/var/www/html/public/uploads
+      - /home/ubuntu/secrets/ga-service-account.json:/home/ubuntu/secrets/ga-service-account.json:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - sessions:/var/www/html/var/sessions
       - audio:/var/www/html/public/audio
