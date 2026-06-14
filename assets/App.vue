@@ -1,9 +1,10 @@
 <script setup>
-
+import CookieConsent from "./components/sections/CookieConsent.vue";
 </script>
 
 <template>
-        <RouterView />
+    <RouterView />
+    <CookieConsent />
 </template>
 
 <style scoped>

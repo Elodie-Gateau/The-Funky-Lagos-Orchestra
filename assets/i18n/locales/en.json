@@ -89,5 +89,10 @@
     "discography" : {
         "title" : "Discography",
         "subtitle" : "Albums"
+    },
+    "cookieConsent": {
+        "text": "We use cookies to analyze site traffic (Google Analytics). You can accept or decline this tracking.",
+        "accept": "Accept",
+        "reject": "Decline"
     }
 }
