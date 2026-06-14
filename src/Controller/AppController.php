@@ -11,9 +11,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class AppController extends AbstractController
 {
     #[Route('/{vueRouting}',
-    name: 'app',
-    requirements: ['vueRouting' => '^(?!api).*'],
-    defaults: ['vueRouting' => null]
+        name: 'app',
+        requirements: ['vueRouting' => '^(?!api|llms\.txt).*'],
+        defaults: ['vueRouting' => null]
     )]
     public function index(): Response
     {
