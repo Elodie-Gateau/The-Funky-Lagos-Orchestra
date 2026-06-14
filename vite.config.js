@@ -7,6 +7,7 @@ export default defineConfig({
         vue(),
         symfonyPlugin(),
     ],
+    assetsInclude: ['**/*.woff2', '**/*.woff'],
     build: {
         rollupOptions: {
             input: {
