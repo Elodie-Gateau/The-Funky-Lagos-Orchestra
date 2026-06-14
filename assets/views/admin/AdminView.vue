@@ -68,12 +68,12 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
         </div>
       </div>
     </div>
-
+      <div class="admin-stat analytics">
       <div class="admin-stat__info analytics">
           <span class="admin-stat__label">Vues</span>
           <span class="admin-stat__value"><AnalyticsChart /></span>
       </div>
-
+  </div>
     <div class="dashboard-grid">
       <div class="admin-card">
         <div class="admin-card__header">
@@ -154,10 +154,21 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
   gap: $size-20;
     align-items: flex-start;
 
+    .admin-card {
+        margin-top: 0;
+    }
+
+
   @media (min-width: $md) {
     grid-template-columns: 1fr 1fr;
   }
 }
+    .admin-stat.analytics {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: $size-24;
+    }
 
 .admin-stats {
   display: grid;
@@ -188,7 +199,11 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
   }
 
   &__info { display: flex; flex-direction: column; gap: $size-4; }
-    &__info.analytics { margin-bottom: $size-12;}
+    &__info.analytics {
+        margin-bottom: $size-36;
+        max-width: 700px;
+
+    }
 
   &__label {
     font-family: "Raleway", system-ui, sans-serif;
