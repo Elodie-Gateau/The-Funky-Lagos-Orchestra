@@ -19,7 +19,7 @@ COPY . .
 
 # Installation des dépendances PHP
 RUN APP_ENV=prod composer install --no-dev --optimize-autoloader
-RUN npm install && npm run build
+RUN npm install --legacy-peer-deps && npm run build
 
 # Config Nginx
 COPY docker/nginx.conf /etc/nginx/sites-available/default
