@@ -45,6 +45,11 @@ const routes = [
             meta: { requiresAuth: true, title: 'Admin — The Funky Lagos Orchestra' }
         },
         {
+            path: '/admin/musicians',
+            component: () => import('../views/admin/ManageMusiciansView.vue'),
+            meta: { requiresAuth: true, title: 'Admin — The Funky Lagos Orchestra' }
+        },
+        {
             path: '/admin/settings',
             component: () => import('../views/admin/ManageSettingsView.vue'),
             meta: { requiresAuth: true , title: 'Admin — The Funky Lagos Orchestra'}

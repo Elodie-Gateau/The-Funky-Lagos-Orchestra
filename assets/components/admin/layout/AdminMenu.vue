@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../../stores/auth.js'
-import { LayoutGrid, Music, Calendar, Image, Settings, LogOut } from '@lucide/vue'
+import { LayoutGrid, Music, Calendar, Image, Settings, Drum, LogOut } from '@lucide/vue'
 
 const props = defineProps({
   isOpen: { type: Boolean, default: false }
@@ -89,6 +89,16 @@ async function handleLogout() {
       >
         <span class="admin-sidebar__icon"><Settings /></span>
         Paramètres
+      </RouterLink>
+
+        <RouterLink
+        to="/admin/musicians"
+        class="admin-sidebar__item"
+        active-class="admin-sidebar__item--active"
+        @click="emit('close')"
+      >
+        <span class="admin-sidebar__icon"><Drum /></span>
+        Musiciens
       </RouterLink>
     </nav>
 
