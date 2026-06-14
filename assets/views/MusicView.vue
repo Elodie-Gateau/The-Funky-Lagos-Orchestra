@@ -25,7 +25,7 @@ onMounted(async() => {
 <template>
     <AppHeader/>
     <main>
-        <section>
+        <section class="section--dark">
             <SectionTitle :title="t('discography.subtitle')" :subtitle="t('discography.title')" />
             <div class="albums" v-for="album in albums" :key="album.id">
                 <div class="wrapper">
