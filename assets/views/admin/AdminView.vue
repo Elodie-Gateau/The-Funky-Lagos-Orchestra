@@ -5,6 +5,7 @@ import AdminLayout from '../../components/admin/layout/AdminLayout.vue'
 import { Music, Calendar, Image } from '@lucide/vue'
 import {Icon} from "@iconify/vue";
 import {formatDate} from "../../composables/dateFormat.js";
+import AnalyticsChart from "../../components/admin/ui/AnalyticsChart.vue";
 
 const auth = useAuthStore()
 const tracks = ref([])
@@ -67,6 +68,11 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
         </div>
       </div>
     </div>
+
+      <div class="admin-stat__info analytics">
+          <span class="admin-stat__label">Vues</span>
+          <span class="admin-stat__value"><AnalyticsChart /></span>
+      </div>
 
     <div class="dashboard-grid">
       <div class="admin-card">
@@ -146,6 +152,7 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
   display: grid;
   grid-template-columns: 1fr;
   gap: $size-20;
+    align-items: flex-start;
 
   @media (min-width: $md) {
     grid-template-columns: 1fr 1fr;
@@ -181,6 +188,7 @@ const upcomingEvents = computed(() => events.value.slice(0, 4))
   }
 
   &__info { display: flex; flex-direction: column; gap: $size-4; }
+    &__info.analytics { margin-bottom: $size-12;}
 
   &__label {
     font-family: "Raleway", system-ui, sans-serif;
